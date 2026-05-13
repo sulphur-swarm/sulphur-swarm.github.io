@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sulphur-swarm.github.io/sitemap.xml

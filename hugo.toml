@@ -30,4 +30,3 @@ theme = "PaperMod"
   disableXML = true
   minifyOutput = true
 
-enableRobotsTXT = true
