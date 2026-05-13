@@ -1,0 +1,38 @@
+baseURL = "https://sulphur-swarm.github.io/"
+languageCode = "en-us"
+title = "SwarmFix"
+theme = "PaperMod"
+
+[params]
+  env = "production"
+  description = "Autonomous code resolution powered by AI swarm intelligence"
+  author = "SwarmFix"
+  defaultTheme = "dark"
+  ShowReadingTime = false
+  ShowShareButtons = false
+  ShowPostNavLinks = false
+  ShowBreadCrumbs = false
+  ShowCodeCopyButtons = true
+  disableSpecial1stPost = true
+
+  [params.homeInfoParams]
+    Title = "SwarmFix"
+    Content = "Autonomous code resolution powered by AI swarm intelligence. Submit a GitHub issue, we resolve it."
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/sulphur-swarm/swarmfix"
+
+[params.profileMode]
+  enabled = true
+  title = "SwarmFix"
+  subtitle = "Autonomous code resolution powered by AI swarm intelligence"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[minify]
+  disableXML = true
+  minifyOutput = true
+
+enableRobotsTXT = true
