@@ -23,11 +23,6 @@ theme = "PaperMod"
     name = "github"
     url = "https://github.com/sulphur-swarm/swarmfix"
 
-[params.profileMode]
-  enabled = true
-  title = "SwarmFix"
-  subtitle = "Autonomous code resolution powered by AI swarm intelligence"
-
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
