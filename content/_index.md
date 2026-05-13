@@ -1,6 +1,6 @@
 ---
 title: "SwarmFix"
-layout: "home"
+subtitle: "Autonomous code resolution powered by AI swarm intelligence"
 ---
 
 ## Autonomous Code Resolution
