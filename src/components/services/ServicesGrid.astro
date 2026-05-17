@@ -1,0 +1,84 @@
+---
+import ServiceCard from './ServiceCard.astro';
+
+const swarmfixIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19c-2.3 0-6.57-2.42-6.57-7.5 0-3.87 2.94-7 6.57-7s6.57 3.13 6.57 7C18.57 16.58 14.3 19 12 19z"/>
+  <path d="M12 4.5V3M5.5 7l-1.5-1.5M18.5 7l1.5-1.5M3 12H2M22 12h-1M5.5 17l-1.5 1.5M18.5 17l1.5 1.5"/>
+</svg>`;
+
+const customDevIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+  <polyline points="2 17 12 22 22 17"/>
+  <polyline points="2 12 12 17 22 12"/>
+</svg>`;
+
+const codeReviewIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  <polyline points="8 11 10 13 14 9"/>
+</svg>`;
+
+const documentationIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+  <polyline points="14 2 14 8 20 8"/>
+  <line x1="16" y1="13" x2="8" y2="13"/>
+  <line x1="16" y1="17" x2="8" y2="17"/>
+  <polyline points="10 9 9 9 8 9"/>
+</svg>`;
+---
+
+<section class="services-grid-section py-20 md:py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="services-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      <ServiceCard
+        title="SwarmFix"
+        description="Automated bug fixing for open source projects. Deploy a coordinated agent swarm to analyze, plan, and fix code issues — autonomously, at scale."
+        icon={swarmfixIcon}
+        href="/swarmfix/"
+        comingSoon={false}
+        featured={true}
+      />
+      <ServiceCard
+        title="Custom Development"
+        description="Bespoke software development powered by the swarm. From architecture to deployment, we handle the full stack."
+        icon={customDevIcon}
+        comingSoon={true}
+      />
+      <ServiceCard
+        title="Code Review"
+        description="Multi-agent code review pipeline. Multiple specialized agents review your code for correctness, performance, and security."
+        icon={codeReviewIcon}
+        comingSoon={true}
+      />
+      <ServiceCard
+        title="Documentation"
+        description="Generate comprehensive technical documentation for your codebase. API references, guides, and READMEs — written by the swarm."
+        icon={documentationIcon}
+        comingSoon={true}
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.service-card',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.12,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.services-grid',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+</script>

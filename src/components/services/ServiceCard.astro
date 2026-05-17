@@ -1,0 +1,72 @@
+---
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  href?: string;
+  comingSoon?: boolean;
+  featured?: boolean;
+}
+
+const {
+  title,
+  description,
+  icon,
+  href,
+  comingSoon = false,
+  featured = false,
+} = Astro.props;
+
+const isActive = !comingSoon && href;
+
+const cardClasses = [
+  'service-card group relative rounded-xl overflow-hidden transition-all duration-300 p-6',
+  isActive
+    ? 'bg-[rgba(14,17,23,0.8)] border border-[rgba(108,99,255,0.3)] hover:-translate-y-1 hover:border-[rgba(108,99,255,0.6)] hover:shadow-[0_8px_30px_rgba(108,99,255,0.2)] cursor-pointer backdrop-blur-sm'
+    : 'bg-[rgba(14,17,23,0.5)] border border-[rgba(255,255,255,0.06)] opacity-70 cursor-not-allowed',
+  featured ? 'md:col-span-1' : '',
+].filter(Boolean).join(' ');
+---
+
+<div class={cardClasses}>
+  <!-- Top accent line for active cards -->
+  {isActive && (
+    <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-[#6c63ff] to-[#00d4ff]"></div>
+  )}
+
+  <!-- Coming Soon badge -->
+  {comingSoon && (
+    <span class="absolute top-4 right-4 text-xs font-mono text-[#888] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] rounded-full px-3 py-1">
+      Coming Soon
+    </span>
+  )}
+
+  <!-- Card content -->
+  {isActive ? (
+    <a href={href} class="block h-full no-underline" tabindex="0">
+      <!-- Icon -->
+      <div class={`w-12 h-12 mb-4 ${isActive ? 'text-[#6c63ff]' : 'text-[#555]'}`}>
+        <Fragment set:html={icon} />
+      </div>
+      <!-- Title -->
+      <h3 class="text-xl font-bold text-[#f0f0f0] mb-2">{title}</h3>
+      <!-- Description -->
+      <p class="text-[#888] text-base leading-relaxed mt-2 mb-6">{description}</p>
+      <!-- CTA -->
+      <Button href={href} variant="secondary" size="sm">Learn More →</Button>
+    </a>
+  ) : (
+    <div class="block h-full">
+      <!-- Icon -->
+      <div class="w-12 h-12 mb-4 text-[#555]">
+        <Fragment set:html={icon} />
+      </div>
+      <!-- Title -->
+      <h3 class="text-xl font-bold text-[#888] mb-2">{title}</h3>
+      <!-- Description -->
+      <p class="text-[#555] text-base leading-relaxed mt-2 mb-6">{description}</p>
+    </div>
+  )}
+</div>

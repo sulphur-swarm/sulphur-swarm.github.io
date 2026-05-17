@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ServicesGrid from '../components/services/ServicesGrid.astro';
+import CustomServicesBlock from '../components/sections/CustomServicesBlock.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="Services — Sulphur AI Swarm"
+  description="Explore the services offered by the Sulphur AI Swarm — from automated bug fixing with SwarmFix to custom development and code review."
+>
+  <PageHero
+    title="Our Services"
+    subtitle="From fixing code to reviewing architecture — deploy the right agents for the right task."
+    badge="Services"
+    breadcrumb="Services"
+  />
+
+  <ServicesGrid />
+
+  <CustomServicesBlock />
+
+  <CTABanner
+    title="Ready to get started?"
+    subtitle="Put the swarm to work on your project today."
+    primaryHref="/contact/"
+    primaryLabel="Get in Touch"
+    secondaryHref="/swarmfix/"
+    secondaryLabel="Explore SwarmFix"
+  />
+</BaseLayout>

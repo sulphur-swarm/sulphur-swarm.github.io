@@ -1,0 +1,67 @@
+---
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+
+const {
+  title = 'Ready to get started?',
+  subtitle = 'Put the swarm to work on your project today.',
+  primaryHref = '/contact/',
+  primaryLabel = 'Contact Us',
+  secondaryHref,
+  secondaryLabel,
+} = Astro.props;
+---
+
+<section class="cta-banner relative overflow-hidden py-20 md:py-24">
+  <!-- Purple radial glow background -->
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(108,99,255,0.15)_0%,transparent_70%)]"
+  >
+  </div>
+  <!-- Top border line gradient -->
+  <div
+    class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#6c63ff] to-transparent"
+  >
+  </div>
+
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-4">{title}</h2>
+    <p class="text-[#888] text-lg leading-relaxed mb-8">{subtitle}</p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <Button href={primaryHref} variant="primary" size="lg">{primaryLabel}</Button>
+      {secondaryHref && secondaryLabel && (
+        <Button href={secondaryHref} variant="secondary" size="lg">{secondaryLabel}</Button>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.cta-banner',
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.cta-banner',
+        start: 'top 85%',
+        once: true,
+      },
+    }
+  );
+</script>
