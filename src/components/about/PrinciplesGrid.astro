@@ -1,0 +1,80 @@
+---
+const principles = [
+  { icon: '🔗', title: 'Strict Delegation', description: 'Every task flows through the correct hierarchy. No agent bypasses its superior or skips chain of command.' },
+  { icon: '⚡', title: 'Autonomous Execution', description: 'Once tasked, agents work independently. Humans set direction; the swarm handles execution.' },
+  { icon: '✅', title: 'Quality Validation', description: 'Every output is reviewed before it proceeds. No unchecked changes reach production.' },
+  { icon: '🔍', title: 'Transparent Decisions', description: 'Every action is logged and explainable. The swarm is a system you can audit, not a black box.' },
+];
+---
+
+<section class="principles-section">
+  <div class="principles-inner">
+    <div class="principles-grid js-principles-grid">
+      {principles.map(p => (
+        <div class="principle-card js-principle-card">
+          <div class="principle-icon">{p.icon}</div>
+          <h3 class="principle-title">{p.title}</h3>
+          <p class="principle-desc">{p.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo('.js-principle-card',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: '.js-principles-grid', start: 'top 80%', once: true }
+    }
+  );
+</script>
+
+<style>
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 3rem auto 0;
+  }
+
+  .principle-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 2rem 1.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .principle-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.1);
+  }
+
+  .principle-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .principle-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+
+  .principle-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  gradient?: boolean;
+  centered?: boolean;
+}
+
+const { eyebrow, title, subtitle, gradient = true, centered = true } = Astro.props;
+---
+
+<div class={`section-header ${centered ? 'text-center' : ''}`}>
+  {eyebrow && (
+    <p class="eyebrow">{eyebrow}</p>
+  )}
+  <h2 class={gradient ? 'gradient-title' : ''}>{title}</h2>
+  {subtitle && <p class="subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .gradient-title {
+    background: linear-gradient(135deg, #fff 0%, #6c63ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>

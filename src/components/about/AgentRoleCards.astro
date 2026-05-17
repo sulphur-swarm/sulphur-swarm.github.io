@@ -1,0 +1,84 @@
+---
+const roles = [
+  { icon: '🤝', title: 'Personal Assistant', description: 'User-facing agent. Translates human requests into swarm tasks and reports results back.' },
+  { icon: '👁️', title: 'Overseer', description: 'Top-level orchestrator managing projects and reporting to the Council.' },
+  { icon: '📋', title: 'Project Manager', description: 'Owns one project. Creates Working Groups and coordinates their Coordinators.' },
+  { icon: '🔗', title: 'Coordinator', description: 'Leads one Working Group. Spawns task pipelines and monitors task agents.' },
+  { icon: '🔍', title: 'Researcher', description: 'First in the task pipeline. Explores the codebase and gathers context.' },
+  { icon: '⚡', title: 'Worker', description: 'Implements the planned solution, writing or modifying code and content.' },
+  { icon: '✅', title: 'Validator', description: 'Verifies outputs at each pipeline stage before passing them forward.' },
+];
+---
+
+<section class="roles-section">
+  <div class="roles-inner">
+    <div class="roles-grid js-roles-grid">
+      {roles.map(role => (
+        <div class="role-card js-role-card">
+          <div class="role-card__icon">{role.icon}</div>
+          <h3 class="role-card__title">{role.title}</h3>
+          <p class="role-card__desc">{role.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo('.js-role-card',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: '.js-roles-grid', start: 'top 80%', once: true }
+    }
+  );
+</script>
+
+<style>
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+    max-width: 1100px;
+    margin: 3rem auto 0;
+  }
+
+  .role-card {
+    background: rgba(14, 17, 23, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .role-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(108, 99, 255, 0.5);
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.15);
+  }
+
+  .role-card__icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .role-card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .role-card__desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

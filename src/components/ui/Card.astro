@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  icon?: string;
+  href?: string;
+  variant?: 'default' | 'glass' | 'featured';
+  class?: string;
+}
+
+const { title, description, icon, href, variant = 'default', class: className } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag href={href} class={`card card--${variant} ${className ?? ''}`}>
+  {icon && <div class="card__icon" set:html={icon} />}
+  <h3 class="card__title">{title}</h3>
+  {description && <p class="card__description">{description}</p>}
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    display: block;
+    text-decoration: none;
+  }
+
+  .card--default {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .card--glass {
+    background: rgba(14, 17, 23, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+  }
+
+  .card--featured {
+    background: rgba(108, 99, 255, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+    box-shadow: 0 0 30px rgba(108, 99, 255, 0.2);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .card__icon {
+    margin-bottom: 0.75rem;
+  }
+
+  .card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .card__description {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>
