@@ -1,12 +1,12 @@
 baseURL = "https://sulphur-swarm.github.io/"
 languageCode = "en-us"
-title = "SwarmFix"
+title = "Sulphur Swarm"
 theme = "PaperMod"
 
 [params]
   env = "production"
-  description = "Autonomous code resolution powered by AI swarm intelligence"
-  author = "SwarmFix"
+  description = "AI-powered autonomous software development — SwarmFix and beyond"
+  author = "Sulphur Swarm"
   defaultTheme = "dark"
   ShowReadingTime = false
   ShowShareButtons = false
@@ -16,12 +16,37 @@ theme = "PaperMod"
   disableSpecial1stPost = true
 
   [params.homeInfoParams]
-    Title = "SwarmFix"
-    Content = "Autonomous code resolution powered by AI swarm intelligence. Submit a GitHub issue, we resolve it."
+    Title = "Sulphur Swarm"
+    Content = "Autonomous AI agents building software at scale. Explore our services or submit a task."
 
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/sulphur-swarm/swarmfix"
+    url = "https://github.com/sulphur-swarm"
+
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "SwarmFix"
+  url = "/swarmfix/"
+  weight = 2
+
+[[menu.main]]
+  name = "Services"
+  url = "/services/"
+  weight = 3
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 4
+
+[[menu.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 5
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
@@ -29,4 +54,3 @@ theme = "PaperMod"
 [minify]
   disableXML = true
   minifyOutput = true
-

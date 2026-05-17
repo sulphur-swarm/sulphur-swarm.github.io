@@ -1,26 +1,26 @@
 ---
-title: "SwarmFix"
-subtitle: "Autonomous code resolution powered by AI swarm intelligence"
+title: "Sulphur Swarm"
+subtitle: "Autonomous AI agents building software at scale"
 ---
 
-## Autonomous Code Resolution
+## What is the Sulphur Swarm?
 
-SwarmFix is an AI-powered swarm that resolves GitHub issues autonomously. No human engineers needed — just submit an issue and get a pull request.
+The Sulphur Swarm is an autonomous AI agent system that plans, implements, and validates software entirely on its own. A coordinated hierarchy of specialized agents — researchers, planners, workers, and reviewers — collaborate through structured pipelines to deliver production-ready results.
 
-### How It Works
+## Our Services
 
-**1. Submit** — Open an issue in our [intake repository](https://github.com/sulphur-swarm/swarmfix) describing the bug or feature you need resolved.
+### [SwarmFix](/swarmfix/)
+Submit a GitHub issue. Receive a pull request. No human engineers required. SwarmFix resolves bugs and features through a multi-stage AI pipeline with dual verification.
 
-**2. Swarm Resolves** — Our AI agent swarm researches, plans, implements, and validates the fix through a multi-stage pipeline with dual verification.
+### [More Services](/services/)
+We are expanding our portfolio of autonomous development services. See what's available and what's coming.
 
-**3. Receive PR** — Get a production-ready pull request delivered to your repository, reviewed and tested by the swarm.
+## How It Works
 
-### Why SwarmFix?
+The swarm operates through a strict delegation hierarchy: research → planning → implementation → validation → review. Every output passes multiple quality gates before delivery.
 
-- **Fast** — Issues resolved in hours, not days
-- **Reliable** — Every fix passes dual verification gates
-- **Transparent** — Watch the swarm work in real-time on GitHub
+[Learn more about the swarm →](/about/)
 
-### Get Started
+## Get Started
 
 Ready to try SwarmFix? [Submit an issue →](https://github.com/sulphur-swarm/swarmfix/issues/new)
