@@ -251,6 +251,9 @@ describe("Hero section", () => {
   it("global.css has font-geist utility", () => {
     const css = readFileSync(join(root, "src/styles/global.css"), "utf-8");
     expect(css).toContain(".font-geist");
+  });
+});
+
 describe("Blog system", () => {
   it("has content collection config", () => {
     expect(existsSync(join(root, "src/content.config.ts"))).toBe(true);
