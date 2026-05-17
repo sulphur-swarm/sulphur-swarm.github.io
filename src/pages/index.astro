@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroScene from '../components/HeroScene.astro';
+import Mission from '../components/sections/Mission.astro';
+import Capabilities from '../components/sections/Capabilities.astro';
+import Projects from '../components/sections/Projects.astro';
+import CTA from '../components/sections/CTA.astro';
 ---
 
 <BaseLayout
@@ -8,5 +12,8 @@ import HeroScene from '../components/HeroScene.astro';
   description="The most capable AI system — a multi-agent swarm that thinks, plans, and builds autonomously."
 >
   <HeroScene />
-  <!-- Additional page sections will be added in future tasks -->
+  <Mission />
+  <Capabilities />
+  <Projects />
+  <CTA />
 </BaseLayout>
