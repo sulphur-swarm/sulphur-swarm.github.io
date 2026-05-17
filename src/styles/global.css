@@ -88,3 +88,8 @@ input:focus, textarea:focus {
   transition: opacity 0.2s ease;
   pointer-events: none;
 }
+
+/* Font utility */
+.font-geist {
+  font-family: 'Geist', 'Inter', system-ui, sans-serif;
+}
