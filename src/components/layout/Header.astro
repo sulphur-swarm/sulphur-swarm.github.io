@@ -32,7 +32,13 @@
 
     <!-- CTA button (desktop) + hamburger (mobile) -->
     <a href="/contact/" class="cta-btn" aria-label="Get started">Get Started</a>
-    <button id="mobile-menu-btn" class="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+    <button
+      id="mobile-menu-toggle"
+      class="hamburger-btn"
+      aria-label="Toggle mobile menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="19" y2="6"/>
         <line x1="3" y1="11" x2="19" y2="11"/>
@@ -217,18 +223,21 @@
 
 <script>
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
 
-  // Scroll-based opacity: increase header bg opacity after 80px
-  ScrollTrigger.create({
-    start: 80,
-    onEnter: () => gsap.to('#site-header', { backgroundColor: 'rgba(8,9,12,0.97)', duration: 0.3 }),
-    onLeaveBack: () => gsap.to('#site-header', { backgroundColor: 'rgba(8,9,12,0.85)', duration: 0.3 }),
-  });
+  // Scroll-based background opacity using scrollY
+  function handleScroll() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+    if (window.scrollY > 80) {
+      header.style.background = 'rgba(8,9,12,0.97)';
+    } else {
+      header.style.background = 'rgba(8,9,12,0.85)';
+    }
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
 
   // Mobile menu toggle
-  const openBtn = document.getElementById('mobile-menu-btn');
+  const openBtn = document.getElementById('mobile-menu-toggle');
   const closeBtn = document.getElementById('mobile-close-btn');
   const menu = document.getElementById('mobile-menu');
 
@@ -267,6 +276,13 @@
 
   openBtn?.addEventListener('click', openMenu);
   closeBtn?.addEventListener('click', closeMenu);
+
+  // Click-outside-to-dismiss: clicking the overlay itself closes it
+  menu?.addEventListener('click', (e) => {
+    if (e.target === menu) {
+      closeMenu();
+    }
+  });
 
   // Highlight active nav link
   const links = document.querySelectorAll('.nav-link');

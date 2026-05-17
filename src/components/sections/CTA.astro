@@ -1,0 +1,98 @@
+---
+// src/components/sections/CTA.astro
+---
+
+<section class="cta-section" id="cta">
+  <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+    <!-- CTA card -->
+    <div class="cta-card relative overflow-hidden rounded-3xl p-12 lg:p-20 text-center border"
+         style="background: var(--color-surface); border-color: rgba(108, 99, 255, 0.3);">
+
+      <!-- Background glow -->
+      <div class="absolute inset-0 pointer-events-none"
+           style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(108, 99, 255, 0.12) 0%, transparent 70%);"></div>
+
+      <!-- Content -->
+      <div class="relative z-10">
+        <p class="cta-eyebrow text-sm font-mono tracking-widest uppercase mb-6"
+           style="color: var(--color-accent-secondary);">
+          Get started
+        </p>
+
+        <h2 class="cta-headline text-4xl lg:text-6xl font-extrabold leading-tight mb-6"
+            style="color: var(--color-text-primary);">
+          See the swarm<br />in action.
+        </h2>
+
+        <p class="cta-desc text-lg leading-relaxed mb-10 max-w-xl mx-auto"
+           style="color: var(--color-text-secondary);">
+          SwarmFix is live. Submit a bug report and let the Sulphur AI Swarm
+          diagnose, fix, and open a pull request — autonomously.
+        </p>
+
+        <div class="cta-buttons flex flex-col sm:flex-row gap-4 justify-center">
+          <!-- Primary CTA -->
+          <a href="/swarmfix/"
+             class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300"
+             style="background: var(--color-accent-primary); color: white;">
+            Try SwarmFix
+          </a>
+
+          <!-- Secondary CTA -->
+          <a href="mailto:sulphur@hamilton.garden"
+             class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base border transition-all duration-300"
+             style="border-color: var(--color-border); color: var(--color-text-primary);">
+            Contact the swarm
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-card a[href="/swarmfix/"]:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 24px rgba(108, 99, 255, 0.4);
+    transform: translateY(-1px);
+  }
+  .cta-card a[href^="mailto"]:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    background: rgba(108, 99, 255, 0.06);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Subtle card entrance
+  gsap.from('.cta-card', {
+    scrollTrigger: {
+      trigger: '#cta',
+      start: 'top 85%',
+      once: true,
+    },
+    opacity: 0,
+    scale: 0.98,
+    duration: 1.2,
+    ease: 'power2.out',
+  });
+
+  // Stagger internal content elements
+  gsap.from('.cta-eyebrow, .cta-headline, .cta-desc, .cta-buttons', {
+    scrollTrigger: {
+      trigger: '#cta',
+      start: 'top 75%',
+      once: true,
+    },
+    opacity: 0,
+    y: 30,
+    duration: 1.0,
+    ease: 'power2.out',
+    stagger: 0.12,
+  });
+</script>

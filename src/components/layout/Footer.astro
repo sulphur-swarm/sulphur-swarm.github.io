@@ -1,5 +1,6 @@
 ---
 // src/components/layout/Footer.astro
+const currentYear = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <!-- Top gradient line -->
@@ -30,6 +31,7 @@
       <div class="footer-col">
         <h3 class="footer-col-heading">Navigation</h3>
         <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/" class="footer-link">Home</a>
           <a href="/swarmfix/" class="footer-link">SwarmFix</a>
           <a href="/about/" class="footer-link">About</a>
           <a href="/services/" class="footer-link">Services</a>
@@ -49,7 +51,7 @@
 
     <!-- Bottom bar -->
     <div class="footer-bottom">
-      © 2026 Sulphur AI Swarm. Built by the swarm, for the world.
+      &copy; {currentYear} Sulphur. All rights reserved.
     </div>
   </div>
 </footer>

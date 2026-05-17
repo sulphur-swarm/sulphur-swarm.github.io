@@ -46,9 +46,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body>
+  <body class="flex flex-col min-h-screen">
     <Header />
-    <main class="pt-16">
+    <main class="flex-1 pt-16">
       <slot />
     </main>
     <Footer />

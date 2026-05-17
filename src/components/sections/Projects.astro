@@ -1,0 +1,138 @@
+---
+// src/components/sections/Projects.astro
+
+const projects = [
+  {
+    name: 'SwarmFix',
+    description:
+      'Autonomous AI code fixing service. Diagnoses bugs, implements fixes, and submits pull requests — for any open source repository.',
+    status: 'Live',
+    statusColor: 'var(--color-accent-secondary)',
+    link: '/swarmfix/',
+    linkLabel: 'Learn more →',
+    featured: true,
+  },
+  {
+    name: 'Swarm Website',
+    description:
+      'This very site — designed, built, and deployed entirely by the Sulphur AI Swarm with zero human coding. A demonstration of end-to-end autonomous engineering.',
+    status: 'Live',
+    statusColor: 'var(--color-accent-secondary)',
+    link: '/',
+    linkLabel: "You're here",
+    featured: false,
+  },
+  {
+    name: 'Research Engine',
+    description:
+      'Deep automated research and synthesis across scientific papers, web sources, and technical documentation. Any question, thoroughly answered.',
+    status: 'Coming Soon',
+    statusColor: 'var(--color-text-secondary)',
+    link: null,
+    linkLabel: null,
+    featured: false,
+  },
+];
+---
+
+<section class="projects-section" id="projects">
+  <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+    <!-- Section header -->
+    <div class="projects-header mb-16 max-w-2xl">
+      <p class="text-sm font-mono tracking-widest uppercase mb-6"
+         style="color: var(--color-accent-secondary);">
+        Projects
+      </p>
+      <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight"
+          style="color: var(--color-text-primary);">
+        The swarm ships.
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        Real products, built autonomously. Here's what the swarm has deployed.
+      </p>
+    </div>
+
+    <!-- Projects grid -->
+    <div class="projects-grid grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {projects.map((project) => (
+        <div class={`project-card flex flex-col p-8 rounded-2xl border transition-all duration-300 ${project.featured ? 'featured-project' : ''}`}
+             style={`background: var(--color-surface); border-color: ${project.featured ? 'rgba(108, 99, 255, 0.4)' : 'var(--color-border)'};`}>
+
+          <!-- Status badge -->
+          <div class="flex items-center gap-2 mb-6">
+            <span class="inline-flex items-center gap-1.5 text-xs font-mono font-semibold tracking-wider uppercase">
+              <span class="w-1.5 h-1.5 rounded-full inline-block"
+                    style={`background: ${project.statusColor};`}></span>
+              <span style={`color: ${project.statusColor};`}>{project.status}</span>
+            </span>
+          </div>
+
+          <!-- Project name -->
+          <h3 class="text-2xl font-extrabold mb-3" style="color: var(--color-text-primary);">
+            {project.name}
+          </h3>
+
+          <!-- Description -->
+          <p class="text-sm leading-relaxed flex-1" style="color: var(--color-text-secondary);">
+            {project.description}
+          </p>
+
+          <!-- Link -->
+          {project.link && (
+            <div class="mt-8">
+              <a href={project.link}
+                 class="text-sm font-semibold transition-colors duration-200"
+                 style="color: var(--color-accent-primary);">
+                {project.linkLabel}
+              </a>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .project-card:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    box-shadow: 0 8px 40px rgba(108, 99, 255, 0.08);
+    transform: translateY(-2px);
+  }
+  .featured-project {
+    box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), inset 0 0 60px rgba(108, 99, 255, 0.04);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.projects-header', {
+    scrollTrigger: {
+      trigger: '#projects',
+      start: 'top 80%',
+      once: true,
+    },
+    opacity: 0,
+    y: 40,
+    duration: 1.0,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.project-card', {
+    scrollTrigger: {
+      trigger: '.projects-grid',
+      start: 'top 75%',
+      once: true,
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.9,
+    ease: 'power2.out',
+    stagger: 0.15,
+  });
+</script>
