@@ -1,0 +1,196 @@
+---
+// src/components/swarmfix/HowItWorks.astro
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const steps = [
+  {
+    number: '01',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`,
+    title: 'Submit Issue',
+    description: 'Point SwarmFix at a GitHub repository or paste an issue URL. Describe the bug or link the issue — the swarm takes it from there.',
+  },
+  {
+    number: '02',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>`,
+    title: 'Swarm Analyzes',
+    description: 'Researcher and Planner agents dive into your codebase. They map dependencies, trace the root cause, and produce a precise fix strategy.',
+  },
+  {
+    number: '03',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>`,
+    title: 'AI Implements Fix',
+    description: 'Worker agents write the code. Validator agents test it. No patch ships without passing validation — quality is non-negotiable.',
+  },
+  {
+    number: '04',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12m0 0a3 3 0 100 6 3 3 0 000-6zm0-12a3 3 0 100-6 3 3 0 000 6zm0 0c4.418 0 8 1.79 8 4v4m0-4a3 3 0 100 6 3 3 0 000-6z"/></svg>`,
+    title: 'PR Delivered',
+    description: 'A clean pull request lands in your repo with a plain-English explanation of every change made. Review, merge, and ship.',
+  },
+];
+---
+
+<section class="hiw-section">
+  <div class="hiw-container">
+    <SectionHeader
+      eyebrow="Process"
+      title="How It Works"
+      subtitle="Four steps from bug report to merged fix. No manual effort required."
+    />
+
+    <div class="hiw-wrapper">
+      <!-- SVG connecting line (desktop) -->
+      <div class="hiw-line-container" aria-hidden="true">
+        <svg id="hiw-line-svg" viewBox="0 0 4 400" preserveAspectRatio="none">
+          <!-- Vertical dashed track line -->
+          <line x1="2" y1="0" x2="2" y2="400"
+            stroke="rgba(108,99,255,0.2)" stroke-width="2" stroke-dasharray="6 4" />
+          <!-- Animated dot -->
+          <circle id="hiw-dot" cx="2" cy="0" r="5" fill="var(--color-accent-primary)"
+            style="filter:drop-shadow(0 0 6px rgba(108,99,255,0.8));" />
+        </svg>
+      </div>
+
+      <!-- Steps -->
+      <div class="hiw-steps">
+        {steps.map((step, i) => (
+          <div class="hiw-step" data-step={i}>
+            <div class="step-number">{step.number}</div>
+            <div class="step-card">
+              <div class="step-icon" set:html={step.icon} />
+              <div class="step-content">
+                <h3 class="step-title">{step.title}</h3>
+                <p class="step-desc">{step.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hiw-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+  }
+  .hiw-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hiw-wrapper {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+  }
+  .hiw-line-container {
+    flex-shrink: 0;
+    width: 20px;
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .hiw-line-container { display: block; }
+  }
+  #hiw-line-svg { width: 100%; height: 100%; }
+
+  .hiw-steps {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .hiw-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .step-number {
+    font-family: 'Geist Mono', monospace;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(108, 99, 255, 0.06);
+    flex-shrink: 0;
+    width: 4rem;
+    text-align: right;
+    user-select: none;
+  }
+  .step-card {
+    flex: 1;
+    background: rgba(14, 17, 23, 0.6);
+    border: 1px solid rgba(108, 99, 255, 0.15);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .step-card:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    box-shadow: 0 0 24px rgba(108, 99, 255, 0.12);
+  }
+  .step-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    color: var(--color-accent-primary);
+  }
+  .step-icon svg { width: 100%; height: 100%; }
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.4rem;
+  }
+  .step-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .step-content {}
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Stagger reveal each step card
+  gsap.to('.hiw-step', {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    stagger: 0.15,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.hiw-steps',
+      start: 'top 80%',
+      once: true,
+    },
+  });
+
+  // Animate the dot along the SVG line (scrub with scroll)
+  const dot = document.getElementById('hiw-dot');
+  if (dot) {
+    gsap.fromTo(
+      dot,
+      { attr: { cy: 0 } },
+      {
+        attr: { cy: 400 },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hiw-steps',
+          start: 'top 80%',
+          end: 'bottom 20%',
+          scrub: 1,
+        },
+      }
+    );
+  }
+</script>
