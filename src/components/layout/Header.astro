@@ -1,0 +1,137 @@
+---
+// src/components/layout/Header.astro
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/swarmfix/', label: 'SwarmFix' },
+  { href: '/about/', label: 'About' },
+  { href: '/services/', label: 'Services' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 h-16 flex items-center"
+  style="background: rgba(8,9,12,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06);"
+>
+  <div class="w-full max-w-6xl mx-auto px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10" cy="10" r="3" fill="#6c63ff"/>
+        <circle cx="10" cy="10" r="6" stroke="#6c63ff" stroke-width="1" fill="none" opacity="0.4"/>
+        <circle cx="3" cy="4" r="1.5" fill="#00d4ff" opacity="0.7"/>
+        <circle cx="17" cy="4" r="1.5" fill="#00d4ff" opacity="0.7"/>
+        <circle cx="3" cy="16" r="1.5" fill="#6c63ff" opacity="0.5"/>
+        <circle cx="17" cy="16" r="1.5" fill="#6c63ff" opacity="0.5"/>
+        <line x1="10" y1="10" x2="3" y2="4" stroke="rgba(108,99,255,0.3)" stroke-width="0.8"/>
+        <line x1="10" y1="10" x2="17" y2="4" stroke="rgba(108,99,255,0.3)" stroke-width="0.8"/>
+        <line x1="10" y1="10" x2="3" y2="16" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+        <line x1="10" y1="10" x2="17" y2="16" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+      </svg>
+      <span style="font-weight: 700; letter-spacing: 0.12em; font-size: 0.9rem; color: #f0f0f0;">SULPHUR</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Main navigation">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`text-sm font-medium transition-colors duration-200 no-underline ${
+            currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+              ? 'text-[#6c63ff]'
+              : 'text-[#888] hover:text-[#f0f0f0]'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Right: CTA + Hamburger -->
+    <div class="flex items-center gap-4">
+      <a
+        href="/contact/"
+        class="hidden md:inline-flex items-center text-sm font-medium text-white no-underline px-4 py-2 rounded-lg transition-colors duration-200"
+        style="background: #6c63ff;"
+        onmouseover="this.style.background='#5a51e0'"
+        onmouseout="this.style.background='#6c63ff'"
+      >
+        Get Started
+      </a>
+
+      <!-- Hamburger (mobile) -->
+      <button
+        id="mobile-menu-toggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        class="md:hidden flex flex-col gap-1.5 p-2 text-[#888] hover:text-[#f0f0f0] transition-colors"
+      >
+        <span class="hamburger-line block w-5 h-0.5 bg-current transition-all duration-300"></span>
+        <span class="hamburger-line block w-5 h-0.5 bg-current transition-all duration-300"></span>
+        <span class="hamburger-line block w-5 h-0.5 bg-current transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu overlay -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40 flex flex-col pt-16"
+  style="background: rgba(8,9,12,0.97); backdrop-filter: blur(12px); transform: translateX(100%); transition: transform 0.3s ease;"
+  aria-hidden="true"
+>
+  <nav class="flex flex-col gap-2 p-6" aria-label="Mobile navigation">
+    {navLinks.map(link => (
+      <a
+        href={link.href}
+        class={`text-lg font-medium py-3 px-4 rounded-lg no-underline transition-colors duration-200 ${
+          currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+            ? 'text-[#6c63ff] bg-[rgba(108,99,255,0.1)]'
+            : 'text-[#888] hover:text-[#f0f0f0]'
+        }`}
+      >
+        {link.label}
+      </a>
+    ))}
+    <a
+      href="/contact/"
+      class="mt-4 text-center text-base font-medium text-white no-underline px-4 py-3 rounded-lg"
+      style="background: #6c63ff;"
+    >
+      Get Started
+    </a>
+  </nav>
+</div>
+
+<script>
+  // Scroll opacity behavior
+  const header = document.getElementById('site-header');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        header.style.background = 'rgba(8,9,12,0.95)';
+      } else {
+        header.style.background = 'rgba(8,9,12,0.85)';
+      }
+    }, { passive: true });
+  }
+
+  // Mobile menu toggle
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let isOpen = false;
+
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', () => {
+      isOpen = !isOpen;
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      mobileMenu.style.transform = isOpen ? 'translateX(0)' : 'translateX(100%)';
+    });
+  }
+</script>
