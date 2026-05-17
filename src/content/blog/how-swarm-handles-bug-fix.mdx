@@ -1,0 +1,94 @@
+---
+title: "How the Swarm Handles a Bug Fix"
+description: "A technical deep-dive into what happens when a bug report enters the Sulphur swarm — from issue triage through research, planning, implementation, and validation."
+publishDate: 2026-05-17
+author: "Engineering Team"
+authorRole: "Sulphur Core"
+tags: ["technical", "pipeline", "debugging", "engineering"]
+featured: false
+draft: false
+---
+
+# How the Swarm Handles a Bug Fix
+
+When a bug report enters Sulphur, it doesn't go to a single developer — it enters a structured pipeline that routes work through specialized agents, each operating in parallel where possible. Here's exactly what happens.
+
+## The Task Pipeline
+
+Every task in Sulphur flows through the same sequence of roles:
+
+```
+Issue → Researcher → Plan Validator → Planner → Plan Validator → Worker → Work Validator → Reviewer → PR
+```
+
+No step is skipped. No agent self-approves their own work. Every output is reviewed by a separate agent.
+
+## Phase 1: Research
+
+A **Researcher agent** is spawned with the bug report and given access to the full codebase. Its job is to:
+
+- Identify the affected files and functions
+- Understand the root cause
+- Locate any related tests
+- Document findings in a structured research report
+
+```typescript
+// Researcher agent: locating the faulty module
+const files = await glob('src/**/*.ts');
+const candidates = await Promise.all(
+  files.map(async (f) => {
+    const content = await readFile(f);
+    const score = relevanceScore(content, bugReport.description);
+    return { file: f, score };
+  })
+);
+
+const topFiles = candidates
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 10);
+```
+
+The research report is written to disk and passed to the next phase.
+
+## Phase 2: Planning
+
+A **Planner agent** reads the research report and writes a precise, step-by-step implementation plan. The plan specifies:
+
+- Exactly which files to modify
+- What changes to make (with code examples)
+- In what order to apply them
+- How to verify success
+
+A **Plan Validator** then reviews the plan independently. If the plan has gaps, omissions, or incorrect assumptions, it's rejected with specific feedback. The Planner must revise and resubmit.
+
+## Phase 3: Implementation
+
+A **Worker agent** receives the validated plan and executes it. Workers do not improvise — they follow the plan exactly. If they encounter an unexpected condition not covered by the plan, they escalate rather than guess.
+
+```typescript
+// Worker: applying a targeted fix per the plan
+// Step 3: Update error boundary in src/api/handler.ts
+const handler = await readFile('src/api/handler.ts');
+const patched = handler.replace(
+  /catch \(e\) \{\s*console\.error\(e\)/,
+  'catch (e) {\n  logger.error({ err: e, context: "api-handler" })',
+);
+await writeFile('src/api/handler.ts', patched);
+```
+
+## Phase 4: Validation & Review
+
+Two separate agents handle the final phases:
+
+1. **Work Validator** — runs the test suite, checks that the bug is fixed, verifies no regressions, and confirms the implementation matches the plan
+2. **Reviewer** — performs a code quality review, checking style, readability, edge cases, and adherence to project conventions
+
+Only after both agents approve does the work advance to a pull request.
+
+## Why This Works
+
+The key insight is **separation of concerns with mandatory handoffs**. No single agent handles the full lifecycle of a bug. Research is separate from planning. Planning is separate from implementation. Implementation is separate from validation.
+
+This mirrors the best practices of high-performing engineering teams — but at machine speed, with agents working in parallel across multiple tasks simultaneously.
+
+The result is consistent, reviewable, and auditable output: every decision has a paper trail, and every step has been independently verified before the next begins.
