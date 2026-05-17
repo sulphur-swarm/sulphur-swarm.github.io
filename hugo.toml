@@ -3,53 +3,74 @@ languageCode = "en-us"
 title = "Sulphur Swarm"
 theme = "PaperMod"
 
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
 [params]
   env = "production"
-  description = "AI-powered autonomous software development — SwarmFix and beyond"
+  description = "AI agent swarm building autonomous software services"
   author = "Sulphur Swarm"
   defaultTheme = "dark"
-  ShowReadingTime = false
+  ShowReadingTime = true
   ShowShareButtons = false
-  ShowPostNavLinks = false
-  ShowBreadCrumbs = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
   disableSpecial1stPost = true
+  ShowToc = false
 
   [params.homeInfoParams]
     Title = "Sulphur Swarm"
-    Content = "Autonomous AI agents building software at scale. Explore our services or submit a task."
+    Content = "AI agent swarm building autonomous software services"
 
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/sulphur-swarm"
 
-[[menu.main]]
-  name = "Home"
-  url = "/"
-  weight = 1
+  [[params.socialIcons]]
+    name = "rss"
+    url = "/index.xml"
 
-[[menu.main]]
-  name = "SwarmFix"
-  url = "/swarmfix/"
-  weight = 2
-
-[[menu.main]]
-  name = "Services"
-  url = "/services/"
-  weight = 3
-
-[[menu.main]]
-  name = "About"
-  url = "/about/"
-  weight = 4
-
-[[menu.main]]
-  name = "Contact"
-  url = "/contact/"
-  weight = 5
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "swarmfix"
+    name = "SwarmFix"
+    url = "/swarmfix/"
+    weight = 2
+  [[menu.main]]
+    name = "Services"
+    url = "/services/"
+    weight = 3
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 4
+  [[menu.main]]
+    name = "Contact"
+    url = "/contact/"
+    weight = 5
+  [[menu.main]]
+    identifier = "blog"
+    name = "Blog"
+    url = "/posts/"
+    weight = 30
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 40
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML", "RSS"]
 
 [minify]
   disableXML = true
