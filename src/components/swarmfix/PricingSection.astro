@@ -1,0 +1,231 @@
+---
+// src/components/swarmfix/PricingSection.astro
+import SectionHeader from '../ui/SectionHeader.astro';
+import Button from '../ui/Button.astro';
+import { pricingTiers } from '../../data/swarmfixPricing';
+---
+
+<section class="pricing-section">
+  <div class="pricing-container">
+    <SectionHeader
+      eyebrow="Pricing"
+      title="Simple, transparent pricing"
+      subtitle="Start free. Scale when you're ready. Cancel anytime."
+    />
+
+    <div class="pricing-grid">
+      {pricingTiers.map((tier) => (
+        <div class:list={['pricing-card', tier.featured && 'featured']}>
+          {tier.featured && (
+            <div class="featured-badge">Most Popular</div>
+          )}
+
+          {tier.featured && <div class="card-accent-line" />}
+
+          <div class="tier-header">
+            <h3 class="tier-name">{tier.name}</h3>
+            <div class="tier-price">
+              <span class="price-value">{tier.price}</span>
+              {tier.priceNote && <span class="price-note">{tier.priceNote}</span>}
+            </div>
+            <p class="tier-desc">{tier.description}</p>
+          </div>
+
+          <ul class="feature-list">
+            {tier.features.map((feat) => (
+              <li class="feature-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="tier-cta">
+            <Button
+              href={tier.ctaHref}
+              variant={tier.featured ? 'primary' : 'secondary'}
+              size="md"
+            >
+              {tier.cta}
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="pricing-note">
+      * Pricing is indicative and subject to change. <a href="/contact/">Contact us</a> for the latest rates.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+    position: relative;
+  }
+  .pricing-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .pricing-grid {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  .pricing-card {
+    position: relative;
+    background: rgba(14, 17, 23, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    backdrop-filter: blur(12px);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+  .pricing-card.featured {
+    border-color: rgba(108, 99, 255, 0.5);
+    background: rgba(14, 17, 23, 0.85);
+    box-shadow: 0 0 40px rgba(108, 99, 255, 0.15);
+  }
+  .pricing-card.featured:hover {
+    box-shadow: 0 0 60px rgba(108, 99, 255, 0.25);
+  }
+
+  .card-accent-line {
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent-primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.85rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .tier-header { flex: 0 0 auto; }
+  .tier-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.75rem;
+    font-family: 'Geist Mono', monospace;
+  }
+  .tier-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .price-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    line-height: 1;
+  }
+  .price-note {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+  .tier-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+  .check-icon {
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .tier-cta { margin-top: auto; }
+  .tier-cta :global(a) { width: 100%; text-align: center; display: block; }
+
+  .pricing-note {
+    text-align: center;
+    margin-top: 2.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+  }
+  .pricing-note a {
+    color: var(--color-accent-primary);
+    text-decoration: none;
+  }
+  .pricing-note a:hover { text-decoration: underline; }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.pricing-card',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.12,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.pricing-grid',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+</script>

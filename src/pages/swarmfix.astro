@@ -1,0 +1,49 @@
+---
+// src/pages/swarmfix.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ProblemSolution from '../components/swarmfix/ProblemSolution.astro';
+import HowItWorks from '../components/swarmfix/HowItWorks.astro';
+import FeaturesGrid from '../components/swarmfix/FeaturesGrid.astro';
+import PricingSection from '../components/swarmfix/PricingSection.astro';
+import StatsRow from '../components/swarmfix/StatsRow.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="SwarmFix — Automated OSS Bug Fixing | Sulphur AI Swarm"
+  description="Deploy the Sulphur AI Swarm to fix bugs in your open source project. Automated, precise, and relentless. From issue to PR in under 2 hours."
+>
+  <!-- 1. Hero -->
+  <PageHero
+    title="SwarmFix"
+    subtitle="Let the swarm fix your bugs. Automated, precise, relentless."
+    badge="OSS Code Fixing"
+    breadcrumb="Services → SwarmFix"
+  />
+
+  <!-- 2. Problem / Solution Pitch -->
+  <ProblemSolution />
+
+  <!-- 3. How It Works -->
+  <HowItWorks />
+
+  <!-- 4. Features Grid -->
+  <FeaturesGrid />
+
+  <!-- 5. Stats Row -->
+  <StatsRow />
+
+  <!-- 6. Pricing -->
+  <PricingSection />
+
+  <!-- 7. CTA Banner -->
+  <CTABanner
+    headline="Ready to fix your codebase?"
+    subtext="Join the growing list of projects powered by the Sulphur swarm."
+    primaryHref="/contact/"
+    primaryLabel="Get Started Free"
+    secondaryHref="/about/"
+    secondaryLabel="Learn How It Works"
+  />
+</BaseLayout>

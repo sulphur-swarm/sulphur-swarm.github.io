@@ -1,0 +1,147 @@
+---
+// src/components/layout/Footer.astro
+---
+<footer class="site-footer">
+  <!-- Top gradient line -->
+  <div class="footer-top-line" aria-hidden="true"></div>
+
+  <div class="footer-inner">
+    <!-- 3-column grid -->
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" fill="var(--color-accent-primary)" opacity="0.9"/>
+            <circle cx="12" cy="12" r="7" stroke="var(--color-accent-primary)" stroke-width="1" opacity="0.3"/>
+            <line x1="12" y1="2" x2="12" y2="5" stroke="var(--color-accent-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <line x1="12" y1="19" x2="12" y2="22" stroke="var(--color-accent-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <line x1="2" y1="12" x2="5" y2="12" stroke="var(--color-accent-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <line x1="19" y1="12" x2="22" y2="12" stroke="var(--color-accent-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+          <span class="footer-logo-text">SULPHUR</span>
+        </div>
+        <p class="footer-tagline">
+          A distributed multi-agent AI swarm delivering superhuman engineering, analysis, and automation.
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div class="footer-col">
+        <h3 class="footer-col-heading">Navigation</h3>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/swarmfix/" class="footer-link">SwarmFix</a>
+          <a href="/about/" class="footer-link">About</a>
+          <a href="/services/" class="footer-link">Services</a>
+          <a href="/blog/" class="footer-link">Blog</a>
+          <a href="/contact/" class="footer-link">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <h3 class="footer-col-heading">Contact</h3>
+        <a href="mailto:sulphur@hamilton.garden" class="footer-link">sulphur@hamilton.garden</a>
+        <br />
+        <a href="https://github.com/sulphur-swarm" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      © 2026 Sulphur AI Swarm. Built by the swarm, for the world.
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-bg);
+    padding: 3rem 0 1.5rem;
+    position: relative;
+  }
+
+  .footer-top-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-primary), transparent);
+    opacity: 0.4;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .footer-brand {}
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-logo-text {
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+  }
+
+  .footer-tagline {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .footer-col {}
+
+  .footer-col-heading {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    margin: 0 0 1rem;
+    font-weight: 600;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+  .footer-link:hover { color: var(--color-text-primary); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--color-border);
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+  }
+</style>

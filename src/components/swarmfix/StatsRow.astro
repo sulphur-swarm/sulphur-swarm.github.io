@@ -1,0 +1,112 @@
+---
+// src/components/swarmfix/StatsRow.astro
+
+const stats = [
+  { value: 500, suffix: '+', label: 'Issues Fixed' },
+  { value: 50,  suffix: '+', label: 'Repos Supported' },
+  { value: 99,  suffix: '%', label: 'Success Rate' },
+  { value: 2,   prefix: '<', suffix: 'hr', label: 'Avg Turnaround' },
+];
+---
+
+<section class="stats-section">
+  <div class="stats-inner">
+    {stats.map((stat) => (
+      <div class="stat-item">
+        <div class="stat-value">
+          {stat.prefix && <span class="stat-prefix">{stat.prefix}</span>}
+          <span class="stat-number" data-target={stat.value}>0</span>
+          <span class="stat-suffix">{stat.suffix}</span>
+        </div>
+        <p class="stat-label">{stat.label}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    padding: 4rem 1.5rem;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .stats-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .stats-inner { grid-template-columns: repeat(4, 1fr); }
+  }
+  .stat-item {
+    opacity: 0;
+  }
+  .stat-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.1rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    font-family: 'Geist Mono', monospace;
+    background: linear-gradient(135deg, #fff 0%, var(--color-accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .stat-prefix, .stat-suffix {
+    font-size: 0.6em;
+    opacity: 0.8;
+  }
+  .stat-number { display: inline-block; }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  let animated = false;
+
+  gsap.to('.stat-item', {
+    opacity: 1,
+    duration: 0.5,
+    stagger: 0.1,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.stats-section',
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        if (animated) return;
+        animated = true;
+        // Counter animation for each stat
+        document.querySelectorAll('.stat-number').forEach(el => {
+          const target = parseInt(el.getAttribute('data-target') ?? '0', 10);
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 1.8,
+            ease: 'power2.out',
+            onUpdate() {
+              el.textContent = Math.round(obj.val).toString();
+            },
+          });
+        });
+      },
+    },
+  });
+</script>

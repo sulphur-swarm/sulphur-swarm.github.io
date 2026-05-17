@@ -1,0 +1,102 @@
+---
+// src/components/sections/CTABanner.astro
+import Button from '../ui/Button.astro';
+
+interface Props {
+  headline?: string;
+  subtext?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+const {
+  headline = 'Ready to fix your codebase?',
+  subtext = 'Deploy the swarm. Ship cleaner code.',
+  primaryHref = '/contact/',
+  primaryLabel = 'Get Started',
+  secondaryHref = '/swarmfix/',
+  secondaryLabel = 'Learn More',
+} = Astro.props;
+---
+<section class="cta-banner">
+  <!-- Radial purple glow background -->
+  <div class="cta-glow" aria-hidden="true"></div>
+
+  <div class="cta-inner">
+    <h2 class="cta-headline">{headline}</h2>
+    <p class="cta-subtext">{subtext}</p>
+    <div class="cta-actions">
+      <Button href={primaryHref} variant="primary" size="lg">{primaryLabel}</Button>
+      <Button href={secondaryHref} variant="secondary" size="lg">{secondaryLabel}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    position: relative;
+    padding: 5rem 1.5rem;
+    text-align: center;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cta-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(108,99,255,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .cta-headline {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+
+  .cta-subtext {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    margin: 0 0 2rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.cta-banner',
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.cta-banner',
+        start: 'top 85%',
+        once: true,
+      },
+    }
+  );
+</script>

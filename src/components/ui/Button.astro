@@ -1,0 +1,55 @@
+---
+// src/components/ui/Button.astro
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+}
+const { href, variant = 'primary', size = 'md' } = Astro.props;
+---
+<a href={href} class:list={['btn', `btn-${variant}`, `btn-${size}`]}>
+  <slot />
+</a>
+
+<style>
+  .btn {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-sm  { padding: 0.4rem 1rem; font-size: 0.8rem; }
+  .btn-md  { padding: 0.75rem 1.75rem; font-size: 0.95rem; }
+  .btn-lg  { padding: 1rem 2.25rem; font-size: 1.05rem; }
+
+  .btn-primary {
+    background: var(--color-accent-primary);
+    color: white;
+    border: 1px solid transparent;
+  }
+  .btn-primary:hover {
+    background: #5a51e0;
+    box-shadow: 0 0 24px rgba(108, 99, 255, 0.45);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-accent-primary);
+    border: 1px solid var(--color-accent-primary);
+  }
+  .btn-secondary:hover {
+    background: rgba(108, 99, 255, 0.1);
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.2);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid transparent;
+  }
+  .btn-ghost:hover { color: var(--color-text-primary); }
+</style>
