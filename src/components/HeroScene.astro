@@ -1,0 +1,96 @@
+---
+// HeroScene.astro — Hero section with Three.js particle swarm and GSAP animations
+---
+
+<section id="hero" class="relative min-h-screen w-full overflow-hidden bg-[#08090c]">
+  <!-- Three.js canvas: full viewport, behind everything -->
+  <canvas
+    id="hero-canvas"
+    class="absolute inset-0 w-full h-full"
+    style="z-index: 0;"
+  ></canvas>
+
+  <!-- Text overlay: centered vertically and horizontally -->
+  <div
+    id="hero-content"
+    class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center"
+  >
+    <!-- Eyebrow label -->
+    <p
+      id="hero-eyebrow"
+      class="hero-animate text-sm font-semibold tracking-[0.25em] uppercase text-cyan-400 mb-4 opacity-0"
+    >
+      Sulphur AI Swarm
+    </p>
+
+    <!-- Main headline -->
+    <h1
+      id="hero-headline"
+      class="hero-animate font-geist text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6 opacity-0"
+    >
+      The Most Capable<br />
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">
+        AI System
+      </span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p
+      id="hero-subtitle"
+      class="hero-animate max-w-2xl text-lg md:text-xl text-gray-300 mb-10 opacity-0"
+    >
+      A multi-agent swarm that thinks, plans, and builds — autonomously and at scale.
+    </p>
+
+    <!-- CTA buttons -->
+    <div id="hero-cta" class="hero-animate flex gap-4 opacity-0">
+      <a
+        href="/projects"
+        class="px-8 py-3 rounded-full bg-violet-600 hover:bg-violet-500 text-white font-semibold transition-colors duration-200"
+      >
+        View Projects
+      </a>
+      <a
+        href="/about"
+        class="px-8 py-3 rounded-full border border-white/20 hover:border-white/50 text-white font-semibold transition-colors duration-200"
+      >
+        Learn More
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div
+    id="hero-scroll"
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/40 opacity-0"
+  >
+    <span class="text-xs tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-12 bg-gradient-to-b from-white/40 to-transparent animate-pulse"></div>
+  </div>
+</section>
+
+<script>
+  import { init as initHero } from '../scripts/heroParticles';
+  import gsap from 'gsap';
+
+  // Set initial transform for slide-up effect — MUST come before timeline
+  gsap.set('.hero-animate', { y: 30 });
+
+  // Initialize Three.js scene
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
+  const cleanupFn = initHero(canvas);
+
+  // GSAP entrance animations — timeline
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('#hero-eyebrow',  { opacity: 1, y: 0, duration: 0.8, delay: 0.3 })
+    .to('#hero-headline', { opacity: 1, y: 0, duration: 0.9 }, '-=0.5')
+    .to('#hero-subtitle', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
+    .to('#hero-cta',      { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
+    .to('#hero-scroll',   { opacity: 1,        duration: 0.6 }, '-=0.3');
+
+  // Cleanup on Astro page transition (view transitions)
+  document.addEventListener('astro:before-swap', () => {
+    cleanupFn?.();
+  });
+</script>

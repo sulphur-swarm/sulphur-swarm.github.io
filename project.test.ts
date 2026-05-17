@@ -200,3 +200,56 @@ describe("BaseLayout integration", () => {
     expect(layout).toContain("flex-1");
   });
 });
+
+describe("Hero section", () => {
+  it("has HeroScene.astro component", () => {
+    expect(existsSync(join(root, "src/components/HeroScene.astro"))).toBe(true);
+  });
+
+  it("has heroParticles.ts script", () => {
+    expect(existsSync(join(root, "src/scripts/heroParticles.ts"))).toBe(true);
+  });
+
+  it("package.json has three and gsap in dependencies", () => {
+    const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf-8"));
+    expect(pkg.dependencies).toHaveProperty("three");
+    expect(pkg.dependencies).toHaveProperty("gsap");
+  });
+
+  it("index.astro uses HeroScene component", () => {
+    const index = readFileSync(join(root, "src/pages/index.astro"), "utf-8");
+    expect(index).toContain("HeroScene");
+    expect(index).toContain("BaseLayout");
+  });
+
+  it("HeroScene.astro has canvas and hero content elements", () => {
+    const hero = readFileSync(
+      join(root, "src/components/HeroScene.astro"),
+      "utf-8"
+    );
+    expect(hero).toContain("hero-canvas");
+    expect(hero).toContain("hero-content");
+    expect(hero).toContain("hero-headline");
+    expect(hero).toContain("hero-eyebrow");
+    expect(hero).toContain("hero-cta");
+    expect(hero).toContain("gsap");
+    expect(hero).toContain("heroParticles");
+  });
+
+  it("heroParticles.ts exports init function and uses Three.js", () => {
+    const particles = readFileSync(
+      join(root, "src/scripts/heroParticles.ts"),
+      "utf-8"
+    );
+    expect(particles).toContain("export function init");
+    expect(particles).toContain("WebGLRenderer");
+    expect(particles).toContain("PARTICLE_COUNT_DESKTOP");
+    expect(particles).toContain("PARTICLE_COUNT_MOBILE");
+    expect(particles).toContain("CONNECTION_DISTANCE");
+  });
+
+  it("global.css has font-geist utility", () => {
+    const css = readFileSync(join(root, "src/styles/global.css"), "utf-8");
+    expect(css).toContain(".font-geist");
+  });
+});
