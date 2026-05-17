@@ -1,0 +1,43 @@
+/* src/styles/global.css */
+
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Geist fonts from Fontsource */
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/700.css";
+@import "@fontsource/geist/800.css";
+@import "@fontsource/geist-mono/400.css";
+
+/* Design system CSS custom properties */
+:root {
+  --color-bg: #08090c;
+  --color-surface: #0e1117;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-accent-primary: #6c63ff;
+  --color-accent-secondary: #00d4ff;
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #888888;
+}
+
+/* Base resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: 'Geist', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
