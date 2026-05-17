@@ -41,3 +41,38 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+/* Tailwind Typography plugin */
+@plugin "@tailwindcss/typography";
+
+/* Blog prose overrides — dark theme */
+.prose {
+  --tw-prose-body: var(--color-text-primary);
+  --tw-prose-headings: #ffffff;
+  --tw-prose-lead: var(--color-text-secondary);
+  --tw-prose-links: var(--color-accent-primary);
+  --tw-prose-bold: #ffffff;
+  --tw-prose-counters: var(--color-text-secondary);
+  --tw-prose-bullets: var(--color-text-secondary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-text-primary);
+  --tw-prose-quote-borders: var(--color-accent-primary);
+  --tw-prose-captions: var(--color-text-secondary);
+  --tw-prose-code: #e2e8f0;
+  --tw-prose-pre-code: #e2e8f0;
+  --tw-prose-pre-bg: #0d1117;
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+}
+
+/* Reading progress bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
