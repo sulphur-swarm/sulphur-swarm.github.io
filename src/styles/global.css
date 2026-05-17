@@ -41,3 +41,90 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #6c63ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: rgba(108, 99, 255, 0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent-primary); }
+
+/* Selection */
+::selection {
+  background: rgba(108, 99, 255, 0.3);
+  color: #fff;
+}
+
+/* Input focus glow */
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+/* Node pulse animation for PageHero decorative SVG */
+@keyframes pulse-node {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.4); }
+}
+
+.node { animation: pulse-node 3s ease-in-out infinite; }
+.node-1 { animation-delay: 0s; }
+.node-2 { animation-delay: 0.5s; }
+.node-3 { animation-delay: 1s; }
+.node-4 { animation-delay: 1.5s; }
+.node-5 { animation-delay: 2s; }
+
+/* Copy tooltip */
+.copy-tooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* Font utility */
+.font-geist {
+  font-family: 'Geist', 'Inter', system-ui, sans-serif;
+}
+
+/* Tailwind Typography plugin */
+@plugin "@tailwindcss/typography";
+
+/* Blog prose overrides — dark theme */
+.prose {
+  --tw-prose-body: var(--color-text-primary);
+  --tw-prose-headings: #ffffff;
+  --tw-prose-lead: var(--color-text-secondary);
+  --tw-prose-links: var(--color-accent-primary);
+  --tw-prose-bold: #ffffff;
+  --tw-prose-counters: var(--color-text-secondary);
+  --tw-prose-bullets: var(--color-text-secondary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-text-primary);
+  --tw-prose-quote-borders: var(--color-accent-primary);
+  --tw-prose-captions: var(--color-text-secondary);
+  --tw-prose-code: #e2e8f0;
+  --tw-prose-pre-code: #e2e8f0;
+  --tw-prose-pre-bg: #0d1117;
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+}
+
+/* Reading progress bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}

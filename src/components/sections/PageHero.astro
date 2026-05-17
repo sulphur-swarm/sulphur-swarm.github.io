@@ -3,110 +3,123 @@ interface Props {
   title: string;
   subtitle?: string;
   badge?: string;
+  breadcrumb?: string;
 }
 
-const { title, subtitle, badge } = Astro.props;
+const { title, subtitle, badge, breadcrumb } = Astro.props;
 ---
 
-<section class="page-hero">
-  <div class="page-hero__decoration" aria-hidden="true">
-    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <line x1="30" y1="40" x2="80" y2="90" stroke="rgba(108,99,255,0.4)" stroke-width="1"/>
-      <line x1="80" y1="90" x2="150" y2="60" stroke="rgba(0,212,255,0.4)" stroke-width="1"/>
-      <line x1="80" y1="90" x2="120" y2="150" stroke="rgba(108,99,255,0.4)" stroke-width="1"/>
-      <line x1="150" y1="60" x2="170" y2="120" stroke="rgba(0,212,255,0.3)" stroke-width="1"/>
-      <circle cx="30" cy="40" r="3" fill="#6c63ff"/>
-      <circle cx="80" cy="90" r="3" fill="#6c63ff"/>
-      <circle cx="150" cy="60" r="3" fill="#00d4ff"/>
-      <circle cx="120" cy="150" r="3" fill="#6c63ff"/>
-      <circle cx="170" cy="120" r="3" fill="#00d4ff"/>
-    </svg>
-  </div>
-  <div class="page-hero__content">
-    {badge && <span class="page-hero__badge">{badge}</span>}
-    <h1 class="page-hero__title js-hero-title">{title}</h1>
-    {subtitle && <p class="page-hero__subtitle">{subtitle}</p>}
+<section class="page-hero relative overflow-hidden py-20 md:py-28">
+  <!-- Background radial gradient -->
+  <div
+    class="hero-bg absolute inset-0"
+    style="background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.12) 0%, transparent 70%), var(--color-surface, #0e1117);"
+  ></div>
+
+  <!-- Decorative SVG node cluster (top-right) -->
+  <svg
+    class="absolute top-0 right-0 opacity-20 pointer-events-none"
+    width="300"
+    height="200"
+    viewBox="0 0 300 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <!-- Connection lines -->
+    <line x1="80" y1="40" x2="160" y2="90" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="160" y1="90" x2="240" y2="50" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="160" y1="90" x2="200" y2="150" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="80" y1="40" x2="200" y2="150" stroke="#6c63ff" stroke-width="1" opacity="0.3" />
+    <!-- Node circles -->
+    <circle class="node-circle" cx="80" cy="40" r="4" fill="#6c63ff" />
+    <circle class="node-circle" cx="160" cy="90" r="5" fill="#6c63ff" />
+    <circle class="node-circle" cx="240" cy="50" r="4" fill="#6c63ff" />
+    <circle class="node-circle" cx="200" cy="150" r="3" fill="#6c63ff" />
+  </svg>
+
+  <!-- Bottom fade -->
+  <div
+    class="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+    style="background: linear-gradient(to bottom, transparent, var(--color-bg, #08090c));"
+  ></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    {
+      breadcrumb && (
+        <p class="text-sm text-[#888] mb-3 font-mono">{breadcrumb}</p>
+      )
+    }
+    {
+      badge && (
+        <span class="inline-block text-xs font-mono uppercase tracking-widest text-[#6c63ff] border border-[#6c63ff]/30 bg-[#6c63ff]/10 rounded-full px-3 py-1 mb-4">
+          {badge}
+        </span>
+      )
+    }
+    <h1
+      class="hero-title text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 bg-gradient-to-br from-white to-[#6c63ff] bg-clip-text text-transparent"
+    >
+      {title}
+    </h1>
+    {
+      subtitle && (
+        <p class="text-lg md:text-xl text-[#888] max-w-2xl mx-auto leading-relaxed">
+          {subtitle}
+        </p>
+      )
+    }
   </div>
 </section>
+
+<style>
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .node-circle {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .node-circle:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+
+  .node-circle:nth-child(3) {
+    animation-delay: 1s;
+  }
+
+  .node-circle:nth-child(4) {
+    animation-delay: 1.5s;
+  }
+</style>
 
 <script>
   import { gsap } from 'gsap';
   import { SplitText } from 'gsap/SplitText';
   gsap.registerPlugin(SplitText);
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const titleEl = document.querySelector('.js-hero-title');
-    if (!titleEl) return;
-    const split = new SplitText(titleEl, { type: 'chars' });
-    gsap.fromTo(split.chars,
+  const heading = document.querySelector('.hero-title') as HTMLElement | null;
+  if (heading) {
+    const split = new SplitText(heading, { type: 'chars' });
+    gsap.fromTo(
+      split.chars,
       { opacity: 0, y: 20, rotationX: -90 },
       {
-        opacity: 1, y: 0, rotationX: 0,
-        duration: 0.6,
-        stagger: 0.03,
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.5,
+        stagger: 0.025,
         ease: 'back.out(1.7)',
         delay: 0.2,
       }
     );
-  });
+  }
 </script>
-
-<style>
-  .page-hero {
-    min-height: 380px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(180deg, #0e1117 0%, #08090c 100%);
-    position: relative;
-    overflow: hidden;
-    padding: 6rem 1.5rem 4rem;
-  }
-
-  .page-hero__decoration {
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
-    opacity: 0.3;
-    pointer-events: none;
-  }
-
-  .page-hero__content {
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .page-hero__badge {
-    background: rgba(108, 99, 255, 0.15);
-    border: 1px solid rgba(108, 99, 255, 0.3);
-    color: #6c63ff;
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    display: inline-block;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-  }
-
-  .page-hero__title {
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    font-weight: 800;
-    background: linear-gradient(135deg, #fff 0%, #6c63ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0 0 1rem;
-    line-height: 1.1;
-  }
-
-  .page-hero__subtitle {
-    color: var(--color-text-secondary);
-    font-size: 1.15rem;
-    max-width: 560px;
-    line-height: 1.7;
-    margin: 0 auto;
-  }
-</style>

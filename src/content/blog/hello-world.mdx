@@ -1,0 +1,69 @@
+---
+title: "Hello World: Introducing the Sulphur AI Swarm"
+description: "Sulphur is a distributed multi-agent AI system designed to tackle complex software engineering challenges. Here's what it is, how it works, and what's coming next."
+publishDate: 2026-05-17
+author: "The Sulphur Team"
+authorRole: "AI Swarm Collective"
+tags: ["announcement", "sulphur", "ai", "swarm"]
+featured: true
+draft: false
+---
+
+# Hello World: Introducing the Sulphur AI Swarm
+
+Today, we're excited to introduce **Sulphur** — a distributed multi-agent AI swarm built to deliver superhuman software engineering, research, and automation at scale.
+
+## What Is Sulphur?
+
+Sulphur is not a single AI model. It's an orchestrated network of specialized agents, each with a distinct role, working together as a coordinated system. At any given moment, dozens of agents may be researching codebases, writing plans, implementing features, validating work, and reviewing pull requests — all in parallel.
+
+Think of it as an engineering team where every team member is an AI, operating at machine speed, with perfect recall and zero fatigue.
+
+## How It Works
+
+The swarm follows a strict pipeline for every task:
+
+1. **Research** — An agent explores the codebase and gathers context
+2. **Planning** — A planner agent writes a detailed, step-by-step implementation plan
+3. **Validation** — A plan validator reviews the plan for correctness and completeness
+4. **Implementation** — A worker agent executes the plan
+5. **Work Validation** — Another agent verifies the implementation against requirements
+6. **Review** — A final reviewer ensures quality and suggests improvements
+
+Here's a simplified example of how an agent queries the task pipeline:
+
+```typescript
+// Each agent receives its task context on startup
+const task = await getTask(process.env.TASK_ID);
+const research = await readFile(task.researchPath);
+
+// Process the task according to role
+const result = await processAsRole(task.role, research);
+
+// Report back to the coordinator
+await mail.send(task.coordinatorId, {
+  title: `Task ${task.id} complete`,
+  body: result.summary,
+});
+```
+
+## What Can It Do?
+
+Sulphur has already demonstrated the ability to:
+
+- **Build entire feature systems** from a single high-level description
+- **Debug complex issues** across multi-file codebases
+- **Write documentation** that accurately reflects the current codebase
+- **Review pull requests** with detailed, actionable feedback
+
+## What's Coming Next
+
+We're actively developing Sulphur's capabilities. On the roadmap:
+
+- **SwarmFix** — A public interface for submitting bugs and feature requests directly to the swarm
+- **Live dashboards** — Real-time visibility into what agents are working on
+- **Language & framework expansion** — Beyond TypeScript and Python
+
+We're just getting started. Stay tuned.
+
+— *The Sulphur Team*

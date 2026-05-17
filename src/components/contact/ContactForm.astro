@@ -1,0 +1,141 @@
+---
+// src/components/contact/ContactForm.astro
+---
+
+<div class="max-w-2xl mx-auto px-6">
+  <div class="mb-8">
+    <h2 class="font-semibold mb-2" style="font-size: 1.5rem; color: #f0f0f0;">Send a Message</h2>
+    <p class="text-sm" style="color: #888;">Fill in the details below and we'll open your email client with a ready-to-send message.</p>
+  </div>
+
+  <div
+    class="rounded-xl p-8"
+    style="background: rgba(14,17,23,0.6); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.08);"
+  >
+    <div class="flex flex-col gap-6">
+      <!-- Name field -->
+      <div>
+        <label for="contact-name" class="block text-sm font-medium mb-2" style="color: #888;">
+          Name <span style="color: #6c63ff;">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact-name"
+          name="name"
+          placeholder="Your name"
+          class="w-full rounded-lg px-4 py-3 text-base transition-all duration-200"
+          style="background: rgba(8,9,12,0.8); border: 1px solid rgba(255,255,255,0.08); color: #f0f0f0;"
+          autocomplete="name"
+        />
+      </div>
+
+      <!-- Subject field -->
+      <div>
+        <label for="contact-subject" class="block text-sm font-medium mb-2" style="color: #888;">
+          Subject
+        </label>
+        <input
+          type="text"
+          id="contact-subject"
+          name="subject"
+          placeholder="What's this about?"
+          class="w-full rounded-lg px-4 py-3 text-base transition-all duration-200"
+          style="background: rgba(8,9,12,0.8); border: 1px solid rgba(255,255,255,0.08); color: #f0f0f0;"
+        />
+      </div>
+
+      <!-- Message field -->
+      <div>
+        <label for="contact-message" class="block text-sm font-medium mb-2" style="color: #888;">
+          Message <span style="color: #6c63ff;">*</span>
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="6"
+          placeholder="Tell us about your project or question..."
+          class="w-full rounded-lg px-4 py-3 text-base transition-all duration-200"
+          style="background: rgba(8,9,12,0.8); border: 1px solid rgba(255,255,255,0.08); color: #f0f0f0; resize: none;"
+          maxlength="1000"
+        ></textarea>
+        <span id="char-count" class="text-xs block mt-1 text-right" style="color: #888;">0 / 1000</span>
+      </div>
+
+      <!-- Submit button -->
+      <button
+        type="button"
+        id="send-btn"
+        class="w-full font-semibold py-3 rounded-lg transition-colors duration-200 text-white"
+        style="background: #6c63ff; margin-top: 0.25rem;"
+        onmouseover="this.style.background='#5a51e0'"
+        onmouseout="this.style.background='#6c63ff'"
+      >
+        Open in Email Client →
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Form section reveal
+  gsap.fromTo(
+    '.contact-form-section',
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.contact-form-section',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+
+  const nameEl = document.getElementById('contact-name') as HTMLInputElement | null;
+  const subjectEl = document.getElementById('contact-subject') as HTMLInputElement | null;
+  const messageEl = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+  const charCount = document.getElementById('char-count');
+  const sendBtn = document.getElementById('send-btn');
+
+  // Character counter
+  if (messageEl && charCount) {
+    messageEl.addEventListener('input', () => {
+      charCount.textContent = `${messageEl.value.length} / 1000`;
+    });
+  }
+
+  // Mailto link construction
+  if (sendBtn && nameEl && subjectEl && messageEl) {
+    sendBtn.addEventListener('click', () => {
+      const name = nameEl.value.trim();
+      const subject = subjectEl.value.trim();
+      const message = messageEl.value.trim();
+
+      if (!name || !message) {
+        // Simple validation: highlight empty required fields
+        if (!name) {
+          nameEl.style.borderColor = 'rgba(255,80,80,0.6)';
+          setTimeout(() => { nameEl.style.borderColor = ''; }, 2000);
+        }
+        if (!message) {
+          messageEl.style.borderColor = 'rgba(255,80,80,0.6)';
+          setTimeout(() => { messageEl.style.borderColor = ''; }, 2000);
+        }
+        return;
+      }
+
+      const body = `From: ${name}\n\n${message}`;
+      const mailtoHref = `mailto:sulphur@hamilton.garden?subject=${encodeURIComponent(subject || 'Contact from website')}&body=${encodeURIComponent(body)}`;
+
+      window.location.href = mailtoHref;
+    });
+  }
+</script>

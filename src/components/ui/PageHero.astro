@@ -1,0 +1,103 @@
+---
+// src/components/ui/PageHero.astro
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  breadcrumb?: string;
+}
+
+const { title, subtitle, badge, breadcrumb } = Astro.props;
+---
+
+<section
+  class="relative flex items-center"
+  style="min-height: 380px; background: linear-gradient(180deg, #0e1117 0%, #08090c 100%); overflow: hidden;"
+>
+  <!-- Noise overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="opacity: 0.03; background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/><feColorMatrix type=%22saturate%22 values=%220%22/></filter><rect width=%22300%22 height=%22300%22 filter=%22url(%23noise%22/></svg>'); background-repeat: repeat;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative node cluster -->
+  <div class="absolute right-10 top-1/2 -translate-y-1/2 pointer-events-none" style="opacity: 0.2;" aria-hidden="true">
+    <svg class="decorative-nodes" viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="100" y1="100" x2="60" y2="60" stroke="rgba(108,99,255,0.2)" stroke-width="1"/>
+      <line x1="100" y1="100" x2="150" y2="70" stroke="rgba(108,99,255,0.2)" stroke-width="1"/>
+      <line x1="100" y1="100" x2="80" y2="150" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+      <line x1="100" y1="100" x2="140" y2="140" stroke="rgba(108,99,255,0.15)" stroke-width="1"/>
+      <line x1="60" y1="60" x2="150" y2="70" stroke="rgba(108,99,255,0.1)" stroke-width="0.5"/>
+      <circle cx="100" cy="100" r="4" fill="#6c63ff" opacity="0.6" class="node node-1"/>
+      <circle cx="60" cy="60" r="3" fill="#00d4ff" opacity="0.4" class="node node-2"/>
+      <circle cx="150" cy="70" r="3" fill="#6c63ff" opacity="0.4" class="node node-3"/>
+      <circle cx="80" cy="150" r="2" fill="#00d4ff" opacity="0.3" class="node node-4"/>
+      <circle cx="140" cy="140" r="2.5" fill="#6c63ff" opacity="0.35" class="node node-5"/>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 w-full text-center max-w-3xl mx-auto px-6 py-16">
+    {badge && (
+      <div class="inline-block mb-4">
+        <span
+          class="text-xs font-mono uppercase tracking-widest rounded-full px-3 py-1"
+          style="color: #6c63ff; background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.2);"
+        >
+          {badge}
+        </span>
+      </div>
+    )}
+
+    {breadcrumb && (
+      <p class="text-sm mb-3" style="color: #888;">{breadcrumb}</p>
+    )}
+
+    <h1
+      class="hero-title font-bold"
+      style="font-size: clamp(2.5rem, 6vw, 3.75rem); background: linear-gradient(135deg, #ffffff 0%, #6c63ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.15;"
+    >
+      {title}
+    </h1>
+
+    {subtitle && (
+      <p
+        class="mt-4 max-w-lg mx-auto"
+        style="font-size: clamp(1rem, 2.5vw, 1.25rem); color: #888; line-height: 1.6;"
+      >
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(SplitText, ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const heading = document.querySelector('.hero-title') as HTMLElement | null;
+    if (!heading) return;
+
+    const split = new SplitText(heading, { type: 'chars' });
+
+    gsap.fromTo(
+      split.chars,
+      { opacity: 0, y: 20, rotationX: -90 },
+      {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.6,
+        stagger: 0.03,
+        ease: 'back.out(1.7)',
+        delay: 0.2,
+      }
+    );
+  });
+</script>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import ContactCards from '../components/contact/ContactCards.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import FAQ from '../components/contact/FAQ.astro';
+---
+
+<BaseLayout
+  title="Contact Us — Sulphur AI Swarm"
+  description="Get in touch with the Sulphur AI Swarm. Have a project, question, or want to deploy the swarm? Reach out."
+>
+  <!-- Section 1: Hero -->
+  <PageHero
+    title="Contact Us"
+    subtitle="Have a project? A question? Want to deploy the swarm? Reach out."
+    badge="Contact"
+    breadcrumb="Contact"
+  />
+
+  <!-- Section 2: Contact Cards -->
+  <section class="py-20">
+    <ContactCards />
+  </section>
+
+  <!-- Divider -->
+  <div class="max-w-2xl mx-auto px-6">
+    <hr style="border-color: rgba(255,255,255,0.06);" />
+  </div>
+
+  <!-- Section 3: Mailto Form -->
+  <section class="py-20 contact-form-section">
+    <ContactForm />
+  </section>
+
+  <!-- Divider -->
+  <div class="max-w-2xl mx-auto px-6">
+    <hr style="border-color: rgba(255,255,255,0.06);" />
+  </div>
+
+  <!-- Section 4: FAQ -->
+  <section class="py-20 faq-section">
+    <FAQ />
+  </section>
+</BaseLayout>

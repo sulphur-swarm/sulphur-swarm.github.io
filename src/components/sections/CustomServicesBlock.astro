@@ -1,0 +1,50 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section class="custom-services-block bg-[#0e1117] py-16 md:py-20 px-6">
+  <!-- Top border -->
+  <div class="border-t border-[rgba(255,255,255,0.06)]"></div>
+
+  <!-- Content wrapper -->
+  <div class="max-w-3xl mx-auto text-center py-16 md:py-20">
+    <!-- Eyebrow label -->
+    <p class="text-xs font-mono uppercase tracking-widest text-[#6c63ff] mb-4">
+      Enterprise &amp; Custom
+    </p>
+    <!-- Heading -->
+    <h2 class="text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-4">Need something custom?</h2>
+    <!-- Description -->
+    <p class="text-[#888] text-lg leading-relaxed mb-8 max-w-xl mx-auto">
+      The swarm can be configured for bespoke workflows, private repositories, and
+      enterprise-scale deployments. Let's talk about what you need.
+    </p>
+    <!-- Button -->
+    <Button href="/contact/" variant="primary" size="lg">Get in Touch</Button>
+  </div>
+
+  <!-- Bottom border -->
+  <div class="border-b border-[rgba(255,255,255,0.06)]"></div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.custom-services-block .max-w-3xl',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.custom-services-block',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+</script>

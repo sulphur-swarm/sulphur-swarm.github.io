@@ -1,0 +1,219 @@
+---
+// src/components/Header.astro
+const navLinks = [
+  { label: "Home",      href: "/" },
+  { label: "About",     href: "/about/" },
+  { label: "Services",  href: "/services/" },
+  { label: "SwarmFix",  href: "/swarmfix/" },
+  { label: "Blog",      href: "/blog/" },
+  { label: "Contact",   href: "/contact/" },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  style="background: rgba(8,9,12,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06);"
+>
+  <nav
+    class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16"
+    aria-label="Main navigation"
+  >
+    <!-- Logo / Brand -->
+    <a
+      href="/"
+      class="text-xl font-bold tracking-tight"
+      style="background: linear-gradient(135deg, #f0f0f0 0%, #6c63ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+      aria-label="Sulphur — home"
+    >
+      Sulphur
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <ul
+      class="hidden md:flex items-center gap-8 list-none m-0 p-0"
+      role="list"
+    >
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a href={href} class="nav-link text-sm font-medium">
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      id="mobile-menu-toggle"
+      class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-md"
+      style="background: transparent; border: none; cursor: pointer;"
+      aria-label="Toggle mobile menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span id="ham-bar-1" class="ham-bar"></span>
+      <span id="ham-bar-2" class="ham-bar"></span>
+      <span id="ham-bar-3" class="ham-bar"></span>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<!-- Clicking the overlay itself (outside the inner nav) dismisses the menu -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40 flex flex-col"
+  style="background: rgba(8,9,12,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease;"
+  aria-hidden="true"
+>
+  <!-- Top bar with logo and close button -->
+  <div class="flex items-center justify-between px-6 h-16 shrink-0">
+    <span
+      class="text-xl font-bold"
+      style="background: linear-gradient(135deg, #f0f0f0 0%, #6c63ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+    >
+      Sulphur
+    </span>
+    <button
+      id="mobile-menu-close"
+      class="w-10 h-10 flex items-center justify-center rounded-md close-btn"
+      aria-label="Close menu"
+    >
+      ✕
+    </button>
+  </div>
+
+  <!-- Nav links — wrapped in a container so click-outside works correctly -->
+  <!-- Only clicks directly on #mobile-menu (not on #mobile-menu-inner) close the menu -->
+  <nav
+    id="mobile-menu-inner"
+    class="flex flex-col items-center justify-center flex-1 gap-8"
+    aria-label="Mobile navigation"
+  >
+    {navLinks.map(({ label, href }) => (
+      <a href={href} class="mobile-nav-link text-2xl font-semibold">
+        {label}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<style>
+  /* Desktop nav link hover */
+  .nav-link {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav-link:hover {
+    color: #f0f0f0;
+  }
+
+  /* Hamburger bars */
+  .ham-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #f0f0f0;
+    margin: 2px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Mobile nav link hover */
+  .mobile-nav-link {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .mobile-nav-link:hover {
+    color: #f0f0f0;
+  }
+
+  /* Close button */
+  .close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #f0f0f0;
+    font-size: 1.25rem;
+    transition: color 0.2s ease;
+  }
+  .close-btn:hover {
+    color: #6c63ff;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement;
+  const menu = document.getElementById('mobile-menu') as HTMLDivElement;
+  const closeBtn = document.getElementById('mobile-menu-close') as HTMLButtonElement;
+  const bar1 = document.getElementById('ham-bar-1') as HTMLSpanElement;
+  const bar2 = document.getElementById('ham-bar-2') as HTMLSpanElement;
+  const bar3 = document.getElementById('ham-bar-3') as HTMLSpanElement;
+
+  function openMenu() {
+    menu.style.opacity = '1';
+    menu.style.pointerEvents = 'auto';
+    menu.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    // Animate hamburger bars → X
+    bar1.style.transform = 'translateY(6px) rotate(45deg)';
+    bar2.style.opacity = '0';
+    bar3.style.transform = 'translateY(-6px) rotate(-45deg)';
+  }
+
+  function closeMenu() {
+    menu.style.opacity = '0';
+    menu.style.pointerEvents = 'none';
+    menu.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    // Restore hamburger bars
+    bar1.style.transform = '';
+    bar2.style.opacity = '1';
+    bar3.style.transform = '';
+  }
+
+  // Toggle on hamburger click
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.getAttribute('aria-hidden') === 'false';
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  // Close via close button
+  closeBtn.addEventListener('click', closeMenu);
+
+  // Click-outside: clicking the overlay (#mobile-menu) but NOT its inner content closes the menu
+  menu.addEventListener('click', (e) => {
+    if (e.target === menu) {
+      closeMenu();
+    }
+  });
+
+  // Close when any nav link is clicked (navigating away)
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.getAttribute('aria-hidden') === 'false') {
+      closeMenu();
+    }
+  });
+
+  // Scroll: deepen header background after 20px scroll
+  const header = document.getElementById('site-header') as HTMLElement;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      header.style.background = 'rgba(8,9,12,0.92)';
+      header.style.borderBottomColor = 'rgba(255,255,255,0.10)';
+    } else {
+      header.style.background = 'rgba(8,9,12,0.70)';
+      header.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+    }
+  }, { passive: true });
+</script>
