@@ -1,0 +1,134 @@
+---
+// src/components/contact/FAQ.astro
+
+const faqs = [
+  {
+    q: "How do I submit a bug for SwarmFix?",
+    a: "Head over to the SwarmFix page and follow the submission instructions. You can point us at a GitHub repository or file an issue directly. The swarm will pick it up from there.",
+  },
+  {
+    q: "Is my code kept private?",
+    a: "We take code privacy seriously. For Enterprise plans, your code is processed exclusively within dedicated swarm instances and never used for training. Community and Pro tiers process code in isolated sandboxed environments. Contact us for specific privacy requirements.",
+  },
+  {
+    q: "How do I request a custom service?",
+    a: "Reach out via email at sulphur@hamilton.garden with a description of your requirements. We'll get back within 24–48 hours to discuss how the swarm can be configured for your workflow.",
+  },
+  {
+    q: "What languages does SwarmFix support?",
+    a: "SwarmFix is language-agnostic and works across JavaScript, TypeScript, Python, Go, Rust, Ruby, Java, and more. If the code is readable, the swarm can work with it.",
+  },
+];
+---
+
+<div class="max-w-2xl mx-auto px-6">
+  <h2 class="font-semibold mb-8" style="font-size: 1.5rem; color: #f0f0f0;">Frequently Asked Questions</h2>
+
+  <div class="faq-list">
+    {faqs.map((faq) => (
+      <div class="faq-item" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <button
+          class="faq-trigger w-full flex justify-between items-center py-5 text-left gap-4"
+          aria-expanded="false"
+          style="background: transparent; border: none; cursor: pointer; padding-left: 0; padding-right: 0;"
+        >
+          <span class="font-medium text-base" style="color: #f0f0f0;">{faq.q}</span>
+          <svg
+            class="faq-chevron flex-shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#888"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            style="transform-origin: center;"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-panel" style="height: 0; overflow: hidden;">
+          <div class="faq-answer pb-5 text-sm leading-relaxed" style="color: #888;">
+            {faq.a}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Accordion logic
+  document.querySelectorAll<HTMLButtonElement>('.faq-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-item') as HTMLElement | null;
+      if (!item) return;
+
+      const panel = item.querySelector<HTMLElement>('.faq-panel');
+      const answer = item.querySelector<HTMLElement>('.faq-answer');
+      const chevron = trigger.querySelector<SVGElement>('.faq-chevron');
+
+      if (!panel || !answer || !chevron) return;
+
+      const isOpen = item.classList.contains('is-open');
+
+      // Close all other open items
+      document.querySelectorAll<HTMLElement>('.faq-item.is-open').forEach(openItem => {
+        if (openItem !== item) {
+          openItem.classList.remove('is-open');
+          const openPanel = openItem.querySelector<HTMLElement>('.faq-panel');
+          const openChevron = openItem.querySelector<SVGElement>('.faq-chevron');
+          const openTrigger = openItem.querySelector<HTMLButtonElement>('.faq-trigger');
+          if (openPanel) gsap.to(openPanel, { height: 0, duration: 0.3, ease: 'power2.inOut' });
+          if (openChevron) gsap.to(openChevron, { rotation: 0, duration: 0.3 });
+          if (openTrigger) openTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Toggle current
+      if (isOpen) {
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        gsap.to(panel, { height: 0, duration: 0.35, ease: 'power2.inOut' });
+        gsap.to(chevron, { rotation: 0, duration: 0.35 });
+      } else {
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        // Measure natural height
+        gsap.set(panel, { height: 'auto' });
+        const autoHeight = panel.offsetHeight;
+        gsap.fromTo(
+          panel,
+          { height: 0 },
+          { height: autoHeight, duration: 0.35, ease: 'power2.inOut' }
+        );
+        gsap.to(chevron, { rotation: 180, duration: 0.35 });
+      }
+    });
+  });
+
+  // Scroll reveal
+  gsap.fromTo(
+    '.faq-item',
+    { opacity: 0, y: 20 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.faq-section',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+</script>
