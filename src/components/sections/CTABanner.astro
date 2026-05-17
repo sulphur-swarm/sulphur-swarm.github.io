@@ -1,0 +1,124 @@
+---
+interface Props {
+  headline?: string;
+  subtext?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  headline = 'See what we can build',
+  subtext = 'Put the swarm to work on your hardest problems.',
+  primaryLabel = 'Explore Services',
+  primaryHref = '/services/',
+  secondaryLabel = 'Contact Us',
+  secondaryHref = '/contact/',
+} = Astro.props;
+---
+
+<section class="cta-banner js-cta-banner">
+  <div class="cta-banner__glow" aria-hidden="true"></div>
+  <div class="cta-banner__content">
+    <h2 class="cta-banner__title">{headline}</h2>
+    <p class="cta-banner__subtext">{subtext}</p>
+    <div class="cta-banner__actions">
+      <a href={primaryHref} class="btn btn--primary">{primaryLabel}</a>
+      <a href={secondaryHref} class="btn btn--secondary">{secondaryLabel}</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo('.js-cta-banner',
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+      scrollTrigger: { trigger: '.js-cta-banner', start: 'top 85%', once: true }
+    }
+  );
+</script>
+
+<style>
+  .cta-banner {
+    position: relative;
+    padding: 5rem 1.5rem;
+    background: var(--color-surface);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .cta-banner__glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(108, 99, 255, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-banner__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-banner__title {
+    background: linear-gradient(135deg, #fff 0%, #6c63ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+
+  .cta-banner__subtext {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    margin: 0 auto 2rem;
+    max-width: 500px;
+  }
+
+  .cta-banner__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.875rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+
+  .btn--primary {
+    background: var(--color-accent-primary);
+    color: white;
+  }
+
+  .btn--primary:hover {
+    background: #5a51e0;
+  }
+
+  .btn--secondary {
+    border: 1px solid var(--color-accent-primary);
+    color: var(--color-accent-primary);
+    background: transparent;
+  }
+
+  .btn--secondary:hover {
+    background: var(--color-accent-primary);
+    color: white;
+  }
+</style>

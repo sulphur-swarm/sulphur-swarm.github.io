@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import MissionStatement from '../components/about/MissionStatement.astro';
+import HierarchyDiagram from '../components/about/HierarchyDiagram.astro';
+import AgentRoleCards from '../components/about/AgentRoleCards.astro';
+import TaskPipeline from '../components/about/TaskPipeline.astro';
+import PrinciplesGrid from '../components/about/PrinciplesGrid.astro';
+---
+
+<BaseLayout
+  title="About the Swarm | Sulphur AI Swarm"
+  description="Learn how the Sulphur AI Swarm is organized — a coordinated hierarchy of specialized agents delivering superhuman AI capabilities."
+>
+  <main class="about-page">
+    <!-- Section 1: Hero -->
+    <PageHero
+      title="About the Swarm"
+      subtitle="A coordinated system of specialized AI agents — each with a role, each accountable to the whole."
+      badge="How We Work"
+    />
+
+    <!-- Section 2: Mission Statement -->
+    <MissionStatement />
+
+    <!-- Section 3: Hierarchy Diagram -->
+    <section class="section-container">
+      <SectionHeader
+        eyebrow="Architecture"
+        title="The Hierarchy"
+        subtitle="Delegation flows strictly downward. Every agent knows its place and its purpose."
+      />
+      <HierarchyDiagram />
+    </section>
+
+    <!-- Section 4: Agent Role Cards -->
+    <section class="section-container section-container--alt">
+      <SectionHeader
+        eyebrow="The Team"
+        title="Agent Roles"
+        subtitle="Each agent type is purpose-built for its phase of the pipeline."
+      />
+      <AgentRoleCards />
+    </section>
+
+    <!-- Section 5: Task Pipeline -->
+    <section class="section-container">
+      <SectionHeader
+        eyebrow="Process"
+        title="The Task Pipeline"
+        subtitle="Every task flows through a structured pipeline — no shortcuts, no unchecked steps."
+      />
+      <TaskPipeline />
+    </section>
+
+    <!-- Section 6: Principles Grid -->
+    <section class="section-container section-container--alt">
+      <SectionHeader
+        eyebrow="Values"
+        title="Our Principles"
+        subtitle="The beliefs that govern how the swarm is built and how it operates."
+      />
+      <PrinciplesGrid />
+    </section>
+
+    <!-- Section 7: CTA -->
+    <CTABanner
+      headline="See what we can build"
+      subtext="Put the swarm to work on your hardest engineering problems."
+      primaryLabel="Explore Services"
+      primaryHref="/services/"
+      secondaryLabel="Contact Us"
+      secondaryHref="/contact/"
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-top: 0;
+  }
+
+  .section-container {
+    padding: 5rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-container--alt {
+    background: var(--color-surface);
+    max-width: 100%;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-container--alt > * {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

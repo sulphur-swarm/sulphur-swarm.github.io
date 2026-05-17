@@ -1,0 +1,292 @@
+---
+// No props
+---
+
+<section class="hierarchy-section js-hierarchy">
+  <div class="diagram-wrapper">
+    <svg class="hierarchy-svg" viewBox="0 0 1100 520" role="img"
+         aria-label="Sulphur AI Swarm agent hierarchy diagram">
+      <defs>
+        <filter id="glow-violet" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+
+      <!-- Edge paths -->
+      <path id="edge-user-pa" class="edge-path" d="M 130 260 C 153 260, 153 260, 175 260"/>
+      <path id="edge-pa-overseer" class="edge-path" d="M 305 260 C 335 260, 335 260, 365 260"/>
+      <path id="edge-overseer-council" class="edge-path" d="M 495 260 C 525 260, 555 120, 555 120"/>
+      <path id="edge-overseer-pm" class="edge-path" d="M 495 260 C 525 260, 525 260, 555 260"/>
+      <path id="edge-pm-coordinator" class="edge-path" d="M 685 260 C 720 260, 720 260, 755 260"/>
+      <path id="edge-coordinator-tasks" class="edge-path" d="M 885 260 C 920 260, 955 340, 955 340"/>
+
+      <!-- Node groups -->
+      <g id="node-user" class="node-group" data-node="user">
+        <rect x="0" y="238" width="130" height="44" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+        <text x="65" y="261" text-anchor="middle" dominant-baseline="central" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">User</text>
+      </g>
+
+      <g id="node-pa" class="node-group" data-node="pa">
+        <rect x="175" y="238" width="130" height="44" rx="6" fill="rgba(108,99,255,0.15)" stroke="#6c63ff" stroke-width="1.5"/>
+        <text text-anchor="middle" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">
+          <tspan x="240" y="253">Personal</tspan>
+          <tspan x="240" y="267">Assistant</tspan>
+        </text>
+      </g>
+
+      <g id="node-overseer" class="node-group" data-node="overseer">
+        <rect x="365" y="238" width="130" height="44" rx="6" fill="rgba(108,99,255,0.15)" stroke="#6c63ff" stroke-width="1.5"/>
+        <text x="430" y="261" text-anchor="middle" dominant-baseline="central" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">Overseer</text>
+      </g>
+
+      <g id="node-council" class="node-group" data-node="council">
+        <rect x="555" y="98" width="130" height="44" rx="6" fill="rgba(108,99,255,0.08)" stroke="rgba(108,99,255,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="620" y="121" text-anchor="middle" dominant-baseline="central" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">Council</text>
+      </g>
+
+      <g id="node-pm" class="node-group" data-node="pm">
+        <rect x="555" y="238" width="130" height="44" rx="6" fill="rgba(108,99,255,0.12)" stroke="rgba(108,99,255,0.6)" stroke-width="1.5"/>
+        <text text-anchor="middle" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">
+          <tspan x="620" y="253">Project</tspan>
+          <tspan x="620" y="267">Manager</tspan>
+        </text>
+      </g>
+
+      <g id="node-coordinator" class="node-group" data-node="coordinator">
+        <rect x="755" y="238" width="130" height="44" rx="6" fill="rgba(108,99,255,0.12)" stroke="rgba(108,99,255,0.6)" stroke-width="1.5"/>
+        <text x="820" y="261" text-anchor="middle" dominant-baseline="central" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">Coordinator</text>
+      </g>
+
+      <g id="node-tasks" class="node-group" data-node="tasks">
+        <rect x="955" y="318" width="130" height="44" rx="6" fill="rgba(0,212,255,0.1)" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="1020" y="341" text-anchor="middle" dominant-baseline="central" font-size="12" font-family="Geist, sans-serif" fill="#f0f0f0">Task Agents</text>
+      </g>
+
+      <!-- Animated flow dots (one per edge) -->
+      <circle class="flow-dot flow-dot--violet" r="3" cx="0" cy="0" opacity="0"/>
+      <circle class="flow-dot flow-dot--violet" r="3" cx="0" cy="0" opacity="0"/>
+      <circle class="flow-dot flow-dot--violet" r="3" cx="0" cy="0" opacity="0"/>
+      <circle class="flow-dot flow-dot--violet" r="3" cx="0" cy="0" opacity="0"/>
+      <circle class="flow-dot flow-dot--violet" r="3" cx="0" cy="0" opacity="0"/>
+      <circle class="flow-dot flow-dot--cyan" r="3" cx="0" cy="0" opacity="0"/>
+    </svg>
+
+    <!-- Mobile fallback -->
+    <div class="diagram-fallback" aria-label="Agent hierarchy">
+      <ol class="hierarchy-list">
+        <li>User
+          <ol><li>Personal Assistant
+            <ol><li>Overseer
+              <ol>
+                <li>Council (deliberative)</li>
+                <li>Project Manager
+                  <ol><li>Coordinator
+                    <ol><li>Task Agents</li></ol>
+                  </li></ol>
+                </li>
+              </ol>
+            </li></ol>
+          </li></ol>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Tooltip overlay -->
+    <div id="diagram-tooltip" class="diagram-tooltip" aria-hidden="true"></div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+  gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+  // Initial hidden state
+  gsap.set('.node-group', { opacity: 0, scale: 0.8, transformOrigin: 'center' });
+
+  function startFlowDots() {
+    const dots = document.querySelectorAll('.flow-dot');
+    const edges = [
+      '#edge-user-pa',
+      '#edge-pa-overseer',
+      '#edge-overseer-council',
+      '#edge-overseer-pm',
+      '#edge-pm-coordinator',
+      '#edge-coordinator-tasks',
+    ];
+    dots.forEach((dot, i) => {
+      if (!edges[i]) return;
+      gsap.to(dot, {
+        motionPath: { path: edges[i], align: edges[i], alignOrigin: [0.5, 0.5], start: 0, end: 1 },
+        duration: 2.5 + i * 0.3,
+        repeat: -1,
+        ease: 'none',
+        delay: i * 0.5,
+        opacity: 1,
+      });
+    });
+  }
+
+  ScrollTrigger.create({
+    trigger: '.js-hierarchy',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+      gsap.utils.toArray<SVGPathElement>('.edge-path').forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      });
+      const tl = gsap.timeline();
+      tl.to('.node-group', { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, ease: 'back.out(1.4)' })
+        .to('.edge-path', { strokeDashoffset: 0, duration: 0.5, stagger: 0.08 }, '<0.3')
+        .call(startFlowDots);
+    },
+  });
+
+  // Node pulse
+  gsap.to('.node-group rect', {
+    filter: 'drop-shadow(0 0 8px rgba(108,99,255,0.5))',
+    duration: 1.5,
+    stagger: { each: 0.3, repeat: -1, yoyo: true },
+    ease: 'sine.inOut',
+  });
+
+  // Hover tooltip
+  const nodeData: Record<string, { label: string; desc: string }> = {
+    user: { label: 'User', desc: 'The human principal. Issues directives through the Personal Assistant.' },
+    pa: { label: 'Personal Assistant', desc: 'User-facing agent. Translates human requests into swarm tasks and reports results back.' },
+    overseer: { label: 'Overseer', desc: 'Top-level orchestrator. Manages projects, creates Project Managers, and reports to Council.' },
+    council: { label: 'Council', desc: 'Deliberative body. Reviews Overseer reports and issues binding directives via proposals.' },
+    pm: { label: 'Project Manager', desc: 'One per project. Creates and manages domain-specific Working Groups.' },
+    coordinator: { label: 'Coordinator', desc: 'One per Working Group. Creates and manages tasks within their domain.' },
+    tasks: { label: 'Task Agents', desc: 'Ephemeral specialists: Researcher, Planner, Worker, Validator, Reviewer — each handling one phase of a task.' },
+  };
+
+  const tooltip = document.getElementById('diagram-tooltip');
+  document.querySelectorAll('.node-group').forEach((node) => {
+    const nodeId = (node as HTMLElement).dataset.node ?? '';
+    const data = nodeData[nodeId];
+    if (!data || !tooltip) return;
+    (node as HTMLElement).style.cursor = 'pointer';
+    node.addEventListener('mouseenter', (e) => {
+      tooltip.innerHTML = `<strong>${data.label}</strong><p>${data.desc}</p>`;
+      tooltip.classList.add('visible');
+      positionTooltip(e as MouseEvent);
+    });
+    node.addEventListener('mousemove', (e) => positionTooltip(e as MouseEvent));
+    node.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+  });
+
+  function positionTooltip(e: MouseEvent) {
+    const wrapper = document.querySelector('.diagram-wrapper') as HTMLElement;
+    if (!wrapper || !tooltip) return;
+    const rect = wrapper.getBoundingClientRect();
+    tooltip.style.left = `${e.clientX - rect.left + 12}px`;
+    tooltip.style.top = `${e.clientY - rect.top - 12}px`;
+  }
+</script>
+
+<style>
+  .hierarchy-section {
+    padding: 0;
+  }
+
+  .diagram-wrapper {
+    position: relative;
+    max-width: 1100px;
+    margin: 3rem auto 0;
+  }
+
+  .hierarchy-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .edge-path {
+    stroke: rgba(255, 255, 255, 0.12);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .flow-dot {
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+
+  .flow-dot--violet {
+    fill: #6c63ff;
+    color: #6c63ff;
+  }
+
+  .flow-dot--cyan {
+    fill: #00d4ff;
+    color: #00d4ff;
+  }
+
+  .node-group text {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .diagram-tooltip {
+    position: absolute;
+    background: rgba(14, 17, 23, 0.95);
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    max-width: 220px;
+    font-size: 0.85rem;
+    color: var(--color-text-primary);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+
+  .diagram-tooltip.visible {
+    opacity: 1;
+  }
+
+  .diagram-tooltip strong {
+    color: #6c63ff;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .diagram-tooltip p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 767px) {
+    .hierarchy-svg {
+      display: none;
+    }
+
+    .diagram-fallback {
+      display: block;
+    }
+  }
+
+  .diagram-fallback {
+    display: none;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .hierarchy-list,
+  .hierarchy-list ol {
+    margin: 0.25rem 0 0.25rem 1.5rem;
+    padding: 0;
+  }
+
+  .hierarchy-list li {
+    margin: 0.25rem 0;
+    color: var(--color-text-primary);
+  }
+</style>

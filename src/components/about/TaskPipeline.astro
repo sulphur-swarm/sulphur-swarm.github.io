@@ -1,0 +1,142 @@
+---
+const stages = [
+  { name: 'Researcher', desc: 'Gathers context & investigates the problem space' },
+  { name: 'Research Validator', desc: 'Verifies research quality & completeness' },
+  { name: 'Planner', desc: 'Creates a detailed implementation plan' },
+  { name: 'Plan Validator', desc: 'Reviews the plan for correctness & feasibility' },
+  { name: 'Worker', desc: 'Executes the plan, writing code or content' },
+  { name: 'Work Validator', desc: 'Validates the output for correctness' },
+  { name: 'Reviewer', desc: 'Final quality review before delivery' },
+];
+---
+
+<section class="pipeline-section">
+  <div class="pipeline-inner">
+    <div class="pipeline-track js-pipeline-track">
+      <div class="pipeline-line" aria-hidden="true"></div>
+      {stages.map((stage, i) => (
+        <div class="pipeline-step js-pipeline-step" data-validator={i % 2 === 1 ? 'true' : 'false'}>
+          <div class="pipeline-step__node">
+            <span class="pipeline-step__num">{i + 1}</span>
+          </div>
+          <div class="pipeline-step__label">
+            <span class="pipeline-step__name">{stage.name}</span>
+            <span class="pipeline-step__desc">{stage.desc}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo('.js-pipeline-step',
+    { opacity: 0, x: -20 },
+    {
+      opacity: 1, x: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: '.js-pipeline-track', start: 'top 80%', once: true }
+    }
+  );
+</script>
+
+<style>
+  .pipeline-section {
+    padding: 5rem 1.5rem;
+    overflow: hidden;
+  }
+
+  .pipeline-track {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    max-width: 1100px;
+    margin: 3rem auto 0;
+  }
+
+  .pipeline-line {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6c63ff, #00d4ff);
+    opacity: 0.3;
+  }
+
+  .pipeline-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pipeline-step__node {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid #6c63ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .pipeline-step[data-validator='true'] .pipeline-step__node {
+    border-color: #00d4ff;
+  }
+
+  .pipeline-step[data-validator='true'] .pipeline-step__num {
+    color: #00d4ff;
+  }
+
+  .pipeline-step__num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.85rem;
+    color: #6c63ff;
+  }
+
+  .pipeline-step__name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: block;
+  }
+
+  .pipeline-step__desc {
+    font-size: 0.72rem;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 767px) {
+    .pipeline-track {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .pipeline-line {
+      width: 2px;
+      height: 100%;
+      left: 24px;
+      top: 0;
+      right: auto;
+    }
+
+    .pipeline-step {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1rem;
+      text-align: left;
+    }
+  }
+</style>
