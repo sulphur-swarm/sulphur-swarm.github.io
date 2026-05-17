@@ -1,0 +1,125 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  breadcrumb?: string;
+}
+
+const { title, subtitle, badge, breadcrumb } = Astro.props;
+---
+
+<section class="page-hero relative overflow-hidden py-20 md:py-28">
+  <!-- Background radial gradient -->
+  <div
+    class="hero-bg absolute inset-0"
+    style="background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.12) 0%, transparent 70%), var(--color-surface, #0e1117);"
+  ></div>
+
+  <!-- Decorative SVG node cluster (top-right) -->
+  <svg
+    class="absolute top-0 right-0 opacity-20 pointer-events-none"
+    width="300"
+    height="200"
+    viewBox="0 0 300 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <!-- Connection lines -->
+    <line x1="80" y1="40" x2="160" y2="90" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="160" y1="90" x2="240" y2="50" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="160" y1="90" x2="200" y2="150" stroke="#6c63ff" stroke-width="1" opacity="0.6" />
+    <line x1="80" y1="40" x2="200" y2="150" stroke="#6c63ff" stroke-width="1" opacity="0.3" />
+    <!-- Node circles -->
+    <circle class="node-circle" cx="80" cy="40" r="4" fill="#6c63ff" />
+    <circle class="node-circle" cx="160" cy="90" r="5" fill="#6c63ff" />
+    <circle class="node-circle" cx="240" cy="50" r="4" fill="#6c63ff" />
+    <circle class="node-circle" cx="200" cy="150" r="3" fill="#6c63ff" />
+  </svg>
+
+  <!-- Bottom fade -->
+  <div
+    class="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+    style="background: linear-gradient(to bottom, transparent, var(--color-bg, #08090c));"
+  ></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    {
+      breadcrumb && (
+        <p class="text-sm text-[#888] mb-3 font-mono">{breadcrumb}</p>
+      )
+    }
+    {
+      badge && (
+        <span class="inline-block text-xs font-mono uppercase tracking-widest text-[#6c63ff] border border-[#6c63ff]/30 bg-[#6c63ff]/10 rounded-full px-3 py-1 mb-4">
+          {badge}
+        </span>
+      )
+    }
+    <h1
+      class="hero-title text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 bg-gradient-to-br from-white to-[#6c63ff] bg-clip-text text-transparent"
+    >
+      {title}
+    </h1>
+    {
+      subtitle && (
+        <p class="text-lg md:text-xl text-[#888] max-w-2xl mx-auto leading-relaxed">
+          {subtitle}
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .node-circle {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .node-circle:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+
+  .node-circle:nth-child(3) {
+    animation-delay: 1s;
+  }
+
+  .node-circle:nth-child(4) {
+    animation-delay: 1.5s;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  const heading = document.querySelector('.hero-title') as HTMLElement | null;
+  if (heading) {
+    const split = new SplitText(heading, { type: 'chars' });
+    gsap.fromTo(
+      split.chars,
+      { opacity: 0, y: 20, rotationX: -90 },
+      {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.5,
+        stagger: 0.025,
+        ease: 'back.out(1.7)',
+        delay: 0.2,
+      }
+    );
+  }
+</script>
