@@ -16,15 +16,15 @@ const bullets = [
         <p class="payments-eyebrow">Privacy + Payments</p>
         <h2 class="payments-heading">Optional. Pseudonymous. On-chain.</h2>
         <p class="payments-body">
-          PrivPaste is free forever for basic use. Power users can unlock premium
-          features — longer retention, larger paste sizes, and custom expiry — through a
-          simple USDC microtransaction on Base L2. No credit card. No billing email.
-          Just a wallet and a transaction.
+          PrivPaste is free forever for basic use. Power users can unlock premium features —
+          longer retention, larger paste sizes, and custom expiry — through a simple USDC
+          microtransaction on Base L2. No credit card. No billing email. Just a wallet and
+          a transaction.
         </p>
         <ul class="payments-bullets">
           {bullets.map((b) => (
             <li class="payments-bullet">
-              <span class="bullet-emoji">{b.emoji}</span>
+              <span class="bullet-emoji" aria-hidden="true">{b.emoji}</span>
               <span>{b.text}</span>
             </li>
           ))}
@@ -57,8 +57,7 @@ const bullets = [
     border: 1px solid rgba(108, 99, 255, 0.25);
     border-radius: 1.5rem;
     padding: 3rem;
-    background: radial-gradient(ellipse 70% 80% at 100% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 60%),
-      var(--color-bg);
+    background: radial-gradient(ellipse 70% 80% at 100% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
     position: relative;
     overflow: hidden;
   }
@@ -68,7 +67,7 @@ const bullets = [
     }
   }
   .payments-content {
-    max-width: 700px;
+    max-width: 640px;
   }
   .payments-eyebrow {
     font-family: 'Geist Mono', monospace;
@@ -76,17 +75,17 @@ const bullets = [
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--color-accent-secondary);
-    margin: 0 0 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .payments-heading {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
     background: linear-gradient(135deg, #fff 0%, #6c63ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 0 0 1.25rem;
-    line-height: 1.2;
   }
   .payments-body {
     font-size: 1rem;
@@ -106,14 +105,14 @@ const bullets = [
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    font-size: 0.9rem;
     color: var(--color-text-secondary);
+    font-size: 0.9rem;
     line-height: 1.6;
   }
   .bullet-emoji {
-    flex-shrink: 0;
     font-size: 1.1rem;
-    line-height: 1.4;
+    flex-shrink: 0;
+    margin-top: 0.05em;
   }
 </style>
 

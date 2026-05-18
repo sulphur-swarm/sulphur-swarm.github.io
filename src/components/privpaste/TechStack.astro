@@ -2,7 +2,7 @@
 // src/components/privpaste/TechStack.astro
 import SectionHeader from '../ui/SectionHeader.astro';
 
-const stack = [
+const techs = [
   {
     name: 'Svelte 5',
     accent: '#ff3e00',
@@ -30,15 +30,15 @@ const stack = [
   <div class="stack-container">
     <SectionHeader
       eyebrow="Technology"
-      title="Built to last"
-      subtitle="A minimal, reliable stack — no bloat, no magic, no hidden complexity."
+      title="Built for speed and privacy"
+      subtitle="A minimal, opinionated stack chosen for performance, simplicity, and security."
     />
     <div class="stack-grid">
-      {stack.map((tech) => (
+      {techs.map((t) => (
         <div class="stack-card">
-          <span class="stack-dot" style={`background: ${tech.accent};`}></span>
-          <h3 class="stack-name">{tech.name}</h3>
-          <p class="stack-desc">{tech.description}</p>
+          <div class="stack-dot" style={`background: ${t.accent};`}></div>
+          <h3 class="stack-name">{t.name}</h3>
+          <p class="stack-desc">{t.description}</p>
         </div>
       ))}
     </div>
@@ -85,9 +85,9 @@ const stack = [
     border: 1px solid var(--color-border);
     border-radius: 1rem;
     padding: 1.75rem;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     opacity: 0;
     transform: translateY(20px);
-    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     position: relative;
   }
   .stack-card:hover {
@@ -96,17 +96,16 @@ const stack = [
     transform: translateY(-2px) !important;
   }
   .stack-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     margin-bottom: 1rem;
   }
   .stack-name {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--color-text-primary);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.75rem;
   }
   .stack-desc {
     font-size: 0.875rem;
