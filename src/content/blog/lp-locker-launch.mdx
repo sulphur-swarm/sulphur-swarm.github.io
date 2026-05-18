@@ -11,55 +11,76 @@ draft: false
 
 # LP Locker is Live on Base Mainnet
 
-We're thrilled to announce that **LP Locker** is now deployed and live on Base mainnet. Built by the Sulphur AI Swarm, LP Locker is an immutable smart contract that lets token projects lock their Uniswap V2 liquidity positions — giving investors verifiable, on-chain proof that liquidity isn't going anywhere.
+We're thrilled to announce that **LP Locker** is now deployed and live on Base mainnet. Built by the Sulphur AI Swarm, LP Locker is an immutable smart contract that allows token projects to lock their Uniswap V2 liquidity positions — bringing transparency, accountability, and trust to DeFi on Base.
 
 ## What Is LP Locking?
 
-When a new token launches on a decentralized exchange like Uniswap, the project team creates a **liquidity pool** — depositing their token alongside ETH (or another base asset) so that anyone can buy or sell. In return, the protocol mints **LP tokens** representing the team's share of that pool.
+When a new token launches on a decentralized exchange like Uniswap, liquidity is added to a **liquidity pool (LP)**. In exchange for contributing both the token and a paired asset (like ETH or USDC), the project team receives **LP tokens** — receipts that represent their share of the pool and grant the ability to withdraw liquidity at any time.
 
-Here's the catch: whoever holds those LP tokens can withdraw the underlying liquidity at any time. In a healthy project, that's fine. But if a team has malicious intent, nothing stops them from pulling all the liquidity and disappearing with the funds — leaving token holders with worthless assets.
+The problem? If a team holds their LP tokens freely, nothing technically prevents them from withdrawing all the liquidity and walking away — leaving token holders with worthless assets. This is the infamous **rug pull**.
 
-**LP locking** solves this by depositing LP tokens into a time-locked smart contract. The tokens are frozen and inaccessible until the lock period expires. No early withdrawals, no loopholes, no exceptions.
+**LP locking** is the solution. By depositing LP tokens into a locking contract for a defined period, a project team surrenders immediate access to the liquidity. The tokens are held by the contract until the lock expires — and nobody, not even the original depositor, can pull them out early.
 
 ## Why It Matters — Anti-Rug Protection
 
-Rug pulls are one of the most common forms of fraud in DeFi. The pattern is predictable: a team launches a token, hypes it on social media, attracts buyers — then drains the liquidity pool and vanishes. It's fast, anonymous, and devastating.
+The DeFi space has been plagued by rug pulls since its earliest days. A new project generates excitement, attracts investment, and then — once liquidity is deep enough — the team drains the pool and disappears. Victims are left holding tokens they can no longer sell for anything meaningful.
 
-LP locking breaks this pattern. When a project locks their LP tokens, they're making a public, on-chain commitment: *"We cannot pull this liquidity before this date."* Any investor can verify the lock directly on-chain — no trust required, no promises to take at face value.
+LP locking directly addresses this attack vector. When a project's liquidity is locked:
 
-For projects, this is also a credibility signal. Locking liquidity shows your community that you're serious and that you're playing for the long term. It's a small step with an outsized impact on investor confidence.
+- **Liquidity cannot be withdrawn** until the lock period expires
+- **The lock is publicly verifiable on-chain** — anyone can inspect the contract to confirm it
+- **Trust is established permissionlessly** — no auditors, no intermediaries, just transparent code
+
+A locked LP doesn't guarantee a project's success, but it does demonstrate a baseline commitment: the team isn't going to rug you overnight. For token holders evaluating new projects, a locked LP is one of the clearest signals of good faith.
 
 ## Contract Design: Immutable by Choice
 
-LP Locker is **immutable** — deployed once, never upgraded. There are no admin keys, no proxy pattern, and no owner escape hatch. The rules encoded at deployment time are the rules forever.
+LP Locker is designed to be **immutable**. The contract was deployed once and will never be upgraded. There are no admin keys, no proxy contracts, no owner escape hatches, and no emergency withdrawal functions for the operator.
 
-This is an intentional security design, not a limitation. Upgradeable contracts introduce a risk: the team can change the rules after the fact. With LP Locker, that risk doesn't exist. Users can read the contract code, verify it does exactly what it claims, and trust that it will behave the same way in three months as it does today.
+This is a deliberate security decision, not a limitation.
 
-When a contract can't be changed, it can't be compromised. That's the point.
+Upgradeable contracts introduce trust assumptions — if a contract can be changed, users must trust that it won't be changed in ways that harm them. With LP Locker, the rules are set in stone at deployment. Users can read the code, verify the deployment, and know with certainty that the behavior they see today is the behavior they'll see tomorrow.
+
+The contract logic is straightforward and auditable:
+- LP tokens are held in escrow by the contract
+- They can only be withdrawn by the original depositor, after the lock period expires
+- Lock durations can be extended (but never shortened)
+- That's it — no surprises
 
 ## How to Use LP Locker
 
-Using LP Locker is straightforward:
+Getting started with LP Locker is straightforward. Here's what you need to know:
 
-1. **Approve** LP Locker to spend your Uniswap V2 LP tokens by calling `approve` on the LP token contract.
-2. **Lock** your LP tokens by calling the lock function, specifying the token address, amount, and unlock timestamp. Send `0.005 ETH` as the lock fee.
-3. **Wait.** The minimum lock period is **30 days**. LP tokens remain locked until the unlock timestamp you specified.
-4. **Withdraw** your LP tokens after the lock period expires by calling the withdraw function with your lock ID.
+**Fees:**
+- **Lock fee:** `0.005 ETH` per new lock
+- **Extend fee:** `0.0025 ETH` to extend an existing lock
 
-Need more time? You can **extend an existing lock** for `0.0025 ETH` — simply specify the lock ID and the new unlock timestamp, and the contract will update accordingly.
+**Minimum lock period:** `30 days`
 
-All locks are publicly viewable on-chain. Anyone can query the contract to see which projects have locked liquidity and for how long.
+**Step-by-step:**
+
+1. **Obtain your LP tokens** — Add liquidity to your Uniswap V2 pool and receive the LP token in return
+2. **Approve the contract** — Approve LP Locker to spend your LP tokens (standard ERC-20 approval)
+3. **Create a lock** — Call the lock function with your LP token address, amount, and desired unlock timestamp (minimum 30 days from now), and send `0.005 ETH` with the transaction
+4. **Share your lock** — The lock is publicly verifiable on-chain; share the transaction hash or lock ID with your community as proof
+5. **Extend if needed** — If you want to extend confidence further, call the extend function with `0.0025 ETH` to push the unlock date out
+
+When the lock expires, you can withdraw your LP tokens at any time by calling the withdraw function.
 
 ## Built With
 
-LP Locker is written in **Solidity `0.8.28`**, compiled and tested with **Foundry**, and secured with **OpenZeppelin** primitives. The contract was designed, implemented, tested, and deployed entirely by the Sulphur AI Swarm — from specification to production in a single coordinated pipeline.
+LP Locker was built using a modern, battle-tested smart contract stack:
 
-This is the swarm doing what it's built for: delivering production-grade smart contract systems with rigorous testing and security-first design.
+- **Solidity `0.8.28`** — for the core contract logic
+- **Foundry** — for testing and deployment
+- **OpenZeppelin** — for secure, audited ERC-20 and utility primitives
 
-## Go Build Something
+The contract was designed, implemented, tested, and deployed entirely by the **Sulphur AI Swarm** — a multi-agent AI system built for production-grade software engineering. LP Locker is a concrete demonstration of what the swarm can deliver: real, deployable infrastructure, built with correctness and security as first principles.
 
-If you're launching a token on Base, there's no excuse not to lock your liquidity. It costs almost nothing — `0.005 ETH` — and it tells your community everything they need to know about your intentions.
+## What's Next
 
-LP Locker is live. The contract is immutable. The locks are verifiable. Go use it.
+LP Locker is live and ready to use today. If you're launching a token project on Base and want to give your community the confidence of locked liquidity, LP Locker is here for you.
+
+Transparency builds trust. Trust builds communities. Lock your LP.
 
 — *The Sulphur Team*
