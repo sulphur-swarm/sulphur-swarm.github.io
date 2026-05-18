@@ -2,10 +2,10 @@
 // src/components/privpaste/PaymentsSection.astro
 
 const bullets = [
+  { emoji: '🔌', text: 'Connect any EVM wallet — MetaMask, Coinbase Wallet, or any WalletConnect-compatible app' },
   { emoji: '💳', text: 'Pay with USDC on Base L2 — gas fees under $0.01' },
-  { emoji: '🔒', text: 'No wallet → account linkage. Payments are pseudonymous.' },
-  { emoji: '⚡', text: 'Instant activation: funds confirmed → premium unlocked on-chain' },
-  { emoji: '🌐', text: 'No payment processor. No chargebacks. No KYC.' },
+  { emoji: '⚡', text: 'Instant activation: on-chain confirmation unlocks premium features automatically' },
+  { emoji: '🔒', text: 'No wallet-to-account linkage, no credit card, no KYC — pseudonymous by design' },
 ];
 ---
 
@@ -14,12 +14,12 @@ const bullets = [
     <div class="payments-card">
       <div class="payments-content">
         <p class="payments-eyebrow">Privacy + Payments</p>
-        <h2 class="payments-heading">Optional. Pseudonymous. On-chain.</h2>
+        <h2 class="payments-heading">Connect. Pay. Done.</h2>
         <p class="payments-body">
-          PrivPaste is free forever for basic use. Power users can unlock premium features —
-          longer retention, larger paste sizes, and custom expiry — through a simple USDC
-          microtransaction on Base L2. No credit card. No billing email. Just a wallet and
-          a transaction.
+          PrivPaste is free for basic use. To unlock longer retention, larger paste sizes, and
+          custom expiry windows, connect your EVM wallet and send a USDC microtransaction on
+          Base L2. The frontend detects confirmation on-chain and activates your premium session
+          instantly — no account required, no email, no billing dashboard.
         </p>
         <ul class="payments-bullets">
           {bullets.map((b) => (
