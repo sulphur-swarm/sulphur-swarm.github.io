@@ -1,0 +1,623 @@
+---
+// src/pages/simplemultisig/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="SimpleMultisig — Multisig Wallet Management"
+  description="SimpleMultisig is a multisig wallet management web app built on Safe (Gnosis Safe) protocol. Create wallets, manage signers, and control your on-chain treasury."
+>
+
+  <!-- ========================================================
+       HERO SECTION
+  ======================================================== -->
+  <section class="sm-hero-section relative overflow-hidden" id="sm-hero">
+
+    <!-- Background glow -->
+    <div class="sm-hero-glow absolute inset-0 pointer-events-none"></div>
+
+    <!-- Decorative node pattern -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-10" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <pattern id="hex-pattern" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+          <polygon points="30,2 58,17 58,35 30,50 2,35 2,17" fill="none" stroke="rgba(108,99,255,0.6)" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex-pattern)" />
+    </svg>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-32 lg:py-48 flex flex-col items-center text-center">
+
+      <!-- Eyebrow -->
+      <p class="hero-animate text-sm font-mono tracking-widest uppercase mb-6"
+         style="color: var(--color-accent-secondary);">
+        SimpleMultisig
+      </p>
+
+      <!-- Headline -->
+      <h1 class="hero-animate text-5xl lg:text-7xl font-extrabold leading-tight mb-6 text-gradient">
+        Multisig wallets,<br />made simple.
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-animate text-lg lg:text-xl leading-relaxed mb-10 max-w-2xl"
+         style="color: var(--color-text-secondary);">
+        Manage multi-signature wallets with full control — powered by the Safe protocol.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero-animate flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#"
+           class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 sm-btn-primary"
+           style="background: var(--color-accent-primary); color: white;">
+          Get Started
+        </a>
+        <a href="#"
+           class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base border transition-all duration-300 sm-btn-secondary"
+           style="border-color: var(--color-border); color: var(--color-text-primary);">
+          View on GitHub
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       ABOUT SECTION
+  ======================================================== -->
+  <section class="sm-about-section" id="sm-about">
+    <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+      <!-- Eyebrow -->
+      <p class="sm-about-eyebrow text-sm font-mono tracking-widest uppercase mb-6"
+         style="color: var(--color-accent-secondary);">
+        About
+      </p>
+
+      <!-- Headline -->
+      <h2 class="sm-about-headline text-4xl lg:text-5xl font-extrabold leading-tight mb-16 max-w-2xl"
+          style="color: var(--color-text-primary);">
+        Safe-powered multisig<br />for teams and DAOs.
+      </h2>
+
+      <!-- Two-column layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+        <!-- Description -->
+        <div class="sm-about-desc space-y-6">
+          <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+            Built on the audited Safe (Gnosis Safe) protocol — the gold standard for on-chain
+            multisig — SimpleMultisig brings enterprise-grade custody to everyone.
+          </p>
+          <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+            Designed for teams that need shared custody: developers, DAOs, and crypto-native
+            businesses that require transparent, on-chain governance over their treasury.
+          </p>
+          <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+            A clean, modern interface abstracts the complexity of on-chain multi-signature
+            operations — so you can focus on what matters, not the mechanics.
+          </p>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="sm-about-stats grid grid-cols-2 gap-6">
+          {[
+            { value: 'M-of-N', label: 'Flexible signer thresholds' },
+            { value: 'Safe', label: 'Battle-tested protocol' },
+            { value: 'Web3', label: 'Non-custodial, on-chain' },
+            { value: 'Open', label: 'Transparent & auditable' },
+          ].map(stat => (
+            <div class="sm-stat-card p-6 rounded-xl border"
+                 style="background: var(--color-surface); border-color: var(--color-border);">
+              <div class="text-3xl font-extrabold mb-2"
+                   style="color: var(--color-accent-primary);">
+                {stat.value}
+              </div>
+              <div class="text-sm leading-snug" style="color: var(--color-text-secondary);">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       FEATURES SECTION
+  ======================================================== -->
+  <section class="sm-features-section" id="sm-features">
+    <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+      <!-- Section header -->
+      <div class="sm-features-header mb-16 max-w-2xl">
+        <p class="text-sm font-mono tracking-widest uppercase mb-6"
+           style="color: var(--color-accent-secondary);">
+          Features
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight"
+            style="color: var(--color-text-primary);">
+          Everything you need<br />to manage on-chain assets.
+        </h2>
+      </div>
+
+      <!-- Features grid -->
+      <div class="sm-features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- 1. Create Multisig Wallets -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Create Multisig Wallets</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Deploy a new Safe wallet with custom signer threshold in seconds.
+          </p>
+        </div>
+
+        <!-- 2. Wallet Management -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Wallet Management</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            View balances, pending transactions, and wallet configuration at a glance.
+          </p>
+        </div>
+
+        <!-- 3. Address Book -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Address Book</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Save and label frequently-used addresses for fast, error-free signing.
+          </p>
+        </div>
+
+        <!-- 4. Signers & Settings -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Signers & Settings</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Add or remove signers, change thresholds, and manage wallet permissions.
+          </p>
+        </div>
+
+        <!-- 5. Subscription Management -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Subscription Management</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Manage recurring on-chain payments and allowances for your wallet.
+          </p>
+        </div>
+
+        <!-- 6. Multi-chain Ready -->
+        <div class="sm-feature-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(108, 99, 255, 0.12); color: var(--color-accent-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253M3 12c0 .778.099 1.533.284 2.253" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-3" style="color: var(--color-text-primary);">Multi-chain Ready</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Works across Ethereum mainnet and all major EVM-compatible networks.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       TECH STACK SECTION
+  ======================================================== -->
+  <section class="sm-tech-section" id="sm-tech">
+    <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+      <!-- Section header -->
+      <div class="sm-tech-header mb-16 max-w-2xl">
+        <p class="text-sm font-mono tracking-widest uppercase mb-6"
+           style="color: var(--color-accent-secondary);">
+          Tech Stack
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-6"
+            style="color: var(--color-text-primary);">
+          Built with modern<br />web3 tooling.
+        </h2>
+        <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+          A carefully chosen stack for performance, developer experience, and wallet compatibility.
+        </p>
+      </div>
+
+      <!-- Tech grid -->
+      <div class="sm-tech-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- React + TypeScript -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">React + TypeScript</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">Type-safe component architecture</p>
+        </div>
+
+        <!-- Vite -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">Vite</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">Lightning-fast development builds</p>
+        </div>
+
+        <!-- RainbowKit -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">RainbowKit</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">Best-in-class wallet connection UI</p>
+        </div>
+
+        <!-- Radix UI -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">Radix UI</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">Accessible, unstyled component primitives</p>
+        </div>
+
+        <!-- Safe SDK -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">Safe SDK</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">The industry-standard multisig protocol</p>
+        </div>
+
+        <!-- wagmi / viem -->
+        <div class="sm-tech-card p-8 rounded-2xl border transition-all duration-300"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="icon-wrapper mb-6 w-12 h-12 rounded-xl flex items-center justify-center"
+               style="background: rgba(0, 212, 255, 0.12); color: var(--color-accent-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-1" style="color: var(--color-text-primary);">wagmi / viem</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">React hooks for Ethereum</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       HOW IT WORKS SECTION
+  ======================================================== -->
+  <section class="sm-how-section" id="sm-how">
+    <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+      <!-- Section header -->
+      <div class="sm-how-header mb-16 text-center max-w-2xl mx-auto">
+        <p class="text-sm font-mono tracking-widest uppercase mb-6"
+           style="color: var(--color-accent-secondary);">
+          How It Works
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight"
+            style="color: var(--color-text-primary);">
+          Three steps to<br />secure custody.
+        </h2>
+      </div>
+
+      <!-- Steps -->
+      <div class="sm-steps-grid relative grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Connecting line (desktop only) -->
+        <div class="sm-step-connector hidden md:block absolute top-12 left-1/6 right-1/6"
+             style="height: 1px; background: linear-gradient(90deg, transparent, rgba(108,99,255,0.4), rgba(108,99,255,0.4), transparent); top: 48px;"></div>
+
+        <!-- Step 01 -->
+        <div class="sm-step-card relative p-8 rounded-2xl border text-center"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full font-extrabold text-lg mb-6 mx-auto"
+               style="background: rgba(108, 99, 255, 0.15); color: var(--color-accent-primary);">
+            01
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--color-text-primary);">Connect Wallet</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Connect your Web3 wallet via RainbowKit. Supports MetaMask, Coinbase Wallet, WalletConnect and more.
+          </p>
+        </div>
+
+        <!-- Step 02 -->
+        <div class="sm-step-card relative p-8 rounded-2xl border text-center"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full font-extrabold text-lg mb-6 mx-auto"
+               style="background: rgba(108, 99, 255, 0.15); color: var(--color-accent-primary);">
+            02
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--color-text-primary);">Create or Import</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Deploy a new Safe multisig or import an existing one by address. Configure your signers and threshold.
+          </p>
+        </div>
+
+        <!-- Step 03 -->
+        <div class="sm-step-card relative p-8 rounded-2xl border text-center"
+             style="background: var(--color-surface); border-color: var(--color-border);">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full font-extrabold text-lg mb-6 mx-auto"
+               style="background: rgba(108, 99, 255, 0.15); color: var(--color-accent-primary);">
+            03
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--color-text-primary);">Manage & Sign</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Propose transactions, collect signatures from co-signers, and execute on-chain — all from one dashboard.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       CTA SECTION
+  ======================================================== -->
+  <section class="sm-cta-section" id="sm-cta">
+    <div class="max-w-6xl mx-auto px-6 py-32 lg:py-40">
+
+      <!-- CTA card -->
+      <div class="sm-cta-card relative overflow-hidden rounded-3xl p-12 lg:p-20 text-center border"
+           style="background: var(--color-surface); border-color: rgba(108, 99, 255, 0.3);">
+
+        <!-- Background glow -->
+        <div class="absolute inset-0 pointer-events-none"
+             style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(108, 99, 255, 0.12) 0%, transparent 70%);"></div>
+
+        <!-- Content -->
+        <div class="relative z-10">
+          <p class="sm-cta-eyebrow text-sm font-mono tracking-widest uppercase mb-6"
+             style="color: var(--color-accent-secondary);">
+            Get started
+          </p>
+
+          <h2 class="sm-cta-headline text-4xl lg:text-6xl font-extrabold leading-tight mb-6"
+              style="color: var(--color-text-primary);">
+            Secure your treasury<br />with SimpleMultisig.
+          </h2>
+
+          <p class="sm-cta-desc text-lg leading-relaxed mb-10 max-w-xl mx-auto"
+             style="color: var(--color-text-secondary);">
+            Join teams and DAOs already managing their on-chain assets with multi-signature security.
+          </p>
+
+          <div class="sm-cta-buttons flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#"
+               class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 sm-btn-primary"
+               style="background: var(--color-accent-primary); color: white;">
+              Launch App
+            </a>
+            <a href="#"
+               class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base border transition-all duration-300 sm-btn-secondary"
+               style="border-color: var(--color-border); color: var(--color-text-primary);">
+              View on GitHub
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* Hero glow */
+  .sm-hero-glow {
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108, 99, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 50%, transparent 80%);
+  }
+
+  /* Feature & tech card hover */
+  .sm-feature-card:hover,
+  .sm-tech-card:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(108, 99, 255, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* Button hover states */
+  .sm-btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 24px rgba(108, 99, 255, 0.4);
+    transform: translateY(-1px);
+  }
+  .sm-btn-secondary:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    background: rgba(108, 99, 255, 0.06);
+  }
+
+  /* CTA card buttons */
+  .sm-cta-card .sm-btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 24px rgba(108, 99, 255, 0.4);
+    transform: translateY(-1px);
+  }
+  .sm-cta-card .sm-btn-secondary:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    background: rgba(108, 99, 255, 0.06);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── HERO: timeline on page load ──────────────────────────────
+  gsap.set('.hero-animate', { opacity: 0, y: 30 });
+  const heroTl = gsap.timeline({ delay: 0.1 });
+  heroTl
+    .to('.hero-animate', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+      stagger: 0.15,
+    });
+
+  // ── ABOUT ────────────────────────────────────────────────────
+  gsap.from('.sm-about-eyebrow, .sm-about-headline', {
+    scrollTrigger: { trigger: '#sm-about', start: 'top 80%', once: true },
+    opacity: 0,
+    y: 40,
+    duration: 1.0,
+    ease: 'power2.out',
+    stagger: 0.15,
+  });
+
+  gsap.from('.sm-about-desc, .sm-about-stats', {
+    scrollTrigger: { trigger: '#sm-about', start: 'top 65%', once: true },
+    opacity: 0,
+    y: 30,
+    duration: 1.0,
+    ease: 'power2.out',
+    stagger: 0.2,
+  });
+
+  gsap.from('.sm-stat-card', {
+    scrollTrigger: { trigger: '.sm-about-stats', start: 'top 75%', once: true },
+    opacity: 0,
+    y: 20,
+    scale: 0.95,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.1,
+  });
+
+  // ── FEATURES ─────────────────────────────────────────────────
+  gsap.from('.sm-features-header', {
+    scrollTrigger: { trigger: '#sm-features', start: 'top 80%', once: true },
+    opacity: 0,
+    y: 40,
+    duration: 1.0,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.sm-feature-card', {
+    scrollTrigger: { trigger: '.sm-features-grid', start: 'top 75%', once: true },
+    opacity: 0,
+    y: 30,
+    scale: 0.97,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.1,
+  });
+
+  // ── TECH STACK ───────────────────────────────────────────────
+  gsap.from('.sm-tech-header', {
+    scrollTrigger: { trigger: '#sm-tech', start: 'top 80%', once: true },
+    opacity: 0,
+    y: 40,
+    duration: 1.0,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.sm-tech-card', {
+    scrollTrigger: { trigger: '.sm-tech-grid', start: 'top 75%', once: true },
+    opacity: 0,
+    y: 30,
+    scale: 0.97,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.1,
+  });
+
+  // ── HOW IT WORKS ─────────────────────────────────────────────
+  gsap.from('.sm-how-header', {
+    scrollTrigger: { trigger: '#sm-how', start: 'top 80%', once: true },
+    opacity: 0,
+    y: 40,
+    duration: 1.0,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.sm-step-card', {
+    scrollTrigger: { trigger: '.sm-steps-grid', start: 'top 75%', once: true },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.2,
+  });
+
+  // ── CTA ──────────────────────────────────────────────────────
+  gsap.from('.sm-cta-card', {
+    scrollTrigger: { trigger: '#sm-cta', start: 'top 85%', once: true },
+    opacity: 0,
+    scale: 0.98,
+    duration: 1.2,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.sm-cta-eyebrow, .sm-cta-headline, .sm-cta-desc, .sm-cta-buttons', {
+    scrollTrigger: { trigger: '#sm-cta', start: 'top 75%', once: true },
+    opacity: 0,
+    y: 30,
+    duration: 1.0,
+    ease: 'power2.out',
+    stagger: 0.12,
+  });
+</script>
