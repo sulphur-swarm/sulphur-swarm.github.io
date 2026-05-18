@@ -1,0 +1,102 @@
+---
+// src/components/lplocker/TechStack.astro
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const badges = [
+  { label: 'Solidity 0.8.28' },
+  { label: 'Foundry' },
+  { label: 'Base L2' },
+  { label: 'OpenZeppelin' },
+];
+---
+
+<section class="lp-tech-section">
+  <div class="lp-tech-container">
+    <SectionHeader
+      eyebrow="Tech"
+      title="Built on proven foundations"
+      subtitle="LP Locker is built with industry-standard tooling, auditable from day one."
+    />
+
+    <div class="lp-tech-badges">
+      {badges.map((b) => (
+        <span class="lp-tech-badge">{b.label}</span>
+      ))}
+    </div>
+
+    <p class="lp-tech-body">
+      The contract is written in Solidity 0.8.28, tested exhaustively with Foundry, and deployed
+      on Base L2 for fast and cheap transactions backed by Ethereum's security. OpenZeppelin's
+      <code>ReentrancyGuard</code> and <code>SafeERC20</code> modules are baked in — auditors can
+      verify every dependency on-chain.
+    </p>
+  </div>
+</section>
+
+<style>
+  .lp-tech-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+    position: relative;
+  }
+  .lp-tech-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.2), transparent);
+  }
+  .lp-tech-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .lp-tech-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin: 2.5rem 0;
+  }
+  .lp-tech-badge {
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--color-accent-primary);
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  .lp-tech-body {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .lp-tech-body code {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.85em;
+    color: var(--color-accent-primary);
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to('.lp-tech-badge', {
+    opacity: 1,
+    scale: 1,
+    duration: 0.4,
+    stagger: 0.08,
+    ease: 'back.out(1.5)',
+    scrollTrigger: { trigger: '.lp-tech-section', start: 'top 85%', once: true },
+  });
+</script>

@@ -1,0 +1,168 @@
+---
+// src/components/lplocker/WhatItDoes.astro
+---
+
+<section class="lp-what-section">
+  <div class="lp-what-container">
+
+    <!-- Left: Risk col -->
+    <div class="lp-pitch-col lp-risk-col">
+      <div class="lp-col-eyebrow lp-risk-eyebrow">The Risk</div>
+      <h2 class="lp-col-title">LP pulled overnight.<br/>Investors left holding nothing.</h2>
+      <p class="lp-col-body">
+        Liquidity is the lifeblood of any token project — and it's also its most exploitable weakness.
+        Bad actors raise capital, then silently drain the liquidity pool, collapsing token price overnight.
+      </p>
+      <ul class="lp-problem-list">
+        <li>💀 Rug pulls cost investors billions every year</li>
+        <li>🚨 No on-chain enforcement stops LP withdrawals</li>
+        <li>👻 Teams vanish after pulling liquidity</li>
+      </ul>
+    </div>
+
+    <!-- SVG arrow divider -->
+    <div class="lp-pitch-divider" aria-hidden="true">
+      <svg viewBox="0 0 40 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 4L36 40L4 76" stroke="rgba(108,99,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Right: Solution col -->
+    <div class="lp-pitch-col lp-solution-col">
+      <div class="lp-col-eyebrow lp-solution-eyebrow">The Solution</div>
+      <h2 class="lp-col-title lp-solution-title">Lock it on-chain.<br/>Prove it to your community.</h2>
+      <p class="lp-col-body">
+        LP Locker lets token projects lock DEX LP tokens directly on Base L2 for a minimum of 30 days.
+        The contract is immutable — no admin keys, no upgrades, no backdoors. Code is law.
+      </p>
+      <ul class="lp-solution-list">
+        <li>🔒 LP tokens locked on-chain for min 30 days</li>
+        <li>✅ Immutable contract — verifiable by anyone</li>
+        <li>🛡 Built with OpenZeppelin's battle-tested guards</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .lp-what-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .lp-what-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.25), transparent);
+  }
+
+  .lp-what-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .lp-what-container { grid-template-columns: 1fr auto 1fr; gap: 2rem; }
+  }
+
+  .lp-pitch-divider {
+    width: 40px;
+    display: none;
+    flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .lp-pitch-divider { display: block; }
+  }
+
+  .lp-col-eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .lp-risk-eyebrow { color: rgba(255, 100, 100, 0.8); }
+  .lp-solution-eyebrow { color: var(--color-accent-primary); }
+
+  .lp-col-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+    margin: 0 0 1rem;
+  }
+  .lp-solution-title {
+    background: linear-gradient(135deg, #fff 0%, var(--color-accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .lp-col-body {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .lp-problem-list, .lp-solution-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .lp-problem-list li, .lp-solution-list li {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .lp-risk-col {
+    background: rgba(255, 60, 60, 0.03);
+    border: 1px solid rgba(255, 60, 60, 0.08);
+    border-radius: 1rem;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  .lp-solution-col {
+    background: rgba(108, 99, 255, 0.05);
+    border: 1px solid rgba(108, 99, 255, 0.15);
+    border-radius: 1rem;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateX(30px);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to('.lp-risk-col', {
+    opacity: 1,
+    x: 0,
+    duration: 0.7,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: '.lp-what-section', start: 'top 80%', once: true },
+  });
+  gsap.to('.lp-solution-col', {
+    opacity: 1,
+    x: 0,
+    duration: 0.7,
+    ease: 'power2.out',
+    delay: 0.15,
+    scrollTrigger: { trigger: '.lp-what-section', start: 'top 80%', once: true },
+  });
+</script>
