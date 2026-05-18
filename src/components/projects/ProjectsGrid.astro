@@ -1,0 +1,110 @@
+---
+import ProjectCard from './ProjectCard.astro';
+
+const swarmfixIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19c-2.3 0-6.57-2.42-6.57-7.5 0-3.87 2.94-7 6.57-7s6.57 3.13 6.57 7C18.57 16.58 14.3 19 12 19z"/>
+  <path d="M12 4.5V3M5.5 7l-1.5-1.5M18.5 7l1.5-1.5M3 12H2M22 12h-1M5.5 17l-1.5 1.5M18.5 17l1.5 1.5"/>
+</svg>`;
+
+const lpLockerIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>`;
+
+const privPasteIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+</svg>`;
+
+const simpleMultisigIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>`;
+
+const brainIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.5 2a2.5 2.5 0 0 1 5 0v.5"/>
+  <path d="M14.5 2.5A5.5 5.5 0 0 1 20 8a5 5 0 0 1-2 4"/>
+  <path d="M9.5 2.5A5.5 5.5 0 0 0 4 8a5 5 0 0 0 2 4"/>
+  <path d="M12 13v9"/>
+  <path d="M8 17h8"/>
+  <circle cx="12" cy="13" r="2"/>
+</svg>`;
+
+const projects = [
+  {
+    title: 'SwarmFix',
+    description: 'Automated bug fixing for open source projects. Deploy a coordinated agent swarm to analyze, plan, and fix code issues — autonomously, at scale.',
+    status: 'Active' as const,
+    href: '/swarmfix/',
+    icon: swarmfixIcon,
+  },
+  {
+    title: 'LP Locker',
+    description: 'Lock liquidity pool tokens with confidence. Time-lock your LP positions on-chain — no trust required, no early withdrawals, full transparency.',
+    status: 'Active' as const,
+    href: '/lplocker/',
+    icon: lpLockerIcon,
+  },
+  {
+    title: 'PrivPaste',
+    description: 'End-to-end encrypted paste sharing. Share sensitive text, code, or notes privately — zero knowledge, zero logs, zero compromise.',
+    status: 'Active' as const,
+    href: '/privpaste/',
+    icon: privPasteIcon,
+  },
+  {
+    title: 'SimpleMultisig',
+    description: 'Straightforward multi-signature wallets. Create and manage multisig transactions without complexity — secure collective control made simple.',
+    status: 'Active' as const,
+    href: '/simplemultisig/',
+    icon: simpleMultisigIcon,
+  },
+  {
+    title: 'Next-Gen Intelligence',
+    description: 'A next-generation holistic intelligence system pushing the boundaries of autonomous reasoning, planning, and multi-agent coordination.',
+    status: 'Research' as const,
+    href: undefined,
+    icon: brainIcon,
+  },
+];
+---
+
+<section class="projects-grid-section py-24 md:py-32 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.title}
+          description={project.description}
+          icon={project.icon}
+          href={project.href}
+          status={project.status}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(
+    '.project-card',
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      stagger: 0.12,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.projects-grid',
+        start: 'top 80%',
+        once: true,
+      },
+    }
+  );
+</script>
