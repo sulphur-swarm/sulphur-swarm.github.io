@@ -1,0 +1,67 @@
+---
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  href?: string;
+  status: 'Active' | 'Beta' | 'Research';
+}
+
+const { title, description, icon, href, status } = Astro.props;
+
+const isLinked = !!href;
+
+const cardClasses = [
+  'project-card group relative rounded-xl overflow-hidden transition-all duration-300 p-6',
+  isLinked
+    ? 'bg-[rgba(14,17,23,0.8)] border border-[rgba(108,99,255,0.3)] hover:-translate-y-1 hover:border-[rgba(108,99,255,0.6)] hover:shadow-[0_8px_30px_rgba(108,99,255,0.2)] cursor-pointer backdrop-blur-sm'
+    : 'bg-[rgba(14,17,23,0.5)] border border-[rgba(255,255,255,0.06)] opacity-70',
+].join(' ');
+
+const badgeClasses = {
+  Active: 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10',
+  Beta: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/10',
+  Research: 'text-[#888] border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)]',
+}[status];
+---
+
+<div class={cardClasses}>
+  <!-- Top accent line for linked cards -->
+  {isLinked && (
+    <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-[#6c63ff] to-[#00d4ff]"></div>
+  )}
+
+  <!-- Status badge -->
+  <span class={`absolute top-4 right-4 text-xs font-mono uppercase tracking-widest rounded-full px-3 py-1 border ${badgeClasses}`}>
+    {status}
+  </span>
+
+  <!-- Card content -->
+  {isLinked ? (
+    <a href={href} class="block h-full no-underline" tabindex="0">
+      <!-- Icon -->
+      <div class="w-12 h-12 mb-4 text-[#6c63ff]">
+        <Fragment set:html={icon} />
+      </div>
+      <!-- Title -->
+      <h3 class="text-xl font-bold text-[#f0f0f0] mb-2">{title}</h3>
+      <!-- Description -->
+      <p class="text-[#888] text-base leading-relaxed mt-2 mb-6">{description}</p>
+      <!-- CTA -->
+      <Button href={href} variant="secondary" size="sm">View Project →</Button>
+    </a>
+  ) : (
+    <div class="block h-full">
+      <!-- Icon -->
+      <div class="w-12 h-12 mb-4 text-[#555]">
+        <Fragment set:html={icon} />
+      </div>
+      <!-- Title -->
+      <h3 class="text-xl font-bold text-[#f0f0f0] mb-2">{title}</h3>
+      <!-- Description -->
+      <p class="text-[#888] text-base leading-relaxed mt-2 mb-6">{description}</p>
+    </div>
+  )}
+</div>
