@@ -7,6 +7,11 @@ const badges = [
   { label: 'Foundry' },
   { label: 'Base L2' },
   { label: 'OpenZeppelin' },
+  { label: 'TypeScript' },
+  { label: 'Viem' },
+  { label: 'EIP-6963' },
+  { label: 'WalletConnect v2' },
+  { label: 'Base Sepolia' },
 ];
 ---
 
@@ -25,10 +30,15 @@ const badges = [
     </div>
 
     <p class="lp-tech-body">
-      The contract is written in Solidity 0.8.28, tested exhaustively with Foundry, and deployed
-      on Base L2 for fast and cheap transactions backed by Ethereum's security. OpenZeppelin's
-      <code>ReentrancyGuard</code> and <code>SafeERC20</code> modules are baked in — auditors can
-      verify every dependency on-chain.
+      The smart contract is written in Solidity 0.8.28, tested with Foundry — including fuzz tests,
+      invariant tests, and gas benchmarks — and deployed on Base L2 for fast, cheap, Ethereum-secured
+      transactions. OpenZeppelin's <code>ReentrancyGuard</code> and <code>SafeERC20</code> modules
+      guard every interaction.
+    </p>
+    <p class="lp-tech-body" style="margin-top: 1rem;">
+      The frontend is built in TypeScript with Viem for on-chain reads and writes, and EIP-6963
+      multi-wallet discovery for seamless MetaMask and WalletConnect v2 support. Deployment scripts
+      target both Base Sepolia and Base mainnet.
     </p>
   </div>
 </section>
