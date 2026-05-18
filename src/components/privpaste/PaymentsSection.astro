@@ -1,0 +1,149 @@
+---
+// src/components/privpaste/PaymentsSection.astro
+
+const bullets = [
+  { emoji: '💳', text: 'Pay with USDC on Base L2 — gas fees under $0.01' },
+  { emoji: '🔒', text: 'No wallet → account linkage. Payments are pseudonymous.' },
+  { emoji: '⚡', text: 'Instant activation: funds confirmed → premium unlocked on-chain' },
+  { emoji: '🌐', text: 'No payment processor. No chargebacks. No KYC.' },
+];
+---
+
+<section class="payments-section">
+  <div class="payments-container">
+    <div class="payments-card">
+      <div class="payments-content">
+        <p class="payments-eyebrow">Privacy + Payments</p>
+        <h2 class="payments-heading">Optional. Pseudonymous. On-chain.</h2>
+        <p class="payments-body">
+          PrivPaste is free forever for basic use. Power users can unlock premium
+          features — longer retention, larger paste sizes, and custom expiry — through a
+          simple USDC microtransaction on Base L2. No credit card. No billing email.
+          Just a wallet and a transaction.
+        </p>
+        <ul class="payments-bullets">
+          {bullets.map((b) => (
+            <li class="payments-bullet">
+              <span class="bullet-emoji">{b.emoji}</span>
+              <span>{b.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .payments-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .payments-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108, 99, 255, 0.3), transparent);
+  }
+  .payments-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .payments-card {
+    border: 1px solid rgba(108, 99, 255, 0.25);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    background: radial-gradient(ellipse 70% 80% at 100% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 60%),
+      var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .payments-card {
+      padding: 5rem;
+    }
+  }
+  .payments-content {
+    max-width: 700px;
+  }
+  .payments-eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent-secondary);
+    margin: 0 0 0.75rem;
+  }
+  .payments-heading {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, #6c63ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1.25rem;
+    line-height: 1.2;
+  }
+  .payments-body {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin: 0 0 2rem;
+  }
+  .payments-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .payments-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .bullet-emoji {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.payments-card', {
+    opacity: 0,
+    scale: 0.98,
+    duration: 1.0,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.payments-section',
+      start: 'top 80%',
+      once: true,
+    },
+  });
+
+  gsap.from('.payments-eyebrow, .payments-heading, .payments-body, .payments-bullets', {
+    opacity: 0,
+    y: 24,
+    duration: 0.7,
+    stagger: 0.12,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.payments-section',
+      start: 'top 75%',
+      once: true,
+    },
+  });
+</script>

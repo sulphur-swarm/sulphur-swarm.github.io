@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import PrivacyFeatures from '../components/privpaste/PrivacyFeatures.astro';
+import ArchitectureSection from '../components/privpaste/ArchitectureSection.astro';
+import TechStack from '../components/privpaste/TechStack.astro';
+import PaymentsSection from '../components/privpaste/PaymentsSection.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="PrivPaste — Zero-Knowledge Encrypted Pastebin | Sulphur AI Swarm"
+  description="PrivPaste: E2E encrypted pastebin with no accounts, no tracking, and optional USDC payments on Base L2. Your data, your key, your privacy."
+>
+  <PageHero
+    title="PrivPaste"
+    subtitle="Zero accounts, zero knowledge, zero compromise."
+    badge="Privacy Tool"
+    breadcrumb="Projects → PrivPaste"
+  />
+  <PrivacyFeatures />
+  <ArchitectureSection />
+  <TechStack />
+  <PaymentsSection />
+  <CTABanner
+    title="Your pastes. Your key. Always."
+    subtitle="PrivPaste is built for people who take privacy seriously. Try it — no sign-up required."
+    primaryHref="https://privpaste.app"
+    primaryLabel="Open PrivPaste"
+    secondaryHref="/contact/"
+    secondaryLabel="Get in touch"
+  />
+</BaseLayout>
