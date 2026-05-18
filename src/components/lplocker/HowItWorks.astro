@@ -5,27 +5,39 @@ import SectionHeader from '../ui/SectionHeader.astro';
 const steps = [
   {
     number: '01',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
-    title: 'Choose Your LP Token',
-    description: 'Select the DEX LP token pair you want to lock. Any ERC-20 LP token on Base is supported.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+    title: 'Connect Your Wallet',
+    description: 'Open the app and connect with MetaMask or WalletConnect v2 via EIP-6963 wallet discovery. No extensions required beyond your preferred wallet.',
   },
   {
     number: '02',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4v4m0 4h.01"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>`,
-    title: 'Pay the Lock Fee',
-    description: 'Send 0.005 ETH along with your lock transaction. The fee keeps the contract sustainable and spam-free.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+    title: 'Browse Existing Locks',
+    description: 'Use the lock browser to search locks by token address or project. View full details — token pair, amount, unlock date, and owner — directly in the UI.',
   },
   {
     number: '03',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>`,
-    title: 'Tokens Are Locked On-Chain',
-    description: 'Your LP tokens are transferred to the contract and locked for a minimum of 30 days. The lock is recorded on-chain — publicly verifiable by anyone.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+    title: 'Start a New Lock',
+    description: 'Enter your LP token address. The app fetches token metadata on-chain and shows your balance. Confirm the amount and unlock duration (minimum 30 days).',
   },
   {
     number: '04',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
+    title: 'Approve & Pay the Fee',
+    description: 'Approve the contract to spend your LP tokens, then send the lock transaction with 0.005 ETH. Two wallet confirmations — approval then lock — and you\'re done.',
+  },
+  {
+    number: '05',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>`,
+    title: 'Lock Recorded On-Chain',
+    description: 'Your LP tokens are transferred to the immutable contract. The lock is recorded on-chain and immediately visible in the lock browser — publicly verifiable by anyone.',
+  },
+  {
+    number: '06',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1M17 11V7"/></svg>`,
-    title: 'Withdraw After Expiry',
-    description: 'Once the lock period ends, withdraw your LP tokens at any time. Optionally extend the lock before expiry for 0.0025 ETH.',
+    title: 'Withdraw or Extend',
+    description: 'After the unlock date, withdraw your LP tokens at any time. Or, extend the lock before it expires for 0.0025 ETH — directly from the lock detail view.',
   },
 ];
 ---
@@ -34,8 +46,8 @@ const steps = [
   <div class="lp-hiw-container">
     <SectionHeader
       eyebrow="How It Works"
-      title="Lock in four simple steps"
-      subtitle="From LP token to on-chain proof of liquidity lock — in minutes."
+      title="Lock in six simple steps"
+      subtitle="From wallet connect to on-chain proof of liquidity lock — in minutes."
     />
 
     <div class="lp-hiw-wrapper">
