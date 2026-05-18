@@ -1,0 +1,189 @@
+---
+// src/components/privpaste/ArchitectureSection.astro
+---
+
+<section class="arch-section">
+  <div class="arch-container">
+    <div class="arch-grid">
+      <!-- Left: SVG diagram -->
+      <div class="arch-diagram">
+        <svg
+          viewBox="0 0 420 320"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="Architecture diagram showing key never reaches the server"
+          class="arch-svg"
+        >
+          <!-- Browser box -->
+          <rect x="20" y="20" width="160" height="80" rx="10" fill="var(--color-surface)" stroke="rgba(108,99,255,0.4)" stroke-width="1.5"/>
+          <text x="100" y="50" text-anchor="middle" fill="white" font-family="monospace" font-size="13" font-weight="700">Browser</text>
+          <text x="100" y="70" text-anchor="middle" fill="#888" font-family="monospace" font-size="10">[plaintext paste]</text>
+          <text x="100" y="85" text-anchor="middle" fill="#00d4ff" font-family="monospace" font-size="10">↓ Web Crypto API</text>
+
+          <!-- Browser box 2 — ciphertext -->
+          <rect x="20" y="130" width="160" height="50" rx="10" fill="var(--color-surface)" stroke="rgba(108,99,255,0.4)" stroke-width="1.5"/>
+          <text x="100" y="152" text-anchor="middle" fill="#00d4ff" font-family="monospace" font-size="11" font-weight="700">[ciphertext]</text>
+          <text x="100" y="168" text-anchor="middle" fill="#888" font-family="monospace" font-size="9">key never included</text>
+
+          <!-- Server box -->
+          <rect x="240" y="130" width="160" height="50" rx="10" fill="var(--color-surface)" stroke="rgba(108,99,255,0.4)" stroke-width="1.5"/>
+          <text x="320" y="152" text-anchor="middle" fill="white" font-family="monospace" font-size="13" font-weight="700">Server</text>
+          <text x="320" y="168" text-anchor="middle" fill="#888" font-family="monospace" font-size="10">stores ciphertext</text>
+
+          <!-- Arrow: ciphertext to server (POST) -->
+          <line x1="180" y1="155" x2="238" y2="155" stroke="#6c63ff" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <text x="209" y="148" text-anchor="middle" fill="#6c63ff" font-family="monospace" font-size="9">POST</text>
+
+          <!-- URL fragment row -->
+          <rect x="20" y="220" width="280" height="60" rx="10" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.25)" stroke-width="1.5"/>
+          <text x="30" y="244" fill="#888" font-family="monospace" font-size="9">URL:</text>
+          <text x="60" y="244" fill="white" font-family="monospace" font-size="9">/p/{`{id}`}</text>
+          <text x="110" y="244" fill="#00d4ff" font-family="monospace" font-size="9">#key=abc123</text>
+          <text x="30" y="263" fill="#888" font-family="monospace" font-size="8">↑ fragment — never sent to server</text>
+
+          <!-- Red crossed arrow from URL fragment toward server -->
+          <line x1="302" y1="250" x2="370" y2="250" stroke="#ff4444" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <line x1="355" y1="238" x2="375" y2="262" stroke="#ff4444" stroke-width="2"/>
+          <line x1="355" y1="262" x2="375" y2="238" stroke="#ff4444" stroke-width="2"/>
+
+          <!-- Defs -->
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#6c63ff"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Right: prose -->
+      <div class="arch-prose">
+        <p class="arch-eyebrow">Privacy Model</p>
+        <h2 class="arch-heading">How your key stays private</h2>
+        <div class="arch-body">
+          <p>
+            When you create a paste, PrivPaste generates a random 256-bit AES key entirely
+            in your browser. The paste content is encrypted with that key before any
+            network request is made.
+          </p>
+          <p>
+            The encrypted ciphertext is sent to the server. The key is never included.
+          </p>
+          <p>
+            The key is appended to the share URL as a fragment identifier (<code>#key=…</code>).
+            Browsers intentionally omit URL fragments from HTTP requests — it is a
+            browser standard, not a PrivPaste promise. Even if the server were compromised,
+            an attacker would only obtain ciphertext.
+          </p>
+          <p>
+            When a recipient opens the link, their browser extracts the key from the
+            fragment, fetches the ciphertext, and decrypts it locally — entirely in
+            their browser.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arch-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .arch-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108, 99, 255, 0.3), transparent);
+  }
+  .arch-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .arch-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4rem;
+    }
+  }
+  .arch-svg {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+  }
+  .arch-eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin-bottom: 0.75rem;
+  }
+  .arch-heading {
+    color: white;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0 0 1.5rem;
+  }
+  .arch-body {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+  .arch-body p {
+    margin: 0 0 1rem;
+  }
+  .arch-body p:last-child {
+    margin-bottom: 0;
+  }
+  .arch-body code {
+    font-family: 'Geist Mono', monospace;
+    color: var(--color-accent-secondary);
+    background: rgba(0, 212, 255, 0.08);
+    border-radius: 4px;
+    padding: 0.1em 0.3em;
+    font-size: 0.85em;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.arch-diagram', {
+    opacity: 0,
+    x: -40,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.arch-section',
+      start: 'top 75%',
+      once: true,
+    },
+  });
+
+  gsap.from('.arch-prose', {
+    opacity: 0,
+    x: 40,
+    duration: 0.8,
+    ease: 'power2.out',
+    delay: 0.1,
+    scrollTrigger: {
+      trigger: '.arch-section',
+      start: 'top 75%',
+      once: true,
+    },
+  });
+</script>

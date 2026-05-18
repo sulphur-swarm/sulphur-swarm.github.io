@@ -1,0 +1,135 @@
+---
+// src/components/privpaste/TechStack.astro
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const techs = [
+  {
+    name: 'Svelte 5',
+    accent: '#ff3e00',
+    description: 'Frontend UI built with Svelte 5 runes for reactivity. Compiles to vanilla JS — minimal runtime, maximum speed.',
+  },
+  {
+    name: 'Go',
+    accent: '#00add8',
+    description: 'Backend API in Go. Minimal dependencies, high throughput, and a tiny binary. Handles paste storage and retrieval with sub-millisecond latency.',
+  },
+  {
+    name: 'SQLite',
+    accent: '#0f80cc',
+    description: 'Single-file database. Simple, portable, and fast enough for millions of pastes. Encrypted at rest with SQLCipher.',
+  },
+  {
+    name: 'Caddy',
+    accent: '#00adef',
+    description: 'Reverse proxy with automatic HTTPS via Let\'s Encrypt. Zero-config TLS — encrypted in transit, always.',
+  },
+];
+---
+
+<section class="stack-section">
+  <div class="stack-container">
+    <SectionHeader
+      eyebrow="Technology"
+      title="Built for speed and privacy"
+      subtitle="A minimal, opinionated stack chosen for performance, simplicity, and security."
+    />
+    <div class="stack-grid">
+      {techs.map((t) => (
+        <div class="stack-card">
+          <div class="stack-dot" style={`background: ${t.accent};`}></div>
+          <h3 class="stack-name">{t.name}</h3>
+          <p class="stack-desc">{t.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stack-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+    position: relative;
+  }
+  .stack-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+  }
+  .stack-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  @media (min-width: 640px) {
+    .stack-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .stack-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .stack-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+  }
+  .stack-card:hover {
+    border-color: rgba(108, 99, 255, 0.3);
+    box-shadow: 0 6px 24px rgba(108, 99, 255, 0.08);
+    transform: translateY(-2px) !important;
+  }
+  .stack-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  .stack-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .stack-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to('.stack-card', {
+    opacity: 1,
+    y: 0,
+    duration: 0.55,
+    stagger: 0.1,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.stack-grid',
+      start: 'top 80%',
+      once: true,
+    },
+  });
+</script>
