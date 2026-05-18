@@ -1,0 +1,36 @@
+---
+// src/pages/lplocker.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import WhatItDoes from '../components/lplocker/WhatItDoes.astro';
+import KeyFeatures from '../components/lplocker/KeyFeatures.astro';
+import TechStack from '../components/lplocker/TechStack.astro';
+import HowItWorks from '../components/lplocker/HowItWorks.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="LP Locker — Immutable LP Token Lock on Base | Sulphur"
+  description="Lock DEX LP tokens for a minimum of 30 days with an immutable, auditable smart contract on Base L2. Anti-rug protection for token projects."
+>
+  <PageHero
+    title="LP Locker"
+    subtitle="Immutable LP token locking on Base L2. Verifiable on-chain anti-rug protection for token projects."
+    badge="Smart Contract"
+    breadcrumb="Projects → LP Locker"
+  />
+
+  <WhatItDoes />
+  <KeyFeatures />
+  <TechStack />
+  <HowItWorks />
+
+  <CTABanner
+    title="Trustless by design."
+    subtitle="LP Locker is deployed, immutable, and open to the public. View the contract on BaseScan or explore the source on GitHub."
+    primaryHref="https://basescan.org"
+    primaryLabel="View on BaseScan"
+    secondaryHref="https://github.com"
+    secondaryLabel="GitHub Repository"
+  />
+</BaseLayout>
