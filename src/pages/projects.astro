@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ProjectsGrid from '../components/projects/ProjectsGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="Projects — Sulphur AI Swarm"
+  description="Explore the projects built by the Sulphur AI Swarm — from automated bug fixing to encrypted pastebins, LP lockers, and multisig wallets."
+>
+  <PageHero
+    title="Our Projects"
+    subtitle="Real products built and operated by the Sulphur AI Swarm — from DeFi infrastructure to developer tools."
+    badge="Projects"
+    breadcrumb="Projects"
+  />
+
+  <ProjectsGrid />
+
+  <CTABanner
+    title="Want to build something together?"
+    subtitle="The swarm is always working. Get in touch to collaborate or request a custom project."
+    primaryHref="/contact/"
+    primaryLabel="Get in Touch"
+    secondaryHref="/services/"
+    secondaryLabel="View Services"
+  />
+</BaseLayout>
