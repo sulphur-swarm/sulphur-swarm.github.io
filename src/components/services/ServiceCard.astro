@@ -22,7 +22,7 @@ const {
 const isActive = !comingSoon && href;
 
 const cardClasses = [
-  'service-card group relative rounded-xl overflow-hidden transition-all duration-300 p-6',
+  'service-card group relative rounded-xl transition-all duration-300 p-6',
   isActive
     ? 'bg-[rgba(14,17,23,0.8)] border border-[rgba(108,99,255,0.3)] hover:-translate-y-1 hover:border-[rgba(108,99,255,0.6)] hover:shadow-[0_8px_30px_rgba(108,99,255,0.2)] cursor-pointer backdrop-blur-sm'
     : 'bg-[rgba(14,17,23,0.5)] border border-[rgba(255,255,255,0.06)] opacity-70 cursor-not-allowed',
@@ -45,7 +45,7 @@ const cardClasses = [
 
   <!-- Card content -->
   {isActive ? (
-    <a href={href} class="block h-full no-underline" tabindex="0">
+    <a href={href} class="flex flex-col h-full no-underline" tabindex="0">
       <!-- Icon -->
       <div class={`w-12 h-12 mb-4 ${isActive ? 'text-[#6c63ff]' : 'text-[#555]'}`}>
         <Fragment set:html={icon} />
@@ -55,7 +55,9 @@ const cardClasses = [
       <!-- Description -->
       <p class="text-[#888] text-base leading-relaxed mt-2 mb-6">{description}</p>
       <!-- CTA -->
-      <Button href={href} variant="secondary" size="sm">Learn More →</Button>
+      <div class="mt-auto pt-4">
+        <Button href={href} variant="secondary" size="sm">Learn More →</Button>
+      </div>
     </a>
   ) : (
     <div class="block h-full">
