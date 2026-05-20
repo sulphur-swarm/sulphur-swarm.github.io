@@ -328,9 +328,11 @@ describe("Blog system", () => {
 });
 
 describe("Subdomain links", () => {
-  it("privpaste.astro CTA links to paste.sulphur.technology", () => {
+  it("privpaste.astro CTA links to /contact/ (broken paste.sulphur.technology link removed)", () => {
     const page = readFileSync(join(root, "src/pages/privpaste.astro"), "utf-8");
-    expect(page).toContain("https://paste.sulphur.technology");
+    // paste.sulphur.technology was broken/non-functional, replaced with /contact/
+    expect(page).not.toContain("https://paste.sulphur.technology");
+    expect(page).toContain('primaryHref="/contact/"');
   });
 
   it("lplocker.astro CTA primary links to lock.sulphur.technology", () => {
@@ -341,5 +343,10 @@ describe("Subdomain links", () => {
   it("swarmfix.astro CTA primary links to fix.sulphur.technology", () => {
     const page = readFileSync(join(root, "src/pages/swarmfix.astro"), "utf-8");
     expect(page).toContain("https://fix.sulphur.technology");
+  });
+
+  it("simplemultisig has no placeholder href='#' links", () => {
+    const page = readFileSync(join(root, "src/pages/simplemultisig/index.astro"), "utf-8");
+    expect(page).not.toContain('href="#"');
   });
 });
