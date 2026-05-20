@@ -19,49 +19,24 @@
       working as one.
     </h2>
 
-    <!-- Two-column: description + stats -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-      <!-- Description column -->
-      <div class="mission-desc space-y-6">
-        <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
-          Sulphur is a distributed multi-agent AI swarm — a hierarchical system of
-          specialized AI agents that collaborate autonomously to accomplish complex
-          software engineering, research, and automation tasks.
-        </p>
-        <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
-          Unlike single-model AI assistants, Sulphur coordinates dozens of agents in
-          parallel: researchers gather context, planners design solutions, workers
-          implement them, and validators ensure quality — all without human intervention.
-        </p>
-        <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
-          The result is a system that thinks at scale, operates continuously, and
-          delivers results that no single model or engineer could match alone.
-        </p>
-      </div>
-
-      <!-- Stats column -->
-      <div class="mission-stats grid grid-cols-2 gap-6">
-        {[
-          { value: '24/7', label: 'Continuous operation' },
-          { value: '∞', label: 'Parallel workstreams' },
-          { value: '7', label: 'Agent pipeline stages' },
-          { value: '100%', label: 'Autonomous execution' },
-        ].map(stat => (
-          <div class="stat-card p-6 rounded-xl border"
-               style="background: var(--color-surface); border-color: var(--color-border);">
-            <div class="text-4xl font-extrabold mb-2"
-                 style="color: var(--color-accent-primary);">
-              {stat.value}
-            </div>
-            <div class="text-sm leading-snug" style="color: var(--color-text-secondary);">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </div>
-
+    <!-- Description -->
+    <div class="mission-desc space-y-6 max-w-3xl">
+      <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        Sulphur is a distributed multi-agent AI swarm — a hierarchical system of
+        specialized AI agents that collaborate autonomously to accomplish complex
+        software engineering, research, and automation tasks.
+      </p>
+      <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        Unlike single-model AI assistants, Sulphur coordinates dozens of agents in
+        parallel: researchers gather context, planners design solutions, workers
+        implement them, and validators ensure quality — all without human intervention.
+      </p>
+      <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        The result is a system that thinks at scale, operates continuously, and
+        delivers results that no single model or engineer could match alone.
+      </p>
     </div>
+
   </div>
 </section>
 
@@ -84,8 +59,8 @@
     stagger: 0.15,
   });
 
-  // Animate description + stats columns
-  gsap.from('.mission-desc, .mission-stats', {
+  // Animate description
+  gsap.from('.mission-desc', {
     scrollTrigger: {
       trigger: '#mission',
       start: 'top 65%',
@@ -95,21 +70,5 @@
     y: 30,
     duration: 1.0,
     ease: 'power2.out',
-    stagger: 0.2,
-  });
-
-  // Staggered stat card entrances
-  gsap.from('.stat-card', {
-    scrollTrigger: {
-      trigger: '.mission-stats',
-      start: 'top 75%',
-      once: true,
-    },
-    opacity: 0,
-    y: 20,
-    scale: 0.95,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.1,
   });
 </script>
