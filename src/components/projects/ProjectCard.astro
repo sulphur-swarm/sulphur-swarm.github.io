@@ -1,6 +1,4 @@
 ---
-import Button from '../ui/Button.astro';
-
 interface Props {
   title: string;
   description: string;
@@ -14,7 +12,7 @@ const { title, description, icon, href, status } = Astro.props;
 const isLinked = !!href;
 
 const cardClasses = [
-  'project-card group relative rounded-xl transition-all duration-300 p-6',
+  'project-card group relative rounded-xl transition-all duration-300 p-6 flex flex-col',
   isLinked
     ? 'bg-[rgba(14,17,23,0.8)] border border-[rgba(108,99,255,0.3)] hover:-translate-y-1 hover:border-[rgba(108,99,255,0.6)] hover:shadow-[0_8px_30px_rgba(108,99,255,0.2)] cursor-pointer backdrop-blur-sm'
     : 'bg-[rgba(14,17,23,0.5)] border border-[rgba(255,255,255,0.06)] opacity-70',
@@ -40,7 +38,7 @@ const badgeClasses = {
 
   <!-- Card content -->
   {isLinked ? (
-    <a href={href} class="flex flex-col h-full no-underline" tabindex="0">
+    <a href={href} class="flex flex-col flex-1 h-full no-underline" tabindex="0">
       <!-- Icon -->
       <div class="w-12 h-12 mb-4 text-[#6c63ff]">
         <Fragment set:html={icon} />
@@ -51,7 +49,7 @@ const badgeClasses = {
       <p class="text-[#888] text-base leading-relaxed mt-2 mb-6">{description}</p>
       <!-- CTA -->
       <div class="mt-auto pt-4">
-        <Button href={href} variant="secondary" size="sm">View Project →</Button>
+        <span class="inline-flex items-center justify-center px-4 py-2 text-sm border border-[#6c63ff] text-[#6c63ff] rounded-lg transition-all duration-200 group-hover:bg-[#6c63ff] group-hover:text-white">View Project →</span>
       </div>
     </a>
   ) : (
