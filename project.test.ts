@@ -32,8 +32,14 @@ describe("Project structure", () => {
   it("astro.config.mjs uses static output and correct site URL", () => {
     const config = readFileSync(join(root, "astro.config.mjs"), "utf-8");
     expect(config).toContain("output: 'static'");
-    expect(config).toContain("https://sulphur-swarm.github.io");
+    expect(config).toContain("https://sulphur.technology");
     expect(config).toContain("tailwindcss");
+  });
+
+  it("has CNAME file for custom domain", () => {
+    expect(existsSync(join(root, "public/CNAME"))).toBe(true);
+    const cname = readFileSync(join(root, "public/CNAME"), "utf-8");
+    expect(cname.trim()).toBe("sulphur.technology");
   });
 
   it("global.css imports tailwindcss and geist fonts", () => {
@@ -318,5 +324,22 @@ describe("Blog system", () => {
     expect(css).toContain("@tailwindcss/typography");
     expect(css).toContain("--tw-prose-body");
     expect(css).toContain("reading-progress");
+  });
+});
+
+describe("Subdomain links", () => {
+  it("privpaste.astro CTA links to paste.sulphur.technology", () => {
+    const page = readFileSync(join(root, "src/pages/privpaste.astro"), "utf-8");
+    expect(page).toContain("https://paste.sulphur.technology");
+  });
+
+  it("lplocker.astro CTA primary links to lock.sulphur.technology", () => {
+    const page = readFileSync(join(root, "src/pages/lplocker.astro"), "utf-8");
+    expect(page).toContain("https://lock.sulphur.technology");
+  });
+
+  it("swarmfix.astro CTA primary links to fix.sulphur.technology", () => {
+    const page = readFileSync(join(root, "src/pages/swarmfix.astro"), "utf-8");
+    expect(page).toContain("https://fix.sulphur.technology");
   });
 });

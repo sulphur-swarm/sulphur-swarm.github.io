@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://sulphur-swarm.github.io',
+  site: 'https://sulphur.technology',
   integrations: [
     mdx(),
   ],
