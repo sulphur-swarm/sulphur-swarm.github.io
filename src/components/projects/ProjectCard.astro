@@ -5,9 +5,10 @@ interface Props {
   icon: string;
   href?: string;
   status: 'Active' | 'Beta' | 'Research';
+  external?: boolean;
 }
 
-const { title, description, icon, href, status } = Astro.props;
+const { title, description, icon, href, status, external = false } = Astro.props;
 
 const isLinked = !!href;
 
@@ -38,7 +39,8 @@ const badgeClasses = {
 
   <!-- Card content -->
   {isLinked ? (
-    <a href={href} class="flex flex-col flex-1 h-full no-underline" tabindex="0">
+    <a href={href} class="flex flex-col flex-1 h-full no-underline" tabindex="0"
+       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
       <!-- Icon -->
       <div class="w-12 h-12 mb-4 text-[#6c63ff]">
         <Fragment set:html={icon} />

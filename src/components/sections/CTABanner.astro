@@ -18,6 +18,9 @@ const {
   secondaryHref,
   secondaryLabel,
 } = Astro.props;
+
+const primaryIsExternal = primaryHref?.startsWith('http');
+const secondaryIsExternal = secondaryHref?.startsWith('http');
 ---
 
 <section class="cta-banner relative overflow-hidden py-20 md:py-24">
@@ -36,9 +39,15 @@ const {
     <h2 class="text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-4">{title}</h2>
     <p class="text-[#888] text-lg leading-relaxed mb-8">{subtitle}</p>
     <div class="flex flex-wrap items-center justify-center gap-4">
-      <Button href={primaryHref} variant="primary" size="lg">{primaryLabel}</Button>
+      <Button href={primaryHref} variant="primary" size="lg"
+        {...(primaryIsExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {primaryLabel}
+      </Button>
       {secondaryHref && secondaryLabel && (
-        <Button href={secondaryHref} variant="secondary" size="lg">{secondaryLabel}</Button>
+        <Button href={secondaryHref} variant="secondary" size="lg"
+          {...(secondaryIsExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+          {secondaryLabel}
+        </Button>
       )}
     </div>
   </div>
