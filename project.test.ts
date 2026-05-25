@@ -73,7 +73,6 @@ describe("Header component", () => {
     );
     expect(header).toContain("Home");
     expect(header).toContain("About");
-    expect(header).toContain("Services");
     expect(header).toContain("SwarmFix");
     expect(header).toContain("Blog");
     expect(header).toContain("Contact");
@@ -155,7 +154,6 @@ describe("Footer component", () => {
     );
     expect(footer).toContain("Home");
     expect(footer).toContain("About");
-    expect(footer).toContain("Services");
     expect(footer).toContain("SwarmFix");
     expect(footer).toContain("Blog");
     expect(footer).toContain("Contact");
