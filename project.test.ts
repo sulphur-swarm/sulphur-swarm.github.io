@@ -74,7 +74,6 @@ describe("Header component", () => {
     expect(header).toContain("Home");
     expect(header).toContain("About");
     expect(header).toContain("Services");
-    expect(header).toContain("SwarmFix");
     expect(header).toContain("Blog");
     expect(header).toContain("Contact");
   });
@@ -156,7 +155,6 @@ describe("Footer component", () => {
     expect(footer).toContain("Home");
     expect(footer).toContain("About");
     expect(footer).toContain("Services");
-    expect(footer).toContain("SwarmFix");
     expect(footer).toContain("Blog");
     expect(footer).toContain("Contact");
   });
@@ -336,11 +334,6 @@ describe("Subdomain links", () => {
   it("lplocker.astro CTA primary links to lock.sulphur.technology", () => {
     const page = readFileSync(join(root, "src/pages/lplocker.astro"), "utf-8");
     expect(page).toContain("https://lock.sulphur.technology");
-  });
-
-  it("swarmfix.astro CTA primary links to fix.sulphur.technology", () => {
-    const page = readFileSync(join(root, "src/pages/swarmfix.astro"), "utf-8");
-    expect(page).toContain("https://fix.sulphur.technology");
   });
 
   it("simplemultisig has no placeholder href='#' links", () => {
