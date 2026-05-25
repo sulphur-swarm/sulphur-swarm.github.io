@@ -328,11 +328,9 @@ describe("Blog system", () => {
 });
 
 describe("Subdomain links", () => {
-  it("privpaste.astro CTA links to /contact/ (broken paste.sulphur.technology link removed)", () => {
+  it("privpaste.astro CTA links to paste.sulphur.technology", () => {
     const page = readFileSync(join(root, "src/pages/privpaste.astro"), "utf-8");
-    // paste.sulphur.technology was broken/non-functional, replaced with /contact/
-    expect(page).not.toContain("https://paste.sulphur.technology");
-    expect(page).toContain('primaryHref="/contact/"');
+    expect(page).toContain("https://paste.sulphur.technology");
   });
 
   it("lplocker.astro CTA primary links to lock.sulphur.technology", () => {
@@ -348,5 +346,29 @@ describe("Subdomain links", () => {
   it("simplemultisig has no placeholder href='#' links", () => {
     const page = readFileSync(join(root, "src/pages/simplemultisig/index.astro"), "utf-8");
     expect(page).not.toContain('href="#"');
+  });
+
+  it("simplemultisig has no placeholder GitHub links", () => {
+    const page = readFileSync(join(root, "src/pages/simplemultisig/index.astro"), "utf-8");
+    expect(page).not.toContain("github.com/sulphur-swarm");
+  });
+
+  it("simplemultisig hero CTA links to multisig.sulphur.technology", () => {
+    const page = readFileSync(join(root, "src/pages/simplemultisig/index.astro"), "utf-8");
+    expect(page).toContain("https://multisig.sulphur.technology");
+  });
+
+  it("homepage project cards use external URLs for PrivPaste, SimpleMultisig, LP Locker", () => {
+    const page = readFileSync(join(root, "src/components/sections/Projects.astro"), "utf-8");
+    expect(page).toContain("https://paste.sulphur.technology");
+    expect(page).toContain("https://multisig.sulphur.technology");
+    expect(page).toContain("https://lock.sulphur.technology");
+  });
+
+  it("projects grid uses external URLs for PrivPaste, SimpleMultisig, LP Locker", () => {
+    const page = readFileSync(join(root, "src/components/projects/ProjectsGrid.astro"), "utf-8");
+    expect(page).toContain("https://paste.sulphur.technology");
+    expect(page).toContain("https://multisig.sulphur.technology");
+    expect(page).toContain("https://lock.sulphur.technology");
   });
 });

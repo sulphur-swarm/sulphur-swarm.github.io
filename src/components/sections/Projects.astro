@@ -38,7 +38,7 @@ const projects = [
       'End-to-end encrypted paste service. Your data never touches our servers unencrypted.',
     status: 'Live',
     statusColor: 'var(--color-accent-secondary)',
-    link: '/privpaste/',
+    link: 'https://paste.sulphur.technology',
     linkLabel: 'Learn more →',
     featured: false,
   },
@@ -48,7 +48,7 @@ const projects = [
       'Simple and secure multisig wallet tool for managing shared cryptocurrency funds.',
     status: 'Live',
     statusColor: 'var(--color-accent-secondary)',
-    link: '/simplemultisig/',
+    link: 'https://multisig.sulphur.technology',
     linkLabel: 'Learn more →',
     featured: false,
   },
@@ -58,7 +58,7 @@ const projects = [
       'Secure liquidity pool token locker for DeFi projects and token launches.',
     status: 'Live',
     statusColor: 'var(--color-accent-secondary)',
-    link: '/lplocker/',
+    link: 'https://lock.sulphur.technology',
     linkLabel: 'Learn more →',
     featured: false,
   },
@@ -113,7 +113,8 @@ const projects = [
             <div class="mt-8">
               <a href={project.link}
                  class="text-sm font-semibold transition-colors duration-200"
-                 style="color: var(--color-accent-primary);">
+                 style="color: var(--color-accent-primary);"
+                 {...(project.link?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                 {project.linkLabel}
               </a>
             </div>
