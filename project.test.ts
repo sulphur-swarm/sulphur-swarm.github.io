@@ -74,7 +74,6 @@ describe("Header component", () => {
     expect(header).toContain("Home");
     expect(header).toContain("About");
     expect(header).toContain("Services");
-    expect(header).toContain("SwarmFix");
     expect(header).toContain("Blog");
     expect(header).toContain("Contact");
   });
@@ -133,6 +132,15 @@ describe("Header component", () => {
     expect(layout).toContain("import Header from '../components/Header.astro'");
     expect(layout).toContain("<Header");
   });
+
+  it("does not contain SwarmFix references", () => {
+    const header = readFileSync(
+      join(root, "src/components/Header.astro"),
+      "utf-8"
+    );
+    expect(header).not.toContain("SwarmFix");
+    expect(header).not.toContain("swarmfix");
+  });
 });
 
 describe("Footer component", () => {
@@ -156,9 +164,17 @@ describe("Footer component", () => {
     expect(footer).toContain("Home");
     expect(footer).toContain("About");
     expect(footer).toContain("Services");
-    expect(footer).toContain("SwarmFix");
     expect(footer).toContain("Blog");
     expect(footer).toContain("Contact");
+  });
+
+  it("does not contain SwarmFix references", () => {
+    const footer = readFileSync(
+      join(root, "src/components/Footer.astro"),
+      "utf-8"
+    );
+    expect(footer).not.toContain("SwarmFix");
+    expect(footer).not.toContain("swarmfix");
   });
 
   it("contains copyright notice", () => {
@@ -327,6 +343,34 @@ describe("Blog system", () => {
   });
 });
 
+describe("SwarmFix removal", () => {
+  it("swarmfix.astro page has been deleted", () => {
+    expect(existsSync(join(root, "src/pages/swarmfix.astro"))).toBe(false);
+  });
+
+  it("swarmfix components directory has been deleted", () => {
+    expect(existsSync(join(root, "src/components/swarmfix"))).toBe(false);
+  });
+
+  it("swarmfixPricing.ts data file has been deleted", () => {
+    expect(existsSync(join(root, "src/data/swarmfixPricing.ts"))).toBe(false);
+  });
+
+  it("no SwarmFix references remain in src/", () => {
+    const { execSync } = require("child_process");
+    try {
+      const result = execSync(
+        'grep -ri "swarmfix\\|SwarmFix" src/',
+        { cwd: root, encoding: "utf-8" }
+      );
+      // If grep returns results, fail
+      expect(result).toBe("");
+    } catch {
+      // grep returns exit code 1 when no matches found — that's what we want
+    }
+  });
+});
+
 describe("Subdomain links", () => {
   it("privpaste.astro CTA links to /contact/ (broken paste.sulphur.technology link removed)", () => {
     const page = readFileSync(join(root, "src/pages/privpaste.astro"), "utf-8");
@@ -338,11 +382,6 @@ describe("Subdomain links", () => {
   it("lplocker.astro CTA primary links to lock.sulphur.technology", () => {
     const page = readFileSync(join(root, "src/pages/lplocker.astro"), "utf-8");
     expect(page).toContain("https://lock.sulphur.technology");
-  });
-
-  it("swarmfix.astro CTA primary links to fix.sulphur.technology", () => {
-    const page = readFileSync(join(root, "src/pages/swarmfix.astro"), "utf-8");
-    expect(page).toContain("https://fix.sulphur.technology");
   });
 
   it("simplemultisig has no placeholder href='#' links", () => {

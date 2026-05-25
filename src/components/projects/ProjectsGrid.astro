@@ -1,11 +1,6 @@
 ---
 import ProjectCard from './ProjectCard.astro';
 
-const swarmfixIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 19c-2.3 0-6.57-2.42-6.57-7.5 0-3.87 2.94-7 6.57-7s6.57 3.13 6.57 7C18.57 16.58 14.3 19 12 19z"/>
-  <path d="M12 4.5V3M5.5 7l-1.5-1.5M18.5 7l1.5-1.5M3 12H2M22 12h-1M5.5 17l-1.5 1.5M18.5 17l1.5 1.5"/>
-</svg>`;
-
 const lpLockerIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
   <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -32,13 +27,6 @@ const brainIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" s
 </svg>`;
 
 const projects = [
-  {
-    title: 'SwarmFix',
-    description: 'Automated bug fixing for open source projects. Deploy a coordinated agent swarm to analyze, plan, and fix code issues — autonomously, at scale.',
-    status: 'Active' as const,
-    href: '/swarmfix/',
-    icon: swarmfixIcon,
-  },
   {
     title: 'LP Locker',
     description: 'Lock liquidity pool tokens with confidence. Time-lock your LP positions on-chain — no trust required, no early withdrawals, full transparency.',
