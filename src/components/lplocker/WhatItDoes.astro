@@ -134,16 +134,12 @@
     border: 1px solid rgba(255, 60, 60, 0.08);
     border-radius: 1rem;
     padding: 2rem;
-    opacity: 0;
-    transform: translateX(-30px);
   }
   .lp-solution-col {
     background: rgba(108, 99, 255, 0.05);
     border: 1px solid rgba(108, 99, 255, 0.15);
     border-radius: 1rem;
     padding: 2rem;
-    opacity: 0;
-    transform: translateX(30px);
   }
 </style>
 
@@ -152,16 +148,16 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.to('.lp-risk-col', {
-    opacity: 1,
-    x: 0,
+  gsap.from('.lp-risk-col', {
+    opacity: 0,
+    x: -30,
     duration: 0.7,
     ease: 'power2.out',
     scrollTrigger: { trigger: '.lp-what-section', start: 'top 80%', once: true },
   });
-  gsap.to('.lp-solution-col', {
-    opacity: 1,
-    x: 0,
+  gsap.from('.lp-solution-col', {
+    opacity: 0,
+    x: 30,
     duration: 0.7,
     ease: 'power2.out',
     delay: 0.15,
