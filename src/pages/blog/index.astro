@@ -3,6 +3,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const AUTHOR_NAME = "Engineering Team";
+
 // Fetch all non-draft posts, sorted newest first
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
@@ -50,7 +52,7 @@ function formatDate(date: Date): string {
               <h2 class="featured-title">{featuredPost.data.title}</h2>
               <p class="featured-description">{featuredPost.data.description}</p>
               <div class="featured-meta">
-                <span class="meta-author">{featuredPost.data.author}</span>
+                <span class="meta-author">{AUTHOR_NAME}</span>
                 <span class="meta-dot">·</span>
                 <time class="meta-date">{formatDate(featuredPost.data.publishDate)}</time>
               </div>
@@ -75,7 +77,7 @@ function formatDate(date: Date): string {
                 <h3 class="card-title">{post.data.title}</h3>
                 <p class="card-description">{post.data.description}</p>
                 <div class="card-meta">
-                  <span class="meta-author">{post.data.author}</span>
+                  <span class="meta-author">{AUTHOR_NAME}</span>
                   <time class="meta-date">{formatDate(post.data.publishDate)}</time>
                 </div>
               </a>
