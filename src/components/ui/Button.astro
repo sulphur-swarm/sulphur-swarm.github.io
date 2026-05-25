@@ -4,6 +4,8 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   class?: string;
+  target?: string;
+  rel?: string;
 }
 
 const {
@@ -11,6 +13,8 @@ const {
   variant = 'primary',
   size = 'md',
   class: className = '',
+  target,
+  rel,
 } = Astro.props;
 
 const variantClasses = {
@@ -37,6 +41,6 @@ const classes = [
   .join(' ');
 ---
 
-<a href={href} class={classes}>
+<a href={href} class={classes} {...(target ? { target } : {})} {...(rel ? { rel } : {})}>
   <slot />
 </a>

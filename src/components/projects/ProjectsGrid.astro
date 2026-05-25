@@ -38,27 +38,31 @@ const projects = [
     status: 'Active' as const,
     href: '/swarmfix/',
     icon: swarmfixIcon,
+    external: false,
   },
   {
     title: 'LP Locker',
     description: 'Lock liquidity pool tokens with confidence. Time-lock your LP positions on-chain — no trust required, no early withdrawals, full transparency.',
     status: 'Active' as const,
-    href: '/lplocker/',
+    href: 'https://lock.sulphur.technology',
     icon: lpLockerIcon,
+    external: true,
   },
   {
     title: 'PrivPaste',
     description: 'End-to-end encrypted paste sharing. Share sensitive text, code, or notes privately — zero knowledge, zero logs, zero compromise.',
     status: 'Active' as const,
-    href: '/privpaste/',
+    href: 'https://paste.sulphur.technology',
     icon: privPasteIcon,
+    external: true,
   },
   {
     title: 'SimpleMultisig',
     description: 'Straightforward multi-signature wallets. Create and manage multisig transactions without complexity — secure collective control made simple.',
     status: 'Active' as const,
-    href: '/simplemultisig/',
+    href: 'https://multisig.sulphur.technology',
     icon: simpleMultisigIcon,
+    external: true,
   },
   {
     title: 'Next-Gen Intelligence',
@@ -66,6 +70,7 @@ const projects = [
     status: 'Research' as const,
     href: undefined,
     icon: brainIcon,
+    external: false,
   },
 ];
 ---
@@ -80,6 +85,7 @@ const projects = [
           icon={project.icon}
           href={project.href}
           status={project.status}
+          external={project.external}
         />
       ))}
     </div>
