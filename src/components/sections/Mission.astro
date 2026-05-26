@@ -40,35 +40,39 @@
   </div>
 </section>
 
+<style>
+  .mission-eyebrow,
+  .mission-headline,
+  .mission-desc {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .mission-eyebrow.is-visible,
+  .mission-headline.is-visible,
+  .mission-desc.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Animate eyebrow + headline together
-  gsap.from('.mission-eyebrow, .mission-headline', {
-    scrollTrigger: {
-      trigger: '#mission',
-      start: 'top 80%',
-      once: true,
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
     },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-    stagger: 0.15,
-  });
+    { threshold: 0.15 }
+  );
 
-  // Animate description
-  gsap.from('.mission-desc', {
-    scrollTrigger: {
-      trigger: '#mission',
-      start: 'top 65%',
-      once: true,
-    },
-    opacity: 0,
-    y: 30,
-    duration: 1.0,
-    ease: 'power2.out',
+  // Observe with staggered transition delays
+  const elements = document.querySelectorAll('.mission-eyebrow, .mission-headline, .mission-desc');
+  elements.forEach((el, i) => {
+    (el as HTMLElement).style.transitionDelay = `${i * 0.15}s`;
+    observer.observe(el);
   });
 </script>
