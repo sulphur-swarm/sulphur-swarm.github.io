@@ -76,6 +76,24 @@ const badges = [
     font-family: 'Geist Mono', monospace;
     font-size: 0.875rem;
     color: var(--color-accent-primary);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .lp-tech-badge.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .lp-tech-badge:nth-child(2) { transition-delay: 0.08s; }
+  .lp-tech-badge:nth-child(3) { transition-delay: 0.16s; }
+  .lp-tech-badge:nth-child(4) { transition-delay: 0.24s; }
+  .lp-tech-badge:nth-child(5) { transition-delay: 0.32s; }
+  .lp-tech-badge:nth-child(6) { transition-delay: 0.4s; }
+  .lp-tech-badge:nth-child(7) { transition-delay: 0.48s; }
+  .lp-tech-badge:nth-child(8) { transition-delay: 0.56s; }
+  .lp-tech-badge:nth-child(9) { transition-delay: 0.64s; }
+  @media (scripting: none) {
+    .lp-tech-badge { opacity: 1; transform: none; }
   }
   .lp-tech-body {
     color: var(--color-text-secondary);
@@ -95,16 +113,14 @@ const badges = [
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from('.lp-tech-badge', {
-    opacity: 0,
-    scale: 0.85,
-    duration: 0.4,
-    stagger: 0.08,
-    ease: 'back.out(1.5)',
-    scrollTrigger: { trigger: '.lp-tech-section', start: 'top 85%', once: true },
-  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.lp-tech-badge').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const section = document.querySelector('.lp-tech-section');
+  if (section) observer.observe(section);
 </script>

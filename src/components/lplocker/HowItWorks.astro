@@ -114,6 +114,21 @@ const steps = [
     display: flex;
     align-items: flex-start;
     gap: 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .lp-hiw-step.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .lp-hiw-step:nth-child(2) { transition-delay: 0.15s; }
+  .lp-hiw-step:nth-child(3) { transition-delay: 0.3s; }
+  .lp-hiw-step:nth-child(4) { transition-delay: 0.45s; }
+  .lp-hiw-step:nth-child(5) { transition-delay: 0.6s; }
+  .lp-hiw-step:nth-child(6) { transition-delay: 0.75s; }
+  @media (scripting: none) {
+    .lp-hiw-step { opacity: 1; transform: none; }
   }
   .lp-step-number {
     font-family: 'Geist Mono', monospace;
@@ -168,19 +183,19 @@ const steps = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from('.lp-hiw-step', {
-    opacity: 0,
-    y: 30,
-    duration: 0.6,
-    stagger: 0.15,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.lp-hiw-steps',
-      start: 'top 80%',
-      once: true,
-    },
-  });
+  // IntersectionObserver for step reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.lp-hiw-step').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const steps = document.querySelector('.lp-hiw-steps');
+  if (steps) observer.observe(steps);
 
+  // Keep GSAP for the SVG dot scrub animation
   const dot = document.getElementById('lp-hiw-dot');
   if (dot) {
     gsap.fromTo(

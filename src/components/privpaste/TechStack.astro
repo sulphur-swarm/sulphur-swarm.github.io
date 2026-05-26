@@ -85,15 +85,25 @@ const techs = [
     border: 1px solid var(--color-border);
     border-radius: 1rem;
     padding: 1.75rem;
-    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     opacity: 0;
     transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.25s;
     position: relative;
   }
+  .stack-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stack-card:nth-child(2) { transition-delay: 0.1s; }
+  .stack-card:nth-child(3) { transition-delay: 0.2s; }
+  .stack-card:nth-child(4) { transition-delay: 0.3s; }
   .stack-card:hover {
     border-color: rgba(108, 99, 255, 0.3);
     box-shadow: 0 6px 24px rgba(108, 99, 255, 0.08);
     transform: translateY(-2px) !important;
+  }
+  @media (scripting: none) {
+    .stack-card { opacity: 1; transform: none; }
   }
   .stack-dot {
     width: 12px;
@@ -116,20 +126,14 @@ const techs = [
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.to('.stack-card', {
-    opacity: 1,
-    y: 0,
-    duration: 0.55,
-    stagger: 0.1,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.stack-grid',
-      start: 'top 80%',
-      once: true,
-    },
-  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.stack-card').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const grid = document.querySelector('.stack-grid');
+  if (grid) observer.observe(grid);
 </script>

@@ -85,13 +85,23 @@ const features = [
     border: 1px solid rgba(108, 99, 255, 0.15);
     border-radius: 1rem;
     padding: 2rem;
-    transition: border-color 0.25s, box-shadow 0.25s;
     opacity: 0;
     transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.25s, box-shadow 0.25s;
   }
+  .privacy-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .privacy-card:nth-child(2) { transition-delay: 0.15s; }
+  .privacy-card:nth-child(3) { transition-delay: 0.3s; }
+  .privacy-card:nth-child(4) { transition-delay: 0.45s; }
   .privacy-card:hover {
     border-color: rgba(0, 212, 255, 0.35);
     box-shadow: 0 8px 30px rgba(0, 212, 255, 0.1);
+  }
+  @media (scripting: none) {
+    .privacy-card { opacity: 1; transform: none; }
   }
   .privacy-icon {
     width: 48px;
@@ -118,20 +128,14 @@ const features = [
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.to('.privacy-card', {
-    opacity: 1,
-    y: 0,
-    duration: 0.6,
-    stagger: 0.15,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.privacy-grid',
-      start: 'top 80%',
-      once: true,
-    },
-  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.privacy-card').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const grid = document.querySelector('.privacy-grid');
+  if (grid) observer.observe(grid);
 </script>
