@@ -60,6 +60,13 @@ const bullets = [
     background: radial-gradient(ellipse 70% 80% at 100% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .payments-card.is-visible {
+    opacity: 1;
+    transform: scale(1);
   }
   @media (min-width: 1024px) {
     .payments-card {
@@ -76,7 +83,11 @@ const bullets = [
     text-transform: uppercase;
     color: var(--color-accent-secondary);
     margin-bottom: 0.75rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
   }
+  .payments-eyebrow.is-visible { opacity: 1; transform: translateY(0); }
   .payments-heading {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 800;
@@ -86,13 +97,23 @@ const bullets = [
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition-delay: 0.12s;
   }
+  .payments-heading.is-visible { opacity: 1; transform: translateY(0); }
   .payments-body {
     font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.75;
     margin: 0 0 2rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition-delay: 0.24s;
   }
+  .payments-body.is-visible { opacity: 1; transform: translateY(0); }
   .payments-bullets {
     list-style: none;
     padding: 0;
@@ -100,6 +121,16 @@ const bullets = [
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition-delay: 0.36s;
+  }
+  .payments-bullets.is-visible { opacity: 1; transform: translateY(0); }
+  @media (scripting: none) {
+    .payments-card, .payments-eyebrow, .payments-heading, .payments-body, .payments-bullets {
+      opacity: 1; transform: none;
+    }
   }
   .payments-bullet {
     display: flex;
@@ -117,32 +148,18 @@ const bullets = [
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from('.payments-card', {
-    opacity: 0,
-    scale: 0.98,
-    duration: 1.0,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.payments-section',
-      start: 'top 80%',
-      once: true,
-    },
-  });
-
-  gsap.from('.payments-eyebrow, .payments-heading, .payments-body, .payments-bullets', {
-    opacity: 0,
-    y: 24,
-    duration: 0.7,
-    stagger: 0.12,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.payments-section',
-      start: 'top 75%',
-      once: true,
-    },
-  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelector('.payments-card')?.classList.add('is-visible');
+        document.querySelector('.payments-eyebrow')?.classList.add('is-visible');
+        document.querySelector('.payments-heading')?.classList.add('is-visible');
+        document.querySelector('.payments-body')?.classList.add('is-visible');
+        document.querySelector('.payments-bullets')?.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const section = document.querySelector('.payments-section');
+  if (section) observer.observe(section);
 </script>

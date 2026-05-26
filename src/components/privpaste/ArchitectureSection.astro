@@ -116,6 +116,28 @@
       gap: 4rem;
     }
   }
+  .arch-diagram {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .arch-diagram.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .arch-prose {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition-delay: 0.1s;
+  }
+  .arch-prose.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  @media (scripting: none) {
+    .arch-diagram, .arch-prose { opacity: 1; transform: none; }
+  }
   .arch-svg {
     width: 100%;
     max-width: 420px;
@@ -158,32 +180,15 @@
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from('.arch-diagram', {
-    opacity: 0,
-    x: -40,
-    duration: 0.8,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.arch-section',
-      start: 'top 75%',
-      once: true,
-    },
-  });
-
-  gsap.from('.arch-prose', {
-    opacity: 0,
-    x: 40,
-    duration: 0.8,
-    ease: 'power2.out',
-    delay: 0.1,
-    scrollTrigger: {
-      trigger: '.arch-section',
-      start: 'top 75%',
-      once: true,
-    },
-  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelector('.arch-diagram')?.classList.add('is-visible');
+        document.querySelector('.arch-prose')?.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const section = document.querySelector('.arch-section');
+  if (section) observer.observe(section);
 </script>

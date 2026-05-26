@@ -607,6 +607,80 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108, 99, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 50%, transparent 80%);
   }
 
+  /* ── Hero animations ─────────────────────────────────────── */
+  .hero-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .hero-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── About section animations ────────────────────────────── */
+  .sm-about-eyebrow {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-about-eyebrow.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-about-headline {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    transition-delay: 0.15s;
+  }
+  .sm-about-headline.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-about-desc {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-about-desc.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-about-stats {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    transition-delay: 0.2s;
+  }
+  .sm-about-stats.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-stat-card {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .sm-stat-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  .sm-stat-card:nth-child(2) { transition-delay: 0.1s; }
+  .sm-stat-card:nth-child(3) { transition-delay: 0.2s; }
+  .sm-stat-card:nth-child(4) { transition-delay: 0.3s; }
+
+  /* ── Features section animations ─────────────────────────── */
+  .sm-features-header {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-features-header.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-feature-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .sm-feature-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  .sm-feature-card:nth-child(2) { transition-delay: 0.1s; }
+  .sm-feature-card:nth-child(3) { transition-delay: 0.2s; }
+  .sm-feature-card:nth-child(4) { transition-delay: 0.3s; }
+  .sm-feature-card:nth-child(5) { transition-delay: 0.4s; }
+  .sm-feature-card:nth-child(6) { transition-delay: 0.5s; }
+  .sm-feature-card:nth-child(7) { transition-delay: 0.6s; }
+  .sm-feature-card:nth-child(8) { transition-delay: 0.7s; }
+
   /* Feature & tech card hover */
   .sm-feature-card:hover,
   .sm-tech-card:hover {
@@ -614,6 +688,105 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(108, 99, 255, 0.08);
     transform: translateY(-2px);
   }
+
+  /* ── Pricing section animations ──────────────────────────── */
+  .sm-pricing-header {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-pricing-header.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-pricing-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .sm-pricing-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  .sm-pricing-card:nth-child(2) { transition-delay: 0.15s; }
+
+  /* Pricing card hover */
+  .sm-pricing-card:hover {
+    border-color: rgba(108, 99, 255, 0.4);
+    box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(108, 99, 255, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ── Tech section animations ─────────────────────────────── */
+  .sm-tech-header {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-tech-header.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-tech-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .sm-tech-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  .sm-tech-card:nth-child(2) { transition-delay: 0.1s; }
+  .sm-tech-card:nth-child(3) { transition-delay: 0.2s; }
+  .sm-tech-card:nth-child(4) { transition-delay: 0.3s; }
+  .sm-tech-card:nth-child(5) { transition-delay: 0.4s; }
+  .sm-tech-card:nth-child(6) { transition-delay: 0.5s; }
+
+  /* ── How It Works section animations ─────────────────────── */
+  .sm-how-header {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-how-header.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-step-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .sm-step-card.is-visible { opacity: 1; transform: translateY(0); }
+  .sm-step-card:nth-child(2) { transition-delay: 0.2s; }
+  .sm-step-card:nth-child(3) { transition-delay: 0.4s; }
+
+  /* ── CTA section animations ──────────────────────────────── */
+  .sm-cta-card {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .sm-cta-card.is-visible { opacity: 1; transform: scale(1); }
+
+  .sm-cta-eyebrow {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+  }
+  .sm-cta-eyebrow.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-cta-headline {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    transition-delay: 0.12s;
+  }
+  .sm-cta-headline.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-cta-desc {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    transition-delay: 0.24s;
+  }
+  .sm-cta-desc.is-visible { opacity: 1; transform: translateY(0); }
+
+  .sm-cta-buttons {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    transition-delay: 0.36s;
+  }
+  .sm-cta-buttons.is-visible { opacity: 1; transform: translateY(0); }
 
   /* Button hover states */
   .sm-btn-primary:hover {
@@ -642,14 +815,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     vertical-align: middle;
   }
 
-  /* Pricing card hover */
-  .sm-pricing-card:hover {
-    border-color: rgba(108, 99, 255, 0.4);
-    box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(108, 99, 255, 0.08);
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
-  }
-
   /* Pricing feature list */
   .sm-pricing-feature {
     display: flex;
@@ -662,143 +827,56 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     flex-shrink: 0;
     color: var(--color-accent-secondary);
   }
+
+  /* ── No-JS fallback ──────────────────────────────────────── */
+  @media (scripting: none) {
+    .hero-animate,
+    .sm-about-eyebrow, .sm-about-headline, .sm-about-desc, .sm-about-stats, .sm-stat-card,
+    .sm-features-header, .sm-feature-card,
+    .sm-pricing-header, .sm-pricing-card,
+    .sm-tech-header, .sm-tech-card,
+    .sm-how-header, .sm-step-card,
+    .sm-cta-card, .sm-cta-eyebrow, .sm-cta-headline, .sm-cta-desc, .sm-cta-buttons {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 
 <script>
   import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
 
-  // ── HERO: timeline on page load ──────────────────────────────
+  // ── HERO: timeline on page load (keep GSAP for page-load animation) ──
+  const heroEls = document.querySelectorAll('.hero-animate');
   const heroTl = gsap.timeline({ delay: 0.1 });
-  heroTl
-    .from('.hero-animate', {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: 'power2.out',
-      stagger: 0.15,
+  heroTl.to(heroEls, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.15,
+    onComplete: () => {
+      heroEls.forEach(el => el.classList.add('is-visible'));
+    },
+  });
+
+  // ── IntersectionObserver for all scroll-reveal sections ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.15 });
 
-  // ── ABOUT ────────────────────────────────────────────────────
-  gsap.from('.sm-about-eyebrow, .sm-about-headline', {
-    scrollTrigger: { trigger: '#sm-about', start: 'top 80%', once: true },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-    stagger: 0.15,
-  });
-
-  gsap.from('.sm-about-desc, .sm-about-stats', {
-    scrollTrigger: { trigger: '#sm-about', start: 'top 65%', once: true },
-    opacity: 0,
-    y: 30,
-    duration: 1.0,
-    ease: 'power2.out',
-    stagger: 0.2,
-  });
-
-  gsap.from('.sm-stat-card', {
-    scrollTrigger: { trigger: '.sm-about-stats', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 20,
-    scale: 0.95,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.1,
-  });
-
-  // ── FEATURES ─────────────────────────────────────────────────
-  gsap.from('.sm-features-header', {
-    scrollTrigger: { trigger: '#sm-features', start: 'top 80%', once: true },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-  });
-
-  gsap.from('.sm-feature-card', {
-    scrollTrigger: { trigger: '.sm-features-grid', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 30,
-    scale: 0.97,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.1,
-  });
-
-  // ── PRICING ──────────────────────────────────────────────────
-  gsap.from('.sm-pricing-header', {
-    scrollTrigger: { trigger: '#sm-pricing', start: 'top 80%', once: true },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-  });
-
-  gsap.from('.sm-pricing-card', {
-    scrollTrigger: { trigger: '.sm-pricing-grid', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 30,
-    scale: 0.97,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.15,
-  });
-
-  // ── TECH STACK ───────────────────────────────────────────────
-  gsap.from('.sm-tech-header', {
-    scrollTrigger: { trigger: '#sm-tech', start: 'top 80%', once: true },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-  });
-
-  gsap.from('.sm-tech-card', {
-    scrollTrigger: { trigger: '.sm-tech-grid', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 30,
-    scale: 0.97,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.1,
-  });
-
-  // ── HOW IT WORKS ─────────────────────────────────────────────
-  gsap.from('.sm-how-header', {
-    scrollTrigger: { trigger: '#sm-how', start: 'top 80%', once: true },
-    opacity: 0,
-    y: 40,
-    duration: 1.0,
-    ease: 'power2.out',
-  });
-
-  gsap.from('.sm-step-card', {
-    scrollTrigger: { trigger: '.sm-steps-grid', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
-    ease: 'power2.out',
-    stagger: 0.2,
-  });
-
-  // ── CTA ──────────────────────────────────────────────────────
-  gsap.from('.sm-cta-card', {
-    scrollTrigger: { trigger: '#sm-cta', start: 'top 85%', once: true },
-    opacity: 0,
-    scale: 0.98,
-    duration: 1.2,
-    ease: 'power2.out',
-  });
-
-  gsap.from('.sm-cta-eyebrow, .sm-cta-headline, .sm-cta-desc, .sm-cta-buttons', {
-    scrollTrigger: { trigger: '#sm-cta', start: 'top 75%', once: true },
-    opacity: 0,
-    y: 30,
-    duration: 1.0,
-    ease: 'power2.out',
-    stagger: 0.12,
-  });
+  // Observe all scroll-animated elements
+  document.querySelectorAll(
+    '.sm-about-eyebrow, .sm-about-headline, .sm-about-desc, .sm-about-stats, .sm-stat-card, ' +
+    '.sm-features-header, .sm-feature-card, ' +
+    '.sm-pricing-header, .sm-pricing-card, ' +
+    '.sm-tech-header, .sm-tech-card, ' +
+    '.sm-how-header, .sm-step-card, ' +
+    '.sm-cta-card, .sm-cta-eyebrow, .sm-cta-headline, .sm-cta-desc, .sm-cta-buttons'
+  ).forEach(el => revealObserver.observe(el));
 </script>
