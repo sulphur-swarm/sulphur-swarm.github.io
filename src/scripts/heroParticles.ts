@@ -9,6 +9,7 @@ import {
   LineBasicMaterial,
   Float32BufferAttribute,
   Color,
+  CanvasTexture,
 } from 'three';
 
 // Constants
@@ -19,6 +20,20 @@ const CONNECTION_DISTANCE_SQ = CONNECTION_DISTANCE * CONNECTION_DISTANCE;
 const COLOR_VIOLET = new Color(0x6c63ff);
 const COLOR_CYAN = new Color(0x00d4ff);
 const BACKGROUND_COLOR = new Color(0x08090c);
+
+function createCircleTexture(): CanvasTexture {
+  const size = 64;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  const half = size / 2;
+  ctx.beginPath();
+  ctx.arc(half, half, half, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  return new CanvasTexture(canvas);
+}
 
 export function init(canvas: HTMLCanvasElement): () => void {
   const isMobile = window.innerWidth < 768;
@@ -69,11 +84,15 @@ export function init(canvas: HTMLCanvasElement): () => void {
   particleGeometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
   particleGeometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
+  const circleTexture = createCircleTexture();
   const particleMaterial = new PointsMaterial({
     size: 2,
     vertexColors: true,
     transparent: true,
     opacity: 0.85,
+    map: circleTexture,
+    alphaMap: circleTexture,
+    alphaTest: 0.5,
   });
 
   const points = new Points(particleGeometry, particleMaterial);
@@ -196,6 +215,7 @@ export function init(canvas: HTMLCanvasElement): () => void {
     window.removeEventListener('resize', handleResize);
     particleGeometry.dispose();
     particleMaterial.dispose();
+    circleTexture.dispose();
     lineGeometry.dispose();
     lineMaterial.dispose();
     renderer.dispose();
