@@ -61,9 +61,6 @@ const faqs = [
 
 <script>
   import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
 
   // Accordion logic
   document.querySelectorAll<HTMLButtonElement>('.faq-trigger').forEach(trigger => {
@@ -114,21 +111,30 @@ const faqs = [
     });
   });
 
-  // Scroll reveal
-  gsap.fromTo(
-    '.faq-item',
-    { opacity: 0, y: 20 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.5,
-      stagger: 0.1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.faq-section',
-        start: 'top 80%',
-        once: true,
-      },
-    }
-  );
+  // IntersectionObserver scroll reveal
+  const faqItems = document.querySelectorAll('.faq-item');
+  const faqObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        faqObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  faqItems.forEach((el, i) => {
+    (el as HTMLElement).style.transitionDelay = `${i * 0.1}s`;
+    faqObserver.observe(el);
+  });
 </script>
+
+<style>
+  .faq-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .faq-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>

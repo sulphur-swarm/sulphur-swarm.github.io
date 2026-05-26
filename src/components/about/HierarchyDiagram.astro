@@ -99,12 +99,8 @@
 
 <script>
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-  gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-
-  // Initial hidden state
-  gsap.set('.node-group', { opacity: 0, scale: 0.8, transformOrigin: 'center' });
+  gsap.registerPlugin(MotionPathPlugin);
 
   function startFlowDots() {
     const dots = document.querySelectorAll('.flow-dot');
@@ -129,21 +125,38 @@
     });
   }
 
-  ScrollTrigger.create({
-    trigger: '.js-hierarchy',
-    start: 'top 70%',
-    once: true,
-    onEnter: () => {
-      gsap.utils.toArray<SVGPathElement>('.edge-path').forEach((path) => {
-        const length = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+  function animateEdgesAndDots() {
+    gsap.utils.toArray<SVGPathElement>('.edge-path').forEach((path) => {
+      const length = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+    });
+    gsap.to('.edge-path', {
+      strokeDashoffset: 0,
+      duration: 0.5,
+      stagger: 0.08,
+      onComplete: startFlowDots,
+    });
+  }
+
+  // IntersectionObserver for node entrance
+  const section = document.querySelector('.js-hierarchy');
+  if (section) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const nodes = section.querySelectorAll('.node-group');
+          nodes.forEach((node, i) => {
+            (node as HTMLElement).style.transitionDelay = `${i * 0.1}s`;
+            node.classList.add('is-visible');
+          });
+          // After nodes finish appearing, animate edges + dots
+          setTimeout(animateEdgesAndDots, nodes.length * 100 + 400);
+          observer.unobserve(entry.target);
+        }
       });
-      const tl = gsap.timeline();
-      tl.to('.node-group', { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, ease: 'back.out(1.4)' })
-        .to('.edge-path', { strokeDashoffset: 0, duration: 0.5, stagger: 0.08 }, '<0.3')
-        .call(startFlowDots);
-    },
-  });
+    }, { threshold: 0.15 });
+    observer.observe(section);
+  }
 
   // Node pulse
   gsap.to('.node-group rect', {
@@ -228,6 +241,17 @@
   .node-group text {
     pointer-events: none;
     user-select: none;
+  }
+
+  .node-group {
+    opacity: 0;
+    transform: scale(0.8);
+    transform-origin: center;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .node-group.is-visible {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .diagram-tooltip {

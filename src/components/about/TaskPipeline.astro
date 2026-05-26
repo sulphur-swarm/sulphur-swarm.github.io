@@ -30,17 +30,19 @@ const stages = [
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.fromTo('.js-pipeline-step',
-    { opacity: 0, x: -20 },
-    {
-      opacity: 1, x: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
-      scrollTrigger: { trigger: '.js-pipeline-track', start: 'top 80%', once: true }
-    }
-  );
+  const steps = document.querySelectorAll('.js-pipeline-step');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  steps.forEach((el, i) => {
+    (el as HTMLElement).style.transitionDelay = `${i * 0.1}s`;
+    observer.observe(el);
+  });
 </script>
 
 <style>
@@ -138,5 +140,15 @@ const stages = [
       gap: 1rem;
       text-align: left;
     }
+  }
+
+  .js-pipeline-step {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .js-pipeline-step.is-visible {
+    opacity: 1;
+    transform: translateX(0);
   }
 </style>

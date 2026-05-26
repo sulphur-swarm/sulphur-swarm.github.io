@@ -13,25 +13,18 @@
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import { SplitText } from 'gsap/SplitText';
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-
-  ScrollTrigger.create({
-    trigger: '.js-mission',
-    start: 'top 75%',
-    once: true,
-    onEnter: () => {
-      const el = document.querySelector('.js-mission-text');
-      if (!el) return;
-      const split = new SplitText(el, { type: 'words' });
-      gsap.fromTo(split.words,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: 'power2.out' }
-      );
-    }
-  });
+  const el = document.querySelector('.js-mission-text');
+  if (el) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    observer.observe(el);
+  }
 </script>
 
 <style>
@@ -62,5 +55,15 @@
     line-height: 1.6;
     color: var(--color-text-primary);
     margin: 0;
+  }
+
+  .js-mission-text {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .js-mission-text.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>

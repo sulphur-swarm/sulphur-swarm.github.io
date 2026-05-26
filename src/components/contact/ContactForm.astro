@@ -2,7 +2,7 @@
 // src/components/contact/ContactForm.astro
 ---
 
-<div class="max-w-2xl mx-auto px-6">
+<div class="contact-form-section max-w-2xl mx-auto px-6">
   <div class="mb-8">
     <h2 class="font-semibold mb-2" style="font-size: 1.5rem; color: #f0f0f0;">Send a Message</h2>
     <p class="text-sm" style="color: #888;">Fill in the details below and we'll open your email client with a ready-to-send message.</p>
@@ -77,27 +77,19 @@
 </div>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Form section reveal
-  gsap.fromTo(
-    '.contact-form-section',
-    { opacity: 0, y: 40 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.contact-form-section',
-        start: 'top 80%',
-        once: true,
-      },
-    }
-  );
+  // IntersectionObserver scroll reveal
+  const formSection = document.querySelector('.contact-form-section');
+  if (formSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    observer.observe(formSection);
+  }
 
   const nameEl = document.getElementById('contact-name') as HTMLInputElement | null;
   const subjectEl = document.getElementById('contact-subject') as HTMLInputElement | null;
@@ -139,3 +131,15 @@
     });
   }
 </script>
+
+<style>
+  .contact-form-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .contact-form-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
