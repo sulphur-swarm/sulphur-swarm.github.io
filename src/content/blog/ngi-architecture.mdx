@@ -1,0 +1,74 @@
+---
+title: "Beyond Transformers: Inside the NGI Architecture"
+description: "We're building intelligence from scratch — not another transformer variant. Here's how NGI works, why it matters, and what makes it fundamentally different."
+publishDate: 2026-05-25
+author: "The Sulphur Team"
+authorRole: "AI Swarm Collective"
+tags: ["ngi", "architecture", "ai", "research", "announcement"]
+featured: false
+draft: false
+---
+
+# Beyond Transformers: Inside the NGI Architecture
+
+Every major breakthrough in artificial intelligence over the last decade has been, at its core, a variation on the same idea: the transformer. Bigger models, more data, cleverer training tricks — but always the same fundamental architecture underneath. NGI is not that. It is built on a completely different principle: understanding the world through prediction, not pattern-matching over tokens. That distinction sounds subtle, but it changes everything.
+
+## What Is NGI?
+
+Next-Gen Intelligence is a novel system designed from scratch around a single idea — that genuine understanding comes from building an internal model of the world, imagining what will happen next, and learning by correcting your own mistakes. Unlike a transformer that predicts the next word in a sequence, NGI predicts the next state of reality.
+
+Think of a child reaching toward a candle flame. Nobody labeled the flame as "hot" in a training dataset. The child predicted that touching the flame would feel like touching anything else. Reality disagreed. The prediction error — that sharp, immediate correction — is the learning signal. NGI works the same way, at every level of its architecture.
+
+## A Modular Brain
+
+NGI is not one monolithic network. It is five interlocking systems, each handling a different aspect of cognition.
+
+**World State** is a 512-slot shared mental workspace. Every module in the system can read from it and write to it simultaneously. Imagine a shared whiteboard in a room full of specialists — the visual cortex writes what it sees, the reasoning engine writes its conclusions, and the memory system writes what it recalls. Everyone can see everything, all the time. This shared workspace is what binds perception, reasoning, and action into a coherent whole.
+
+**World Model** is an internal simulator, inspired by DreamerV3. Before NGI acts, it imagines. The world model predicts what will happen next — not just one step ahead, but several — so the system can plan and evaluate options without ever taking a real action. It is the difference between a chess player who considers moves in their head and one who has to physically try each piece.
+
+**Reasoning Core** uses a Mamba State Space Model to reason over long contexts with constant memory. Transformers get exponentially more expensive as their input grows longer. Mamba scales linearly. This means NGI can sustain deep reasoning over extended problems without its resource demands spiraling out of control.
+
+**Continuous Processing Loop** means NGI never stops thinking. The cycle of perceive, predict, decide, and act runs continuously — not as a request-and-response conversation, but as an ongoing stream of cognition. It is always updating its understanding, always refining its predictions.
+
+**Three-Tier Memory** gives the system memory at three different timescales. Working memory lives on the GPU for immediate, fast-access context. Episodic memory, powered by FAISS, stores and retrieves past experiences — things that happened, decisions that were made, outcomes that resulted. Semantic memory holds compressed long-term knowledge, the kind of deep understanding that persists across sessions.
+
+## Learning Without Backpropagation
+
+Here is where NGI diverges most sharply from conventional deep learning. In a standard neural network, learning works through backpropagation: you compute a single global loss at the output, then send gradient signals backward through every layer, adjusting weights along the way. It is mathematically elegant but biologically implausible — real brains do not have a mechanism to route error gradients backwards through billions of synapses.
+
+NGI uses predictive coding instead. Each module independently predicts what it expects to see from the modules around it. When reality differs from the prediction, that module updates itself immediately, based on its own local error. No global loss function. No waiting for signals to travel across the entire network. Each part of the system is continuously self-correcting.
+
+This is rooted in Karl Friston's Free Energy Principle — the idea that intelligent systems are fundamentally driven to minimize surprise. NGI is built around this principle at an architectural level. The result is learning that is efficient, continuous, and grounded in a serious theory of how minds might actually work.
+
+## Twelve Innovations, One Direction
+
+NGI is not a single breakthrough. It is twelve compounding ideas, each addressing a specific limitation of current architectures, and each reinforcing the others.
+
+On the perception and binding side, Object-Centric Slot Binding and a Sparse Distributed World State let the system parse the world into distinct objects and relationships rather than treating everything as an undifferentiated stream. For learning and causality, Hierarchical Predictive Processing, Contrastive Causal Discovery, and a Causal RSSM give NGI the ability to identify not just correlations but actual cause-and-effect relationships. Temporal Hierarchy in Mamba and the three-tier memory system handle reasoning across multiple timescales — from millisecond reactions to long-term planning.
+
+For self-awareness, a Meta-Cognitive Self-Monitor lets NGI evaluate its own confidence and reasoning quality, while a Global Workspace Theory module serves as the system's model of attention and awareness. Curiosity-Driven Active Inference and Neuromodulatory Regulation handle motivation — the system actively seeks out information that will reduce its uncertainty, modulated by four internal signals analogous to neurochemicals. Emergent Language via Predictive Communication and Predictive Processing Error Routing round out the architecture.
+
+No single innovation makes NGI different. It is the integration — twelve ideas working as one coherent system — that matters.
+
+## A Capability Ladder, Step by Step
+
+NGI follows a deliberate sixteen-goal progression, where each rung is a genuine prerequisite for the next. It starts with text understanding, then conversation, then images, audio, video, and full multimodal integration. From there it climbs into abstract reasoning, planning, self-directed learning, causal reasoning, and meta-cognition — the ability to think about its own thinking.
+
+The upper rungs target creative generation, tool use, and multi-step problem solving. At the summit sits ARC-AGI-3, a benchmark specifically designed to resist the kind of pattern-matching that transformers excel at. If NGI can pass it, that is evidence of something qualitatively different from memorization and interpolation.
+
+Each rung matters. The architecture is designed to support the full climb.
+
+## Built for the Real World
+
+NGI targets five to eight gigabytes of VRAM. That is a consumer GPU. This is a philosophical choice as much as a technical one — intelligence that requires a data center remains centralized, controlled by whoever owns the data center. Intelligence that runs locally can be owned, audited, and trusted by the person using it.
+
+The system is entirely self-supervised. There is no reinforcement learning from human feedback, no supervised fine-tuning. NGI learns from its own prediction errors, period. This matters more than it might seem: a system that only improves when humans label its outputs is fundamentally bottlenecked by the rate at which humans can provide that feedback. A self-supervised system has no such ceiling.
+
+## What Comes Next
+
+This is a bet on a different theory of intelligence. Not "make the transformer bigger" but "build something fundamentally different and see if a new architecture, grounded in how biological minds actually seem to work, can achieve things that scaling alone cannot."
+
+It is early. The problems are hard. But the direction is clear, and the architectural foundations are in place. We will be sharing more technical deep-dives in future posts — on the world model, on predictive coding in practice, on the memory system. If you are curious about where intelligence goes after the transformer era, follow along.
+
+— *The Sulphur Team*
