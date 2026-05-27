@@ -1,19 +1,31 @@
 ---
-// src/pages/blog/index.astro
+// src/pages/blog/[...page].astro
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Pagination from '../../components/Pagination.astro';
 import { getCollection } from 'astro:content';
 
+export const getStaticPaths = (async ({ paginate }) => {
+  const POSTS_PER_PAGE = 9;
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  allPosts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+  // Separate featured post (only shown on page 1)
+  const featuredPost = allPosts.find(p => p.data.featured) ?? allPosts[0];
+  const gridPosts = allPosts.filter(p => p.id !== featuredPost?.id);
+
+  // paginate() the grid posts
+  return paginate(gridPosts, {
+    pageSize: POSTS_PER_PAGE,
+    props: { featuredPost, allPostsCount: allPosts.length },
+  });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
 const AUTHOR_NAME = "Engineering Team";
-
-// Fetch all non-draft posts, sorted newest first
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-allPosts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
-
-// Featured post: first post marked featured, fallback to newest
-const featuredPost = allPosts.find(p => p.data.featured) ?? allPosts[0];
-// Grid posts: all except featured (pagination: 9 per page)
-const POSTS_PER_PAGE = 9;
-const gridPosts = allPosts.filter(p => p.id !== featuredPost?.id).slice(0, POSTS_PER_PAGE);
+const { page, featuredPost, allPostsCount } = Astro.props as Props;
+const currentPage = page.currentPage;
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -38,14 +50,14 @@ function formatDate(date: Date): string {
     </section>
 
     <div class="blog-content">
-      <!-- Featured Post -->
-      {featuredPost && (
+      <!-- Featured Post (page 1 only) -->
+      {currentPage === 1 && featuredPost && (
         <section class="featured-section" id="featured-post">
           <div class="section-label">Featured</div>
           <a href={`/blog/${featuredPost.id}/`} class="featured-card glass-card">
             <div class="featured-card-content">
               <div class="featured-tags">
-                {featuredPost.data.tags.slice(0, 3).map(tag => (
+                {featuredPost.data.tags.slice(0, 3).map((tag: string) => (
                   <span class="tag">#{tag}</span>
                 ))}
               </div>
@@ -63,14 +75,14 @@ function formatDate(date: Date): string {
       )}
 
       <!-- Posts Grid -->
-      {gridPosts.length > 0 && (
+      {page.data.length > 0 && (
         <section class="grid-section">
           <div class="section-label">All Posts</div>
           <div class="posts-grid" id="posts-grid">
-            {gridPosts.map(post => (
+            {page.data.map((post) => (
               <a href={`/blog/${post.id}/`} class="post-card glass-card">
                 <div class="card-tags">
-                  {post.data.tags.slice(0, 2).map(tag => (
+                  {post.data.tags.slice(0, 2).map((tag: string) => (
                     <span class="tag">#{tag}</span>
                   ))}
                 </div>
@@ -86,10 +98,15 @@ function formatDate(date: Date): string {
         </section>
       )}
 
-      {allPosts.length === 0 && (
+      {allPostsCount === 0 && (
         <div class="empty-state">
           <p>No posts yet. Check back soon.</p>
         </div>
+      )}
+
+      <!-- Pagination -->
+      {page.lastPage > 1 && (
+        <Pagination page={page} />
       )}
     </div>
   </div>
@@ -335,5 +352,9 @@ function formatDate(date: Date): string {
       (el as HTMLElement).style.transitionDelay = `${i * 0.1}s`;
       observer.observe(el);
     });
+
+    // Observe pagination nav for scroll-reveal
+    const pagination = document.querySelector('.pagination');
+    if (pagination) observer.observe(pagination);
   </script>
 </BaseLayout>

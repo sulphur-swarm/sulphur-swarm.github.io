@@ -285,10 +285,11 @@ describe("Blog system", () => {
   });
 
   it("has blog listing page", () => {
-    expect(existsSync(join(root, "src/pages/blog/index.astro"))).toBe(true);
-    const page = readFileSync(join(root, "src/pages/blog/index.astro"), "utf-8");
+    expect(existsSync(join(root, "src/pages/blog/[...page].astro"))).toBe(true);
+    const page = readFileSync(join(root, "src/pages/blog/[...page].astro"), "utf-8");
     expect(page).toContain("getCollection");
     expect(page).toContain("blog");
+    expect(page).toContain("paginate");
   });
 
   it("has blog dynamic route page", () => {
