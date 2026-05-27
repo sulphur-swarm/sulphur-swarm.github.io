@@ -1,0 +1,97 @@
+---
+// src/components/Pagination.astro
+interface Props {
+  page: {
+    currentPage: number;
+    lastPage: number;
+    url: {
+      prev: string | undefined;
+      next: string | undefined;
+    };
+  };
+}
+
+const { page } = Astro.props;
+const pages = Array.from({ length: page.lastPage }, (_, i) => i + 1);
+---
+
+<nav class="pagination" aria-label="Blog pagination">
+  {page.url.prev ? (
+    <a href={page.url.prev} class="pagination-link prev" aria-label="Previous page">← Prev</a>
+  ) : (
+    <span class="pagination-link prev disabled" aria-hidden="true">← Prev</span>
+  )}
+
+  {pages.map(num => {
+    const href = num === 1 ? '/blog/' : `/blog/${num}/`;
+    const isActive = num === page.currentPage;
+    return isActive ? (
+      <span class="pagination-link page-num active" aria-current="page">{num}</span>
+    ) : (
+      <a href={href} class="pagination-link page-num">{num}</a>
+    );
+  })}
+
+  {page.url.next ? (
+    <a href={page.url.next} class="pagination-link next" aria-label="Next page">Next →</a>
+  ) : (
+    <span class="pagination-link next disabled" aria-hidden="true">Next →</span>
+  )}
+</nav>
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .pagination.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    font-size: 0.8rem;
+    font-family: 'Geist Mono', monospace;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+  }
+
+  .pagination-link:hover:not(.disabled):not(.active) {
+    border-color: rgba(108, 99, 255, 0.3);
+    background: rgba(108, 99, 255, 0.04);
+    color: #ffffff;
+  }
+
+  .pagination-link.active {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: #ffffff;
+    font-weight: 700;
+    cursor: default;
+  }
+
+  .pagination-link.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: default;
+  }
+</style>
