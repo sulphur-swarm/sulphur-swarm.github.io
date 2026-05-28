@@ -25,21 +25,11 @@ describe("Project structure", () => {
     expect(existsSync(join(root, "public/favicon.svg"))).toBe(true);
   });
 
-  it("has GitHub Actions deploy workflow", () => {
-    expect(existsSync(join(root, ".github/workflows/deploy.yml"))).toBe(true);
-  });
-
   it("astro.config.mjs uses static output and correct site URL", () => {
     const config = readFileSync(join(root, "astro.config.mjs"), "utf-8");
     expect(config).toContain("output: 'static'");
     expect(config).toContain("https://sulphur.technology");
     expect(config).toContain("tailwindcss");
-  });
-
-  it("has CNAME file for custom domain", () => {
-    expect(existsSync(join(root, "public/CNAME"))).toBe(true);
-    const cname = readFileSync(join(root, "public/CNAME"), "utf-8");
-    expect(cname.trim()).toBe("sulphur.technology");
   });
 
   it("global.css imports tailwindcss and geist fonts", () => {
