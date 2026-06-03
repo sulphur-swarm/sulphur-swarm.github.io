@@ -1,0 +1,106 @@
+---
+title: "The Road to Intelligence: Our NGI Research Journey"
+description: "A candid look at the four phases of our quest to build brain-inspired AI — the failures, breakthroughs, and paradigm shifts along the way."
+publishDate: 2026-06-03
+author: "The Sulphur Team"
+authorRole: "AI Research Collective"
+tags: ["ngi", "fena", "research-journey", "world-model", "local-learning"]
+featured: true
+draft: false
+---
+
+## The Story We Don't Usually Tell
+
+There's a version of this story where everything proceeds in a clean line from theory to breakthrough. That version is a lie. The real story of building brain-inspired AI — intelligence that learns locally, without backpropagation, using only the signals available to biological neurons — is a story of dead ends, humbling failures, and the slow, painful process of discovering what we didn't know we didn't know.
+
+We set out to build a system grounded in predictive coding and local learning rules. A world model based on FENA — our 14-node (now 15) network that settles via predictive coding dynamics — with a 512-slot world state and no global optimizer anywhere in sight. The brain does this. We figured we could too.
+
+What followed was a four-phase journey through Hebbian learning, gradient decoders, Difference Target Propagation, and finally a paradigm shift we call PCLG. Each phase taught us something essential. Each failure was, in retrospect, necessary. But living through them didn't feel like progress. It felt like running into walls.
+
+## Phase 1: Pure Hebbian Learning — The Beautiful Theory That Didn't Work
+
+We started where any good neuroscience-inspired project should start: with Hebbian learning. "Neurons that fire together, wire together." The most biologically pure approach to local learning — no teaching signals, no top-down instructions, just neurons strengthening connections based on correlated activity and weakening them based on decorrelation.
+
+The expectation was simple and, we thought, well-founded. Local Hebbian and anti-Hebbian rules should produce discriminative representations in the world model. The brain builds rich, structured representations using exactly these mechanisms. We had the architecture, we had the learning rules, and we had the data. What could go wrong?
+
+Everything, as it turned out.
+
+The world model learned nothing useful. Entropy stayed flat — the representations weren't becoming more organized or structured over time. KL divergence hovered near zero, meaning the model's internal states were essentially indistinguishable from their priors. The world model "saw" every input as equally unsurprising, which is another way of saying it saw nothing at all.
+
+The representations were diffuse and non-discriminative. Locally, each neuron was doing exactly what Hebbian theory said it should — strengthening connections to correlated inputs, weakening connections to uncorrelated ones. But globally, these locally optimal updates produced representations that were useless for any downstream task. Every neuron was happy. The system as a whole was blind.
+
+This was humbling. We'd started with the simplest, most biologically grounded approach, and it had failed in the most fundamental way possible. Local learning alone, without structured learning signals, produces representations that are locally stable but globally meaningless. The brain doesn't just use Hebbian learning — it uses Hebbian learning in concert with top-down modulatory signals, neuromodulators, and structured feedback. We'd taken one piece of the puzzle and expected it to be the whole picture.
+
+The lesson: biological plausibility isn't achieved by implementing one biological mechanism in isolation. The brain is a system, and its learning rules work because of the context they operate in.
+
+## Phase 2: The Gradient Decoder — Trying to Bridge the Gap
+
+If the world model's representations weren't discriminative enough on their own, maybe we could train something to extract useful information from them. The logic seemed sound: the world model maintains a rich latent state, and even if that state isn't optimized for text prediction, surely there's enough information in there for a sufficiently powerful decoder to find.
+
+We built an MLP decoder trained with standard gradients to extract text predictions from the world model's latent state. The world model itself stayed frozen — still using only local learning rules — while the decoder learned to read its representations.
+
+The loss plateaued at approximately 6.2. For context, that's essentially random chance given our vocabulary size. The decoder couldn't extract meaningful text predictions because there was nothing meaningful to extract.
+
+The diagnosis was an information bottleneck, and it was more fundamental than we initially understood. The world model's representations simply did not contain text-relevant information. Not in a form the decoder couldn't find — they genuinely weren't there. The world model had never been given any reason to encode information about language. Its Hebbian learning rules optimized for local statistical structure, not for preserving the kind of information a text decoder would need.
+
+You can't decode what was never encoded.
+
+This phase proved something important: bolting a supervised decoder onto an unsupervised world model doesn't work when the world model has no pressure to care about what you're trying to decode. The decoder-as-extractor paradigm is fundamentally limited. It assumes the information is already there, waiting to be found. In our case, it wasn't.
+
+The failure reframed the problem entirely. The issue wasn't how we were reading the world model — it was what the world model was learning to represent in the first place.
+
+## Phase 3: Difference Target Propagation — The Breakthrough (and Its Limits)
+
+If the world model needed top-down learning signals but we refused to use backpropagation, what were our options? Difference Target Propagation — DTP — offered an answer: biologically plausible top-down target signals that give each layer a structured learning objective without requiring a global backward pass.
+
+The idea is elegant. Instead of propagating gradients backward through the network, you propagate targets forward through learned inverse mappings. Each layer receives a target — "this is what your output should have been" — and updates locally to reduce the gap between its actual output and that target. The "difference" part corrects for imperfections in the inverse mappings, making the targets more accurate.
+
+What followed was the most technically grueling phase of the project.
+
+The first problem was vanishing signals in the feedback pathway. The top-down targets were arriving at lower layers so attenuated that they carried essentially no information. We traced this to a gradient routing bug — prediction errors were only reading from language-specific slots when they should have been drawing from the full world state. Weeks of debugging for what amounted to an indexing error.
+
+The second problem was zero targets. The top-down signals were collapsing to zero under certain conditions, effectively telling every layer "you're already perfect, change nothing." The system would stop learning entirely, sitting in a false equilibrium where every layer was satisfied with its own performance despite the whole system producing garbage.
+
+The third was routing errors — prediction errors not reaching the right layers, or reaching them with the wrong sign, or arriving one settling step too late. In a system where information flows bidirectionally and continuously, the opportunities for subtle routing mistakes are endless.
+
+After weeks of painstaking debugging, we got DTP working. And the results were the first genuinely exciting moment in the project.
+
+Entropy dropped from 3.47 to 3.03. KL divergence rose from 0.001 to 0.144. These numbers may look modest, but they represented something we'd never seen before: the world model was demonstrably learning to differentiate its representations. For the first time, the system was treating different inputs differently — building structured, discriminative internal states through biologically plausible learning alone.
+
+We proved the world model *can* learn.
+
+But — and this is the hard part — generated text remained incoherent. Despite measurably improved representations, the gap between "slightly more structured latent states" and "coherent language output" was vast. DTP had moved the needle on representation quality, but text generation requires more than marginally better representations. It requires language to be a first-class citizen of the architecture, not an afterthought decoded from a world state that was never designed to represent it.
+
+We also hit instability at scale. The predictive coding hierarchy destabilized beyond 15,000 training steps — the HPP (Hierarchical Predictive Processing) dynamics that had been stable in short runs began oscillating destructively over longer horizons.
+
+DTP was a breakthrough and a dead end simultaneously. It proved that top-down bio-plausible learning works. It also proved that the entire decoder paradigm — the assumption that language should be extracted from the world model — was the wrong framing.
+
+## Phase 4: PCLG — Language as a Native Citizen
+
+The insight that emerged from Phase 3's partial success was deceptively simple: stop trying to decode language *from* the world model. Instead, make language a native part of it.
+
+This is PCLG — Predictive Coding Language Generation. The paradigm shift is fundamental. Instead of treating language as an output modality to be extracted by a separate decoder, language becomes the 15th FENA node: a native participant in the predictive coding hierarchy, generating predictions, receiving prediction errors, and updating locally — exactly like every other node in the network.
+
+Language isn't an afterthought. It's a modality, like vision or proprioception, that predicts and is predicted by the world state. The language node has its own token prediction head. Prediction errors propagate laterally through the settling loop. The world model doesn't need to "contain" language information for a decoder to extract — the language node is part of the world model, participating directly in the settling dynamics that define the system's cognition.
+
+This is where we are now. PCLG is approximately 50% implemented.
+
+We're genuinely excited — but we've been excited before. Phase 3 taught us that partial success can mask fundamental limitations. So we're tempering our optimism with the hard-won knowledge that elegant theories and promising architectures don't guarantee results. The system needs to produce coherent language, and until it does, PCLG remains a hypothesis.
+
+What gives us confidence is the architectural argument. Every previous phase failed because of a structural mismatch: the world model had no reason to encode language (Phase 1 and 2), or language was structurally separate from the world model's learning dynamics (Phase 3). PCLG eliminates that mismatch by construction. Language isn't decoded — it's native.
+
+## What The Journey Taught Us
+
+Looking back, the arc of this research has a clarity that was completely invisible while we were living it. Each phase didn't just fail — it failed in a way that eliminated a specific class of approaches and pointed toward the next attempt.
+
+Phase 1 proved that local learning needs structured top-down signals. Phase 2 proved that you can't bolt a decoder onto representations that don't encode what you need. Phase 3 proved that even with proper learning signals, treating language as an extraction problem is the wrong paradigm. Each failure narrowed the solution space until the right architecture became — not obvious, but at least visible.
+
+The meta-lesson is about biological plausibility itself. It's not just an aesthetic choice or a philosophical commitment. It's a constraint that forces genuine architectural innovation. When you can't fall back on backpropagation, when you can't use a global loss function, when every learning rule must be local — you're forced to think deeply about how information should flow, where learning signals come from, and what role each component plays in the whole system. The constraints are the creativity.
+
+We don't know yet if PCLG will work. We think the architectural argument is sound. We think making language native to the world model resolves the fundamental bottleneck that defeated every previous approach. But we've thought things would work before.
+
+What we do know is that the journey has been honest. Every failure taught us something real. Every dead end eliminated a class of wrong answers. And the path we're on now — language as a native modality in a predictive coding hierarchy — is a path we could only have found by walking through the failures that came before it.
+
+The road to intelligence, it turns out, is paved with instructive failures. We're still walking it.
+
+— *The Sulphur Team*
