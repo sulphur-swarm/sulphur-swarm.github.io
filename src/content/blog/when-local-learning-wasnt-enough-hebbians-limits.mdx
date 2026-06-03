@@ -1,0 +1,76 @@
+---
+title: "When Local Learning Wasn't Enough: Hebbian's Limits"
+description: "Phase 1 of our NGI journey — why pure Hebbian learning produced flat entropy and zero discrimination, and what it taught us about the need for top-down signals."
+publishDate: 2026-06-03
+author: "The Sulphur Team"
+authorRole: "AI Research Collective"
+tags: ["ngi", "fena", "research-journey", "hebbian", "local-learning"]
+featured: false
+draft: false
+---
+
+## The Promise of Pure Local Learning
+
+We started Phase 1 with genuine excitement. The premise was elegant: build a system that learns the way the brain does — no backpropagation, no global error signals, just neurons strengthening and weakening their connections based on local activity. Pure Hebbian learning. Biologically plausible from the ground up.
+
+We'd already done the hard work of replacing every standard neural network component with a brain-compatible alternative — divisive normalization instead of LayerNorm, precision-weighted prediction errors instead of attention, STDP instead of backpropagation. (Our post on bio-plausible component replacements covers each substitution in detail.) Now it was time to see if those components could actually learn something meaningful when wired together.
+
+The hope was that local learning alone would produce emergent discrimination. Present the system with different inputs, let the Hebbian and anti-Hebbian rules sculpt the connection weights, and watch as neurons self-organized into meaningful, differentiated representations. Cats would look different from dogs inside the network. Sentences about weather would activate different patterns than sentences about music. The representations would just... emerge.
+
+That's not what happened.
+
+## What We Ran
+
+Our experimental setup was the FENA predictive coding hierarchy — 14 nodes settling via free energy minimization, connected in a hierarchical structure with lateral and top-down connections. We presented it with training data and let the local learning rules operate freely.
+
+Every learning rule in our biological toolkit was active. Hebbian learning strengthened connections between co-active neurons. Anti-Hebbian learning worked to decorrelate representations across different neurons. Spike-Timing-Dependent Plasticity added directional, causal learning based on millisecond-precision firing order. Prediction error modulation scaled learning rates based on local error magnitude. BCM theory maintained sliding thresholds to prevent saturation.
+
+Critically, there was no gradient-based decoder. No top-down teaching signal telling the system what the inputs meant or how they should differ. This was purely bottom-up self-organization — the system had to find structure in the data using nothing but local statistics.
+
+We tracked two primary metrics: the entropy of learned representations across our 512-dimensional world state, and the KL divergence between representations produced by different input classes. Entropy would tell us how informative the representations were. KL divergence would tell us whether the network could discriminate between different inputs.
+
+## Flat Entropy and Zero Discrimination
+
+The results were unambiguous, and they were bad.
+
+Entropy of the learned representations sat at 6.22 nats — effectively indistinguishable from the theoretical maximum of log(512) ≈ 6.24 nats for a uniformly distributed 512-dimensional representation. This wasn't a slow convergence problem. Entropy started near-maximum and stayed there. After 5,000 training steps, 10,000 steps, 50,000 steps — it barely moved. The representations were maximally uninformative. Every dimension of the world state was contributing roughly equal, undifferentiated activation.
+
+In plain terms: the system was spreading its activity uniformly across all 512 slots, like pouring water onto a flat surface. There was no structure. No clustering. No regions of the world state that responded preferentially to particular inputs. The representations carried almost zero information about what the input actually was.
+
+The KL divergence numbers were worse. Between representations of categorically different inputs — images from different classes, text with different semantic content — KL divergence measured 0.003 nats. Effectively zero. For context, a KL divergence of 0.003 means that if you sampled random activations from the distribution produced by input A and asked whether they came from A or B, you'd be guessing. The network literally could not tell its inputs apart.
+
+We spent two weeks debugging. We checked for implementation errors in the learning rules. We verified that STDP timing windows were correct, that anti-Hebbian weights were updating properly, that BCM thresholds were sliding as expected. Everything was working exactly as specified. The learning rules were faithfully executing their local computations. The problem wasn't a bug.
+
+The problem was the approach itself.
+
+## Why Hebbian Learning Alone Isn't Enough
+
+The realization came slowly, then all at once. Hebbian learning strengthens connections between neurons that fire together — it captures correlations. Anti-Hebbian learning pushes representations apart to reduce redundancy. But neither mechanism has any concept of what distinctions matter.
+
+Consider what happens when you present a Hebbian network with two different images. Both images activate a broad set of neurons. Hebbian learning strengthens the connections that are active during each presentation. But because the network has no signal telling it "these two inputs should produce different representations," the learned weights converge toward capturing the shared statistical structure of all inputs — the average patterns, the common correlations. The network finds what's similar, not what's different.
+
+Anti-Hebbian learning helps with decorrelation — it ensures that different neurons aren't all doing the same thing. But decorrelation isn't discrimination. You can have a beautifully decorrelated representation that still treats every input identically. The neurons are diverse in what they respond to, but they're not organized around meaningful categories. They're decorrelating noise.
+
+BCM theory prevents the runaway excitation that would otherwise make Hebbian learning unstable. The sliding threshold keeps neurons from saturating. But it's a stability mechanism, not a learning objective. It keeps the network functional without telling it what to learn.
+
+STDP adds directionality — it captures causal timing relationships. But timing relationships in the input are also shared across categories. The temporal structure of visual processing or language processing has commonalities that swamp the subtle timing differences between specific inputs.
+
+The fundamental gap is this: local learning rules optimize local statistics. Correlation strength, firing rate stability, temporal contingency, decorrelation. These are all properties of individual neurons or pairs of neurons. But discrimination — telling a cat from a dog, or one sentence from another — is a global property. It requires the network to organize its representations so that meaningful differences are amplified and irrelevant similarities are suppressed. Local rules have no mechanism to know which differences are meaningful.
+
+Neuroscience tells the same story. The brain doesn't use pure Hebbian learning. It has neuromodulatory systems — dopamine, acetylcholine, norepinephrine — that provide top-down modulation of plasticity. Dopamine signals reward prediction errors, telling synapses "what you just learned was useful, consolidate it." Acetylcholine increases the precision of sensory signals during focused attention, effectively telling the learning system "pay attention to this specific difference right now." These neuromodulators don't carry detailed gradient information, but they carry something Hebbian learning lacks entirely: a signal about what matters.
+
+Without that signal, local learning produces locally optimal but globally meaningless representations. That's exactly what we observed.
+
+## What This Failure Taught Us
+
+We won't pretend this wasn't discouraging. Months of careful work on bio-plausible components, and the first integrated experiment produced representations that were essentially random. But the failure was informative in a way that success wouldn't have been.
+
+The key lesson: biological plausibility doesn't mean bottom-up only. The brain is relentlessly local in its learning rules, but it's not purely self-organizing. It uses top-down signals — neuromodulatory, attentional, reward-driven — to guide local plasticity toward globally useful representations. Taking away those signals doesn't make the system more brain-like. It makes it less brain-like, because real brains have always had them.
+
+This insight directly motivated Phase 2 of our research. We introduced a lightweight gradient-based decoder as a "teaching signal" — a minimal addition that gives the local learning rules something to optimize toward. The decoder doesn't replace Hebbian learning. It doesn't propagate gradients through the FENA hierarchy. It sits at the output and provides a discriminative signal that modulates plasticity in the same spirit as neuromodulatory top-down signals in the brain: not detailed instructions, but a nudge that says "your representations need to differentiate here."
+
+It was the smallest possible concession to global optimization, and it changed everything — though not without introducing its own set of problems. Phase 2's results, including a stubborn loss plateau and the information bottleneck we eventually discovered, will be the subject of a future post.
+
+Sometimes you have to watch a beautiful theory fail before you understand what it was missing. Pure local learning taught us exactly what "local" can and cannot do. That's a lesson worth the months it cost.
+
+— *The Sulphur Team*
