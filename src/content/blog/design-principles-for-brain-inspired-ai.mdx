@@ -1,0 +1,74 @@
+---
+title: "Design Principles for Brain-Inspired AI"
+description: "Three binding principles forged from failure — what four phases of brain-inspired AI research taught us about building next-generation intelligence."
+publishDate: 2026-06-03
+author: "The Sulphur Team"
+authorRole: "AI Research Collective"
+tags: ["ngi", "fena", "research-journey", "design-principles", "local-learning"]
+featured: false
+draft: false
+---
+
+## Principles Forged, Not Designed
+
+We didn't sit in a room and decide on three design principles. That's not how it happened. What actually happened was months of building things that didn't work, staring at flat loss curves, debugging vanishing gradients at 2 AM, and slowly — reluctantly — accepting that certain approaches were fundamentally broken. The principles emerged from the wreckage.
+
+After four phases of research into brain-inspired AI, three constraints crystallized that now govern every architectural decision we make on FENA. They aren't aspirational guidelines. They're hard-won rules we violated first and paid for. Each one traces back to a specific failure that forced us to change course.
+
+## All Modalities Native — No Separate Decoders
+
+**The principle**: Every modality — text, vision, audio, video — must be a first-class citizen inside the world model. No separate encoder-decoder pipelines bolted on to extract meaning from the world state.
+
+We learned this the hard way. Early in the journey, we built an MLP decoder to extract text from the world model's internal representation. The architecture seemed reasonable: the world model learns a rich internal state, the decoder learns to read that state and produce language. Clean separation of concerns.
+
+The loss plateaued at random-chance level and refused to budge. We spent weeks debugging — adjusting learning rates, experimenting with decoder architectures, adding capacity. Nothing worked. The root cause turned out to be fundamental: the decoder-as-extractor paradigm creates an information bottleneck. The world model builds rich, distributed, multi-modal representations across its 512 slots. Then the decoder tries to compress all of that through an extraction pipeline that inevitably discards the very richness that makes the world model valuable.
+
+The breakthrough came when we stopped extracting and started integrating. Language became a native FENA node — the 15th node in the network, with its own prediction head, participating directly in the settling process. Prediction errors propagated laterally through the same dynamics as every other modality. The bottleneck vanished because there was no longer a pipeline to bottleneck.
+
+This principle now shapes everything. Every new modality added to FENA must be native to the energy-based settling process. No adapters. No extraction layers. If a modality can't participate directly in the predictive coding loop, we don't bolt it on — we redesign until it can.
+
+## Streaming, Not Autoregressive — Temporal Accumulation Over Token Prediction
+
+**The principle**: The system processes continuous streams and accumulates information over time. It does not generate discrete tokens autoregressively.
+
+When we first explored how the architecture should handle sequential input, the obvious template was the one that dominates modern AI: autoregressive generation. Predict the next token, feed it back in, predict the next one. It's simple, well-understood, and spectacularly successful in transformers.
+
+It's also fundamentally at odds with how brains process information. Brains don't discretize reality into tokens and process them one by one. They receive continuous, overlapping, multi-modal streams and continuously update their internal state. Sound doesn't arrive as a sequence of audio tokens. Vision doesn't arrive frame-by-frame. Everything streams in simultaneously, at different rates, and the brain integrates it all into a coherent, continuously evolving representation.
+
+Trying to force this into an autoregressive paradigm meant artificial discretization that threw away temporal nuance. Worse, autoregressive generation creates a fundamental computational bottleneck: each output depends on the previous one, so generation is inherently sequential. You cannot parallelize "predict the next word."
+
+When we shifted to continuous-time dynamics — ODE-based settling where the system's state evolves according to differential equations — the mismatch dissolved. Variable-rate input arrived naturally. Overlapping modalities could be processed simultaneously. Representations evolved smoothly instead of jumping between discrete states. The architecture stopped fighting the data and started flowing with it.
+
+This is now non-negotiable. FENA's continuous-time dynamics engine is the direct embodiment of this principle. Differential equations, not for loops. Accumulation, not generation. The system doesn't produce one token at a time — it continuously refines its entire world state in response to an ongoing stream of experience.
+
+## Local Learning Only — No Backpropagation, No Exceptions
+
+**The principle**: All learning must use biologically plausible local rules. No backpropagation. No global loss functions. Each component learns from locally available information only.
+
+This one hurt the most, because we violated it first and thought we'd gotten away with it.
+
+When we first tried pure Hebbian learning — neurons that fire together wire together — the results were discouraging. Entropy stayed flat. KL divergence hovered near zero. The representations didn't discriminate between different inputs; they collapsed into undifferentiated mush. Raw local learning without any guidance from higher levels simply wasn't enough to produce useful representations.
+
+We could have abandoned the local learning constraint at that point. Many teams do. Backpropagation works, and the bio-plausibility argument can feel like an academic luxury when your training curves are flatlined. But we held the line, and Phase 3 vindicated the stubbornness.
+
+Difference Target Propagation showed us the way through. Instead of propagating gradients globally through the network, DTP provides each layer with a local target — derived from the layer above, through a bio-plausible pathway. Each layer learns by minimizing the difference between its current state and its local target. No weight transport. No global gradient flow. Strict locality maintained, but now with top-down teaching signals that give learning direction.
+
+It was hard-won — we spent weeks debugging vanishing targets, routing errors, and instabilities — but we proved that the world model *can* learn under local rules. Entropy dropped. KL divergence rose. The representations started discriminating.
+
+The deeper lesson was that local learning isn't just a constraint we tolerate for philosophical reasons. It's a feature. Local learning means online learning — no separate training and inference phases. It means natural resistance to catastrophic forgetting, because updating one area doesn't send shockwaves through every weight in the network. It means the system can learn continuously from experience, exactly as brains do.
+
+Every new learning mechanism in FENA must now pass the locality test: can each component learn using only information available to it? If the answer is no, the mechanism is rejected. No exceptions.
+
+## Three Constraints, One Architecture
+
+These three principles aren't independent rules we enforce separately. They're deeply interdependent, and that interdependence is part of what makes them powerful.
+
+Native modalities require streaming — you can't process continuous multi-modal input if you're locked into a sequential token-generation paradigm. Streaming requires local learning — you can't backpropagate through a continuous temporal stream in any practical sense. And local learning works best with native representations — local prediction errors are most informative when modalities share a representational space, because each modality's predictions constrain and correct the others.
+
+Remove any one principle and the other two weaken. They form a triangle of constraints that, together, define the architecture's identity.
+
+We want to be clear: these aren't philosophical preferences. We didn't choose them because they sound elegant or because we're enamored with neuroscience for its own sake. We chose them because we tried everything else first and watched it fail. The decoder plateau, the autoregressive bottleneck, the Hebbian collapse — each failure narrowed the design space until these three principles were all that remained standing.
+
+They limit what we can build. That's the point. The limitations force the architecture toward solutions that biological brains discovered hundreds of millions of years ago. We're not copying the brain — we're following the same constraints and arriving at similar answers.
+
+— *The Sulphur Team*
