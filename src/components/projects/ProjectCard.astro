@@ -13,7 +13,7 @@ const { title, description, icon, href, status, external = false } = Astro.props
 const isLinked = !!href;
 
 const cardClasses = [
-  'project-card group relative rounded-xl transition-all duration-300 p-6 flex flex-col',
+  'project-card group relative rounded-xl overflow-hidden transition-all duration-300 p-6 flex flex-col',
   isLinked
     ? 'bg-[rgba(14,17,23,0.8)] border border-[rgba(108,99,255,0.3)] hover:-translate-y-1 hover:border-[rgba(108,99,255,0.6)] hover:shadow-[0_8px_30px_rgba(108,99,255,0.2)] cursor-pointer backdrop-blur-sm'
     : 'bg-[rgba(14,17,23,0.5)] border border-[rgba(255,255,255,0.06)] opacity-70',
