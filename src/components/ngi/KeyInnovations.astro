@@ -1,0 +1,146 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const innovations = [
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 017 7c0 2.5-1.5 4.5-3 6s-2 3-2 5h-4c0-2-0.5-3.5-2-5S5 11.5 5 9a7 7 0 017-7z"/><path d="M9 22h6"/><path d="M10 20h4"/></svg>`,
+    title: 'Bio-Plausible Learning',
+    description: 'No backpropagation. Local learning rules inspired by how biological neurons actually learn.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg>`,
+    title: 'Predictive Coding',
+    description: 'The brain as a prediction machine. Every layer predicts, compares, and learns from the difference.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-3 4-5 6-5s4 4 6 4 4-4 6-4"/><path d="M2 18c2-3 4-5 6-5s4 4 6 4 4-4 6-4"/><path d="M2 6c2-3 4-5 6-5s4 4 6 4 4-4 6-4"/></svg>`,
+    title: 'Continuous-Time Processing',
+    description: 'No discrete timesteps. Neural dynamics evolve continuously, like biological neural circuits.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/><circle cx="12" cy="8" r="6"/></svg>`,
+    title: 'Native Multi-Modal',
+    description: 'Vision, language, and action share the same architecture. Not bolted on — built in from the start.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><line x1="10" y1="6.5" x2="14" y2="6.5"/><line x1="10" y1="17.5" x2="14" y2="17.5"/><line x1="6.5" y1="10" x2="6.5" y2="14"/><line x1="17.5" y1="10" x2="17.5" y2="14"/></svg>`,
+    title: 'Slot-Based World Model',
+    description: '512 slots encoding environment state. A learned internal simulation of reality.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10"/><path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10"/><path d="M7 12c0-2.8 2.2-5 5-5"/><path d="M17 12c0 2.8-2.2 5-5 5"/></svg>`,
+    title: 'Memory Without Matrices',
+    description: 'Persistent state through dynamic attractors, not weight matrices. Fundamentally different from transformers.',
+  },
+];
+---
+
+<section class="ngi-innovations-section">
+  <div class="ngi-innovations-container">
+    <SectionHeader
+      eyebrow="Key Innovations"
+      title="What makes NGI different"
+      subtitle="Six fundamental departures from conventional AI architectures."
+    />
+
+    <div class="ngi-innovations-grid">
+      {innovations.map((item) => (
+        <div class="ngi-innovation-card">
+          <div class="ngi-innovation-icon" set:html={item.icon} />
+          <h3 class="ngi-innovation-title">{item.title}</h3>
+          <p class="ngi-innovation-desc">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ngi-innovations-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .ngi-innovations-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent);
+  }
+  .ngi-innovations-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .ngi-innovations-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  @media (min-width: 640px) {
+    .ngi-innovations-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .ngi-innovations-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .ngi-innovation-card {
+    background: rgba(8, 9, 12, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s, box-shadow 0.25s;
+  }
+  .ngi-innovation-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ngi-innovation-card:nth-child(2) { transition-delay: 0.1s; }
+  .ngi-innovation-card:nth-child(3) { transition-delay: 0.2s; }
+  .ngi-innovation-card:nth-child(4) { transition-delay: 0.3s; }
+  .ngi-innovation-card:nth-child(5) { transition-delay: 0.4s; }
+  .ngi-innovation-card:nth-child(6) { transition-delay: 0.5s; }
+  .ngi-innovation-card:hover {
+    transform: translateY(-3px) !important;
+    border-color: rgba(108, 99, 255, 0.3);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.1);
+  }
+  @media (scripting: none) {
+    .ngi-innovation-card { opacity: 1; transform: none; }
+  }
+  .ngi-innovation-icon {
+    width: 44px;
+    height: 44px;
+    color: var(--color-accent-primary);
+    margin-bottom: 1rem;
+  }
+  .ngi-innovation-icon svg { width: 100%; height: 100%; }
+  .ngi-innovation-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+  }
+  .ngi-innovation-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.ngi-innovation-card').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const grid = document.querySelector('.ngi-innovations-grid');
+  if (grid) observer.observe(grid);
+</script>
