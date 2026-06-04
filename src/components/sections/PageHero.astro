@@ -73,6 +73,16 @@ const { title, subtitle, badge, breadcrumb } = Astro.props;
 </section>
 
 <style>
+  .hero-title {
+    opacity: 0;
+  }
+
+  @media (scripting: none) {
+    .hero-title {
+      opacity: 1 !important;
+    }
+  }
+
   @keyframes pulse-glow {
     0%,
     100% {
@@ -104,33 +114,17 @@ const { title, subtitle, badge, breadcrumb } = Astro.props;
   async function animateHeroTitle() {
     try {
       const { gsap } = await import('gsap');
-      const { SplitText } = await import('gsap/SplitText');
-      gsap.registerPlugin(SplitText);
-
-      const heading = document.querySelector('.hero-title') as HTMLElement | null;
+      const heading = document.querySelector('.hero-title');
       if (!heading) return;
-
-      const split = new SplitText(heading, { type: 'chars' });
       gsap.fromTo(
-        split.chars,
-        { opacity: 0, y: 20, rotationX: -90 },
-        {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.5,
-          stagger: 0.025,
-          ease: 'back.out(1.7)',
-          delay: 0.2,
-        }
+        heading,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 }
       );
     } catch {
-      // GSAP failed to load — ensure title is visible
-      const heading = document.querySelector('.hero-title') as HTMLElement | null;
-      if (heading) {
-        heading.style.opacity = '1';
-        heading.style.visibility = 'visible';
-      }
+      // GSAP failed — ensure title is visible
+      const heading = document.querySelector('.hero-title');
+      if (heading) (heading as HTMLElement).style.opacity = '1';
     }
   }
   animateHeroTitle();

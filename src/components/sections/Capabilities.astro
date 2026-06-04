@@ -102,6 +102,14 @@ const capabilities = [
     box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(108, 99, 255, 0.08);
     transform: translateY(-2px);
   }
+
+  @media (scripting: none) {
+    .capabilities-header,
+    .capability-card {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 
 <script>
