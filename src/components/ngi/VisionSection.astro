@@ -1,0 +1,171 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const highlights = [
+  {
+    title: 'Bio-Plausible Learning',
+    description: 'No backpropagation. Local learning rules inspired by neuroscience — the way biological brains actually learn.',
+  },
+  {
+    title: 'Consumer Hardware',
+    description: 'Designed for 5–8 GB VRAM. Intelligence shouldn\'t require a datacenter.',
+  },
+  {
+    title: 'Continuous Processing',
+    description: 'Always-on cognition, not request/response. Thinks like a brain — continuously, in real time.',
+  },
+];
+---
+
+<section class="ngi-vision-section">
+  <div class="ngi-vision-bg" aria-hidden="true"></div>
+  <div class="ngi-vision-container">
+    <SectionHeader
+      eyebrow="The Vision"
+      title="Truly intelligent AI on consumer hardware"
+    />
+
+    <div class="ngi-vision-grid">
+      <div class="ngi-vision-text">
+        <p>
+          Current AI architectures are fundamentally limited — they scale by brute force, demanding
+          ever-larger clusters of GPUs. NGI takes a different path: a <strong>bio-plausible architecture</strong>
+          that replaces backpropagation with local learning rules inspired by how the brain works.
+        </p>
+        <p>
+          Built on <strong>predictive coding</strong> and <strong>free energy principles</strong>, NGI
+          processes information the way biological neural circuits do — continuously predicting,
+          comparing, and learning from the difference. This isn't incremental improvement; it's a
+          fundamentally different approach to intelligence.
+        </p>
+        <p>
+          Modalities aren't bolted on — <strong>vision, language, and action</strong> share the same
+          unified architecture from the ground up. And the target hardware? A consumer GPU with
+          5–8 GB VRAM. Because intelligence should be accessible, not gatekept behind million-dollar
+          infrastructure.
+        </p>
+      </div>
+
+      <div class="ngi-vision-highlights">
+        {highlights.map((h) => (
+          <div class="ngi-highlight-card">
+            <h3 class="ngi-highlight-title">{h.title}</h3>
+            <p class="ngi-highlight-desc">{h.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ngi-vision-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .ngi-vision-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent);
+  }
+  .ngi-vision-bg {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ngi-vision-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .ngi-vision-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+  @media (min-width: 768px) {
+    .ngi-vision-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+  .ngi-vision-text p {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem;
+  }
+  .ngi-vision-text p:last-child {
+    margin-bottom: 0;
+  }
+  .ngi-vision-text strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .ngi-vision-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .ngi-highlight-card {
+    background: rgba(8, 9, 12, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.25s, box-shadow 0.25s;
+  }
+  .ngi-highlight-card.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .ngi-highlight-card:nth-child(2) { transition-delay: 0.15s; }
+  .ngi-highlight-card:nth-child(3) { transition-delay: 0.3s; }
+  .ngi-highlight-card:hover {
+    border-color: rgba(108, 99, 255, 0.5);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.08);
+  }
+  @media (scripting: none) {
+    .ngi-highlight-card { opacity: 1; transform: none; }
+  }
+  .ngi-highlight-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.4rem;
+  }
+  .ngi-highlight-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.ngi-highlight-card').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const highlights = document.querySelector('.ngi-vision-highlights');
+  if (highlights) observer.observe(highlights);
+</script>

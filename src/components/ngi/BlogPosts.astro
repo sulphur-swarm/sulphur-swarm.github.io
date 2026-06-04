@@ -1,0 +1,186 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.tags.includes('ngi') && !data.draft;
+});
+
+// Sort by publishDate descending
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+
+const posts = sortedPosts.slice(0, 6);
+const hasMore = sortedPosts.length > 6;
+---
+
+<section class="ngi-blog-section">
+  <div class="ngi-blog-container">
+    <SectionHeader
+      eyebrow="From the Blog"
+      title="Deep dives into NGI research"
+      subtitle="Detailed explorations of each architecture decision, learning mechanism, and research breakthrough."
+    />
+
+    <div class="ngi-blog-grid">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}`} class="ngi-blog-card">
+          <time class="ngi-blog-date">
+            {post.data.publishDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
+          </time>
+          <h3 class="ngi-blog-title">{post.data.title}</h3>
+          <p class="ngi-blog-desc">{post.data.description}</p>
+          <div class="ngi-blog-tags">
+            {post.data.tags.slice(0, 3).map((tag) => (
+              <span class="ngi-blog-tag">{tag}</span>
+            ))}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    {hasMore && (
+      <div class="ngi-blog-more">
+        <a href="/blog/tag/ngi" class="ngi-blog-more-link">
+          View all NGI posts →
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .ngi-blog-section {
+    padding: 6rem 1.5rem;
+    background: var(--color-bg);
+    position: relative;
+  }
+  .ngi-blog-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent);
+  }
+  .ngi-blog-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .ngi-blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  @media (min-width: 640px) {
+    .ngi-blog-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .ngi-blog-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .ngi-blog-card {
+    background: rgba(8, 9, 12, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s, box-shadow 0.25s;
+  }
+  .ngi-blog-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ngi-blog-card:nth-child(2) { transition-delay: 0.1s; }
+  .ngi-blog-card:nth-child(3) { transition-delay: 0.2s; }
+  .ngi-blog-card:nth-child(4) { transition-delay: 0.3s; }
+  .ngi-blog-card:nth-child(5) { transition-delay: 0.4s; }
+  .ngi-blog-card:nth-child(6) { transition-delay: 0.5s; }
+  .ngi-blog-card:hover {
+    transform: translateY(-3px) !important;
+    border-color: rgba(108, 99, 255, 0.3);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.1);
+  }
+  @media (scripting: none) {
+    .ngi-blog-card { opacity: 1; transform: none; }
+  }
+  .ngi-blog-date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+  .ngi-blog-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+  .ngi-blog-desc {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+  .ngi-blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+  .ngi-blog-tag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    background: rgba(108, 99, 255, 0.1);
+    color: rgba(108, 99, 255, 0.8);
+    border: 1px solid rgba(108, 99, 255, 0.15);
+  }
+  .ngi-blog-more {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .ngi-blog-more-link {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--color-accent-primary);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .ngi-blog-more-link:hover {
+    opacity: 0.8;
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.ngi-blog-card').forEach(el => el.classList.add('is-visible'));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  const grid = document.querySelector('.ngi-blog-grid');
+  if (grid) observer.observe(grid);
+</script>
