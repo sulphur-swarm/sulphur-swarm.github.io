@@ -63,6 +63,13 @@ const secondaryIsExternal = secondaryHref?.startsWith('http');
     opacity: 1;
     transform: translateY(0);
   }
+
+  @media (scripting: none) {
+    .cta-banner {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 
 <script>

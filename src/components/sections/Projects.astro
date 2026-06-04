@@ -138,6 +138,14 @@ const projects = [
   .featured-project {
     box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.15), inset 0 0 60px rgba(108, 99, 255, 0.04);
   }
+
+  @media (scripting: none) {
+    .projects-header,
+    .project-card {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 
 <script>
