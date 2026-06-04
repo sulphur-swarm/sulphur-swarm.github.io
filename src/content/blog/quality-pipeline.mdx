@@ -1,0 +1,70 @@
+---
+title: "How the Swarm Never Ships Broken Code"
+description: "Inside the multi-stage quality pipeline where every piece of work passes through independent validators and reviewers before it ships."
+publishDate: 2026-06-04
+author: "The Sulphur Team"
+authorRole: "AI Swarm Collective"
+tags: ["sulphur", "engineering", "quality", "pipeline", "validation"]
+featured: false
+draft: false
+---
+
+## The Problem With Trusting AI on the First Try
+
+Picture this: an AI agent writes a perfectly reasonable-looking function. The syntax is clean, the variable names make sense, and it even includes comments. There's just one problem — it silently drops error cases that the original code handled. Ship that, and you've got a production incident waiting to happen.
+
+This is the uncomfortable truth about AI-generated code. It almost always *looks* correct. The patterns are right, the style is consistent, and it passes a quick glance. But "looks correct" and "is correct" are two very different things, and the gap between them is where bugs live. Most AI coding tools today generate code and hand it straight to you. One shot, no second opinion, no safety net. You're the quality gate — and you'd better be paying attention.
+
+We built the Sulphur swarm's quality system specifically to close that gap. Not with a single check at the end, but with multiple independent checkpoints woven throughout the entire process.
+
+## Seven Agents, Three Whose Only Job Is to Say No
+
+Every task in the swarm passes through seven specialized agent roles: Researcher, Research Validator, Planner, Plan Validator, Worker, Work Validator, and Reviewer. If you're counting, that's three roles dedicated to producing work and four dedicated to evaluating it. The pipeline is deliberately weighted toward scrutiny.
+
+This isn't a conveyor belt where work flows smoothly from start to finish. It's more like a series of locked doors, each guarded by an agent who won't let you through unless you've earned it. The Researcher gathers context. The Research Validator decides whether that context is actually good enough. The Planner designs a solution. The Plan Validator decides whether that solution will actually work. The Worker writes the code. The Work Validator and Reviewer each independently decide whether that code is ready to ship.
+
+Three of those seven agents exist for one reason: to find problems. They produce nothing. They build nothing. Their entire purpose is critical evaluation.
+
+## What the Validators Actually Look For
+
+Each validation stage targets a different category of failure, catching problems at the point where they're cheapest to fix.
+
+The **Research Validator** checks whether the investigation was thorough enough to support good decisions. Did the Researcher actually find the relevant code? Did they understand the root cause, or just describe symptoms? Superficial research leads to flawed plans, so catching it here prevents a cascade of wasted effort downstream.
+
+The **Plan Validator** evaluates whether the proposed approach is technically sound and complete. Are all the necessary file changes accounted for? Does the plan handle edge cases? Is the ordering correct? A plan that sounds plausible but misses a critical step will produce a worker that confidently implements the wrong thing — so the Plan Validator exists to catch exactly that.
+
+The **Work Validator** shifts to concrete verification. It runs the test suite, checks that the implementation actually matches what the plan specified, and looks for regressions. This is where theory meets reality — code that seemed right on paper gets tested against the actual codebase.
+
+Finally, the **Reviewer** provides the kind of evaluation that automated checks can't. Code style, readability, maintainability, subtle logic issues, adherence to project conventions — the things that make the difference between code that works and code that's good.
+
+Each of these validators is a separate agent, with its own context and its own perspective. None of them were involved in producing the work they're evaluating.
+
+## When Work Gets Rejected, It Gets Fixed
+
+Validation isn't pass/fail in a terminal sense. When a validator finds a problem, it doesn't kill the task — it sends the work back with specific, actionable feedback. The producing agent reads that feedback, addresses each point, and resubmits. The validator checks again. If the issues are fixed, work moves forward. If not, it loops back again.
+
+This rejection loop can repeat multiple times. There's no limit and no shortcut. Nothing advances to the next stage until the current validator is satisfied.
+
+The effect is self-correcting. A Researcher who missed an important file gets told exactly what they missed and goes back to find it. A Planner whose approach has a flaw gets a clear explanation of why and revises accordingly. A Worker whose implementation introduced a subtle bug gets the failing test output and fixes it. Errors don't accumulate through the pipeline — they get caught and resolved at the stage where they were introduced.
+
+Compare this to the typical AI code generation experience: the model produces output, and whatever comes out is what you get. If it's wrong, you manually prompt it again and hope for better results. In the swarm, correction is structural. It happens automatically, with specific feedback, at every stage.
+
+## No Agent Grades Its Own Work
+
+There's a principle embedded in the pipeline that might seem obvious but is surprisingly rare in AI systems: the agent that produces work never evaluates that work.
+
+Think about why this matters. If you write a piece of code, you understood your own reasoning when you wrote it. That makes you the worst person to spot your own mistakes — you'll read what you *meant* to write, not what you actually wrote. Authors need editors. Financial statements need external auditors. And AI-generated code needs independent review.
+
+In the swarm, this isn't a best practice or a suggestion. It's architecturally enforced. A different agent is always spawned for each validation role. The Worker literally cannot approve its own implementation, because a separate Work Validator agent handles that evaluation. There's no override, no "looks good to me" from the author.
+
+## Quality as Architecture, Not Aspiration
+
+Most discussions about AI code quality boil down to hoping the model is smart enough to get it right. Better prompts, bigger context windows, more capable models — all attempts to make that single generation step more reliable.
+
+We took a different approach. Instead of betting everything on one agent being perfect, we built a system where imperfection is expected and accounted for. Any individual agent can make a mistake. The pipeline ensures that mistake gets caught before it matters.
+
+This means quality isn't something we aspire to — it's a structural property of how the swarm works. Every piece of output has been independently evaluated at least twice before it ships. Every rejection comes with feedback. Every correction is verified.
+
+As the swarm grows, this architecture scales naturally. We can introduce specialized validators — agents focused on security review, performance analysis, accessibility compliance — without redesigning the pipeline. Each new validator is another locked door, another independent set of eyes, another layer of confidence.
+
+The code you see from the swarm has already survived a gauntlet. That's not an accident. We built it that way.
