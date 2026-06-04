@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import VisionSection from '../components/ngi/VisionSection.astro';
+import ArchitectureSection from '../components/ngi/ArchitectureSection.astro';
+import ResearchJourney from '../components/ngi/ResearchJourney.astro';
+import KeyInnovations from '../components/ngi/KeyInnovations.astro';
+import BlogPosts from '../components/ngi/BlogPosts.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+---
+
+<BaseLayout
+  title="Next Generation Intelligence — Bio-Plausible AI on Consumer Hardware | Sulphur"
+  description="NGI: a novel bio-plausible AI architecture built on predictive coding and free energy principles, designed to run on consumer hardware with 5-8GB VRAM."
+>
+  <PageHero
+    title="Next Generation Intelligence"
+    subtitle="Bio-plausible AI that thinks, learns, and adapts — running on consumer hardware."
+    badge="Flagship Research"
+    breadcrumb="Projects → NGI"
+  />
+
+  <!-- Neural network canvas visualization overlaid on hero bottom -->
+  <div class="ngi-canvas-wrapper" aria-hidden="true">
+    <canvas id="ngi-neural-canvas"></canvas>
+    <div class="ngi-canvas-fade"></div>
+  </div>
+
+  <VisionSection />
+  <ArchitectureSection />
+  <ResearchJourney />
+  <KeyInnovations />
+  <BlogPosts />
+
+  <CTABanner
+    title="Intelligence, reimagined."
+    subtitle="Follow the NGI research journey through our blog — from first principles to breakthrough results."
+    primaryHref="/blog/tag/ngi"
+    primaryLabel="Read the Research"
+    secondaryHref="/projects"
+    secondaryLabel="Back to Projects"
+  />
+</BaseLayout>
+
+<style>
+  .ngi-canvas-wrapper {
+    position: relative;
+    margin-top: -120px;
+    height: 400px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  @media (max-width: 640px) {
+    .ngi-canvas-wrapper {
+      margin-top: -80px;
+      height: 250px;
+    }
+  }
+  #ngi-neural-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+  }
+  .ngi-canvas-fade {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--color-bg, #08090c));
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  import { init } from '../scripts/ngiNeuralVis';
+
+  const canvas = document.getElementById('ngi-neural-canvas') as HTMLCanvasElement | null;
+  let cleanup: (() => void) | undefined;
+
+  if (canvas) {
+    cleanup = init(canvas);
+  }
+
+  // Cleanup on Astro view transitions
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+  });
+
+  // GSAP: Fade canvas on scroll
+  async function initScrollFade() {
+    try {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to('.ngi-canvas-wrapper', {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: '.ngi-canvas-wrapper',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    } catch {
+      // GSAP not available — canvas stays visible, which is fine
+    }
+  }
+  initScrollFade();
+</script>
