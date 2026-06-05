@@ -109,6 +109,7 @@ ${simplexNoise3D}
 uniform float uTime;
 uniform float uAmplitude;
 varying float vDisplacement;
+varying float vScreenY;
 
 void main() {
   vec3 pos = position;
@@ -127,6 +128,9 @@ void main() {
   pos.y += displacement;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+
+  // Normalized screen Y: 0.0 = bottom, 1.0 = top
+  vScreenY = gl_Position.y / gl_Position.w * 0.5 + 0.5;
 }
 `;
 
@@ -136,6 +140,7 @@ void main() {
 
 const fragmentShader = /* glsl */ `
 varying float vDisplacement;
+varying float vScreenY;
 
 void main() {
   // Purple-to-cyan gradient based on displacement height
@@ -143,8 +148,13 @@ void main() {
   vec3 brightCyan = vec3(0.0, 0.831, 1.0);      // #00d4ff
   vec3 color = mix(deepPurple, brightCyan, vDisplacement);
 
-  // Brightness boost for peaks (feeds into bloom)
-  color *= 1.0 + vDisplacement * 0.5;
+  // Brightness boost for peaks (feeds into bloom) — reduced for subtlety
+  color *= 1.0 + vDisplacement * 0.15;
+
+  // Bottom fade: smoothly blend to background in bottom ~25% of screen
+  vec3 bgColor = vec3(0.031, 0.035, 0.047);
+  float fadeFactor = smoothstep(0.0, 0.25, vScreenY);
+  color = mix(bgColor, color, fadeFactor);
 
   gl_FragColor = vec4(color, 1.0);
 }
@@ -181,12 +191,22 @@ export function init(canvas: HTMLCanvasElement): () => void {
   // Scene
   const scene = new Scene();
   scene.background = BG_COLOR;
-  scene.fog = new FogExp2(0x08090c, 0.004);
+  scene.fog = new FogExp2(0x08090c, isMobile ? 0.005 : 0.003);
 
-  // Camera — positioned above and in front, looking across the surface
-  const camera = new PerspectiveCamera(55, parentWidth() / parentHeight(), 0.1, 1000);
-  camera.position.set(0, 80, 150);
-  camera.lookAt(0, 0, -20);
+  // Camera — viewport-aware positioning for cinematic depth
+  const camera = new PerspectiveCamera(
+    isMobile ? 60 : 50,
+    parentWidth() / parentHeight(),
+    0.1,
+    1000,
+  );
+  if (isMobile) {
+    camera.position.set(0, 90, 130);
+    camera.lookAt(0, 0, -30);
+  } else {
+    camera.position.set(0, 70, 120);
+    camera.lookAt(0, 0, -40);
+  }
 
   // Geometry
   const segments = isMobile ? SEGMENTS_MOBILE : SEGMENTS_DESKTOP;
@@ -208,15 +228,15 @@ export function init(canvas: HTMLCanvasElement): () => void {
   let mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
-  // Post-processing (bloom)
+  // Post-processing (bloom) — reduced for subtle, refined glow
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
 
   const bloomPass = new UnrealBloomPass(
     new Vector2(parentWidth(), parentHeight()),
-    isMobile ? 0.6 : 1.2,
-    isMobile ? 0.4 : 0.6,
-    isMobile ? 0.4 : 0.3,
+    isMobile ? 0.25 : 0.35,
+    isMobile ? 0.25 : 0.3,
+    isMobile ? 0.75 : 0.7,
   );
   composer.addPass(bloomPass);
 
@@ -237,10 +257,15 @@ export function init(canvas: HTMLCanvasElement): () => void {
 
     material.uniforms.uTime.value = time;
 
-    // Subtle camera drift for added depth
-    camera.position.x = Math.sin(time * 0.05) * 10;
-    camera.position.y = 80 + Math.sin(time * 0.03) * 5;
-    camera.lookAt(0, 0, -20);
+    // Subtle camera drift — viewport-aware
+    const driftX = isMobile ? 5 : 10;
+    const driftY = isMobile ? 3 : 5;
+    const baseY = isMobile ? 90 : 70;
+    const lookTarget = isMobile ? -30 : -40;
+
+    camera.position.x = Math.sin(time * 0.05) * driftX;
+    camera.position.y = baseY + Math.sin(time * 0.03) * driftY;
+    camera.lookAt(0, 0, lookTarget);
 
     composer.render();
   }
@@ -272,10 +297,24 @@ export function init(canvas: HTMLCanvasElement): () => void {
       mesh.geometry = newGeometry;
       geometry = newGeometry;
 
-      // Update bloom strength
-      bloomPass.strength = isMobile ? 0.6 : 1.2;
-      bloomPass.radius = isMobile ? 0.4 : 0.6;
-      bloomPass.threshold = isMobile ? 0.4 : 0.3;
+      // Update bloom — subtle refined glow
+      bloomPass.strength = isMobile ? 0.25 : 0.35;
+      bloomPass.radius = isMobile ? 0.25 : 0.3;
+      bloomPass.threshold = isMobile ? 0.75 : 0.7;
+
+      // Update camera for new viewport
+      camera.fov = isMobile ? 60 : 50;
+      if (isMobile) {
+        camera.position.set(0, 90, 130);
+        camera.lookAt(0, 0, -30);
+      } else {
+        camera.position.set(0, 70, 120);
+        camera.lookAt(0, 0, -40);
+      }
+      camera.updateProjectionMatrix();
+
+      // Update fog density
+      scene.fog = new FogExp2(0x08090c, isMobile ? 0.005 : 0.003);
     }
   });
   resizeObserver.observe(parent);
