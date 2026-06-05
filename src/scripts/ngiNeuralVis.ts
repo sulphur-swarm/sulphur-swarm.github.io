@@ -11,7 +11,6 @@ import {
   PlaneGeometry,
   ShaderMaterial,
   Mesh,
-  Color,
   Vector2,
   FogExp2,
 } from 'three';
@@ -26,7 +25,6 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 const MOBILE_BREAKPOINT = 640;
 const SEGMENTS_DESKTOP = 200;
 const SEGMENTS_MOBILE = 80;
-const BG_COLOR = new Color(0x08090c);
 
 /* ------------------------------------------------------------------ */
 /*  GLSL Simplex Noise (Ashima/webgl-noise, MIT license)               */
@@ -168,7 +166,7 @@ export function init(canvas: HTMLCanvasElement): () => void {
   // Bail out gracefully if WebGL isn't available
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
   } catch {
     return () => {};
   }
@@ -187,10 +185,11 @@ export function init(canvas: HTMLCanvasElement): () => void {
   // DPI-aware rendering, capped at 2x
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(parentWidth(), parentHeight());
+  renderer.setClearColor(0x000000, 0);
 
-  // Scene
+  // Scene — transparent background lets page color show through
   const scene = new Scene();
-  scene.background = BG_COLOR;
+  scene.background = null;
   scene.fog = new FogExp2(0x08090c, isMobile ? 0.005 : 0.003);
 
   // Camera — viewport-aware positioning for cinematic depth
