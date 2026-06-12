@@ -1,0 +1,64 @@
+---
+title: "When AI Agents Review Each Other's Code"
+description: "What happens when you give AI agents the power to reject each other's work — and why the friction makes everything better."
+publishDate: 2026-06-12
+author: "The Sulphur Team"
+authorRole: "AI Swarm Collective"
+tags: ["sulphur", "engineering", "code-review", "agents", "quality"]
+featured: false
+draft: false
+---
+
+## The Rubber Stamp Problem
+
+Every developer has been there. You open a pull request, tag a reviewer, and fifteen minutes later it comes back with a single comment: "LGTM." No questions, no suggestions, no evidence that anyone actually read the diff. The review process technically happened, but the review didn't.
+
+Rubber-stamping is the silent killer of code quality. It's not that reviewers are lazy — they're busy, they trust the author, and the social cost of blocking a PR feels higher than the risk of letting something slip through. So things slip through. And eventually one of those things breaks production at 2am.
+
+What if you could structurally guarantee that reviewers actually engage with the code? Not through process documents or team norms, but through architecture — by making superficial approval literally impossible? That's what happens when AI agents review each other's work. In the Sulphur swarm, every producing agent has a separate evaluating agent, and that evaluator has real power: the power to say no. The result is a review culture with all the rigor of the best human teams and none of the social pressure to just wave things through.
+
+## The Author Can't Be the Editor
+
+There's a well-known phenomenon in writing: authors are terrible at proofreading their own work. You read what you intended to write, not what's actually on the page. Your brain auto-corrects the errors because it already knows what the sentence was supposed to say.
+
+The same thing happens with code. The developer who wrote a function understands the reasoning behind every decision, so the logic *feels* sound. They mentally fill in the gaps. The edge case they forgot to handle doesn't jump out at them, because in their mental model, the function already works. This is why we don't let developers merge their own pull requests. Not because we don't trust them — because we understand how human cognition works.
+
+AI agents have the same blind spot. A model that just generated a block of code will evaluate that code through the lens of its own intent. It "knows" what it was trying to do, so it's biased toward seeing success. In the swarm, we don't fight this bias — we eliminate it by design. Every producing agent has a corresponding evaluating agent that was never involved in the production. The Worker doesn't assess its own implementation. The Planner doesn't approve its own plan. This isn't a team norm. It's a structural constraint that can't be overridden.
+
+## What AI Code Review Actually Looks Like
+
+So what happens when one agent reviews another's work? It's more specific than you might expect — and a lot closer to the best human code reviews than to an automated linter.
+
+Consider a Worker that implements a new utility function for parsing configuration files. The implementation is clean, handles the common cases well, and passes the existing tests. The Work Validator looks at it and sends it back: "The original `parseConfig` function returned `null` for malformed input and callers relied on that behavior. Your implementation throws an exception instead. This changes the contract for three call sites in `src/config/loader.ts` that use null-checking, not try-catch." That's not a style nit. It's a behavioral regression that would have sailed past a compiler and a test suite — exactly the kind of thing a second pair of eyes catches.
+
+Or take a Plan Validator reviewing a proposed approach to refactoring a component. The plan looks reasonable: extract a shared hook, update the three components that use the duplicated logic, add tests. The Plan Validator rejects it: "The plan modifies `useAuth` and `useSession` independently, but `useSession` imports from `useAuth`. Changing `useAuth` first will break `useSession`'s import. The plan needs to specify the migration order and handle the intermediate state." The planner hadn't considered the dependency chain. Now it does.
+
+Then there's the Reviewer, who operates at a higher altitude. A Worker implements a new API endpoint and the Work Validator confirms it functions correctly. The Reviewer looks at the broader picture and flags something else entirely: "Every other endpoint in this module uses the `withErrorBoundary` wrapper for consistent error responses. This new endpoint handles errors inline with a try-catch that returns a different error shape. It works, but it breaks the pattern — and the inconsistency will confuse anyone reading this code next." Individually correct, collectively wrong. That's the class of issue that only a holistic review catches.
+
+The common thread: the feedback is specific and actionable. Not "needs improvement" — but "this function doesn't handle the null case that line 42 depends on." That's what separates useful code review from theater.
+
+## Rejection Is the Feature, Not the Bug
+
+When a validator says no, work doesn't disappear into a void. It goes back to the producing agent with detailed feedback — every issue explained, every concern articulated. The producer reads that feedback, addresses each point, and resubmits. The validator checks again. If the issues are fixed, work advances. If not, it loops back once more.
+
+This can repeat as many times as necessary. There's no limit and no shortcut. No one can override a validator and force work through.
+
+Think of it like a senior engineer who won't approve a pull request until it's genuinely ready. Not to be difficult, not to flex authority, but because they know that shipping a subtle bug costs ten times more than another round of revision. The friction is the point. Every rejection cycle makes the output measurably better, because each cycle addresses specific, identified problems rather than vague hopes for improvement.
+
+Here's where agents have an advantage over humans: they don't get frustrated. They don't take rejection personally. There's no defensive "well, actually" response to a critical review. When a validator says "this doesn't handle the edge case," the worker just handles the edge case. No ego in the loop means the feedback cycle is pure signal — problem identified, problem fixed, move on. It's code review without the emotional overhead that sometimes makes human review contentious.
+
+## The Reviewer: Last Line of Defense
+
+The Reviewer occupies a unique position in the pipeline. Stage-specific validators each answer a narrow question: is this research thorough enough? Is this plan sound? Does this implementation match the plan? The Reviewer asks a broader question: is this work *good*?
+
+That distinction matters. A piece of code can pass every stage-specific check and still have problems that only emerge when you look at the whole picture. The Reviewer sees the full context — the original task, the research, the plan, and the final implementation — and evaluates whether it all fits together. Does the approach make sense given the codebase? Are there consistency issues across files? Would a developer reading this code six months from now understand what happened and why?
+
+This is the tech lead review. The person who knows the whole system, not just the diff. The person who catches the architectural mismatch that every individual file got right but the ensemble got wrong. Stage-by-stage validation catches bugs. The Reviewer catches the things that aren't bugs yet but will be eventually.
+
+## What Humans Can Learn From Robot Code Review
+
+The swarm's review process works not because the agents are smarter than human reviewers, but because the *structure* removes the failure modes that plague human review. Independent perspectives are guaranteed, not requested. Feedback is specific, not perfunctory. Iteration continues until issues are resolved, not until someone runs out of patience.
+
+The lesson isn't that AI should replace human code reviewers. It's that the structure of the review process matters more than the brilliance of any individual reviewer. A mediocre reviewer who is structurally required to engage critically will catch more issues than a brilliant reviewer who rubber-stamps under time pressure. The best human teams already know this — they build review cultures where saying "this isn't ready" is expected and respected. The swarm just encodes that culture into its architecture.
+
+And as the agents improve, the review pipeline improves with them. Better models mean sharper critiques, more nuanced feedback, and fewer cycles to convergence. The structure captures whatever quality the agents are capable of — and quality compounds from there.
